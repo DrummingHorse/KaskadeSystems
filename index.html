@@ -1,0 +1,1896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kaskade — Multi-model orchestration</title>
+<meta name="description" content="One prompt. Many models. One master channel. Multi-model AI orchestration for work that deserves more than a single opinion.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #020617;
+  --ink-2: #0b1120;
+  --ink-3: #0f172a;
+  --glass: rgba(255, 255, 255, 0.04);
+  --glass-2: rgba(255, 255, 255, 0.07);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-2: rgba(255, 255, 255, 0.14);
+  --border-cyan: rgba(103, 232, 249, 0.22);
+  --border-violet: rgba(196, 181, 253, 0.22);
+  --border-amber: rgba(251, 191, 36, 0.28);
+  --text: #f8fafc;
+  --text-2: rgba(248, 250, 252, 0.72);
+  --text-3: rgba(248, 250, 252, 0.5);
+  --text-4: rgba(248, 250, 252, 0.35);
+  --cyan: #67e8f9;
+  --cyan-soft: #a5f3fc;
+  --sky: #7dd3fc;
+  --violet: #c4b5fd;
+  --violet-deep: #a78bfa;
+  --fuchsia: #f0abfc;
+  --amber: #fbbf24;
+  --amber-soft: #fef3c7;
+  --orange: #fb923c;
+  --display: 'Fraunces', Georgia, serif;
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--ink);
+  color: var(--text);
+  font-family: var(--display);
+  font-weight: 300;
+  font-variation-settings: "SOFT" 30;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Ambient radial glow atmosphere */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 18% 12%, rgba(103, 232, 249, 0.14), transparent 60%),
+    radial-gradient(ellipse 50% 35% at 38% 35%, rgba(125, 211, 252, 0.1), transparent 60%),
+    radial-gradient(ellipse 45% 30% at 72% 28%, rgba(196, 181, 253, 0.12), transparent 60%),
+    radial-gradient(ellipse 55% 40% at 88% 68%, rgba(167, 139, 250, 0.07), transparent 60%),
+    radial-gradient(ellipse 50% 35% at 12% 85%, rgba(251, 191, 36, 0.04), transparent 60%),
+    linear-gradient(to bottom, #0b1120 0%, #020617 60%, #01040d 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Diagonal light rays — Grok's signature move, but softer */
+.light-rays {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.55;
+  overflow: hidden;
+}
+.light-rays::before,
+.light-rays::after {
+  content: '';
+  position: absolute;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, currentColor, transparent);
+  filter: blur(0.5px);
+}
+.ray-1 {
+  position: absolute;
+  left: 6%; top: 14%;
+  width: 32%;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  transform: rotate(11deg);
+  filter: blur(0.5px);
+  opacity: 0.85;
+}
+.ray-2 {
+  position: absolute;
+  left: 26%; top: 22%;
+  width: 26%;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, var(--sky), transparent);
+  transform: rotate(4deg);
+  filter: blur(0.5px);
+  opacity: 0.75;
+}
+.ray-3 {
+  position: absolute;
+  left: 42%; top: 32%;
+  width: 22%;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, var(--violet), transparent);
+  transform: rotate(-7deg);
+  filter: blur(0.5px);
+  opacity: 0.8;
+}
+.ray-4 {
+  position: absolute;
+  left: 58%; top: 42%;
+  width: 20%;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, var(--fuchsia), transparent);
+  transform: rotate(9deg);
+  filter: blur(0.5px);
+  opacity: 0.7;
+}
+.ray-5 {
+  position: absolute;
+  left: 68%; top: 52%;
+  width: 18%;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, var(--cyan-soft), transparent);
+  transform: rotate(-12deg);
+  filter: blur(0.5px);
+  opacity: 0.6;
+}
+
+/* Grid overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(103, 232, 249, 0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(103, 232, 249, 0.018) 1px, transparent 1px);
+  background-size: 88px 88px;
+  pointer-events: none;
+  z-index: 0;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 82%);
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.75rem 2.5rem;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: rgba(2, 6, 23, 0.65);
+  border-bottom: 0.5px solid var(--border);
+}
+
+.wordmark {
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 0.95rem;
+  letter-spacing: 0.5em;
+  color: var(--text);
+  text-transform: uppercase;
+  text-decoration: none;
+  padding-left: 0.5em;
+  display: inline-flex;
+  align-items: center;
+}
+
+.wordmark::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--cyan);
+  margin-right: 0.9em;
+  animation: pulse 2.4s ease-in-out infinite;
+  box-shadow: 0 0 12px var(--cyan);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.2); }
+}
+
+.nav-menu {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.nav-menu a {
+  color: var(--text-2);
+  text-decoration: none;
+  transition: color 0.3s ease;
+  position: relative;
+}
+
+.nav-menu a:hover { color: var(--cyan); }
+
+.nav-menu a::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 0;
+  height: 0.5px;
+  background: var(--cyan);
+  transition: width 0.3s ease;
+}
+
+.nav-menu a:hover::after { width: 100%; }
+
+main { position: relative; z-index: 1; }
+
+section {
+  padding: 7rem 2.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.section-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.section-label::before {
+  content: '';
+  width: 32px;
+  height: 0.5px;
+  background: var(--cyan);
+}
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  padding-top: 9rem;
+  padding-bottom: 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3.5rem;
+}
+
+.hero-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.55rem 1.1rem;
+  border: 0.5px solid var(--border-cyan);
+  background: rgba(103, 232, 249, 0.06);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--cyan-soft);
+  align-self: flex-start;
+}
+
+.hero-chip::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 8px var(--cyan);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.hero h1 {
+  font-family: var(--display);
+  font-size: clamp(3rem, 8vw, 7.5rem);
+  font-weight: 300;
+  font-variation-settings: "SOFT" 50;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  max-width: 16ch;
+}
+
+.hero h1 em {
+  font-style: italic;
+  font-variation-settings: "SOFT" 80;
+  font-weight: 300;
+  background: linear-gradient(135deg, var(--cyan-soft) 0%, var(--sky) 45%, var(--violet) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.hero-sub {
+  font-family: var(--display);
+  font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+  font-style: italic;
+  font-variation-settings: "SOFT" 70;
+  color: var(--text-2);
+  max-width: 48ch;
+  line-height: 1.5;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1.05rem 1.8rem;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 0.5px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  background: transparent;
+  color: var(--text);
+}
+
+.btn-primary {
+  background: var(--amber);
+  color: var(--ink);
+  border-color: var(--amber);
+  box-shadow: 0 0 0 rgba(251, 191, 36, 0);
+}
+.btn-primary:hover {
+  background: var(--amber-soft);
+  border-color: var(--amber-soft);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(251, 191, 36, 0.2);
+}
+.btn-ghost {
+  border-color: var(--border-2);
+  color: var(--text-2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: var(--glass);
+}
+.btn-ghost:hover {
+  color: var(--cyan);
+  border-color: var(--cyan);
+  background: rgba(103, 232, 249, 0.06);
+}
+.btn-arrow { display: inline-block; transition: transform 0.3s ease; }
+.btn:hover .btn-arrow { transform: translateX(4px); }
+
+/* Hero visual frame */
+.hero-visual {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  border: 0.5px solid var(--border-2);
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.6), rgba(2, 6, 23, 0.9));
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  padding: 1.5rem 1rem 2rem;
+  position: relative;
+  border-radius: 6px;
+  box-shadow: 0 30px 80px -20px rgba(103, 232, 249, 0.08);
+}
+
+.hero-visual::before,
+.hero-visual::after {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 0.5px solid var(--cyan);
+}
+.hero-visual::before { top: -1px; left: -1px; border-right: none; border-bottom: none; }
+.hero-visual::after { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+
+.hero-visual-label {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  padding: 0.5rem 0 1rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.hero-visual-label .right {
+  color: var(--amber);
+  padding-right: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.hero-visual-label .right::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--amber);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+.prism-svg { width: 100%; height: auto; display: block; }
+
+/* TRAP */
+.trap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  align-items: start;
+}
+
+.trap h2 {
+  font-family: var(--display);
+  font-size: clamp(2.2rem, 4.5vw, 4rem);
+  font-weight: 300;
+  font-variation-settings: "SOFT" 60;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.trap h2 em {
+  font-style: italic;
+  font-variation-settings: "SOFT" 90;
+  background: linear-gradient(135deg, var(--cyan-soft), var(--violet));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.trap-body {
+  font-family: var(--display);
+  font-size: 1.15rem;
+  line-height: 1.65;
+  color: var(--text-2);
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  padding-top: 1rem;
+}
+
+.trap-body p:first-child::first-letter {
+  font-size: 3.4em;
+  float: left;
+  line-height: 0.85;
+  padding: 0.05em 0.15em 0 0;
+  color: var(--cyan);
+  font-style: italic;
+  font-variation-settings: "SOFT" 100;
+}
+
+/* Positioning cards — what Kaskade isn't, then what it is */
+.positioning {
+  grid-column: 1 / -1;
+  margin-top: 4rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 0.5px solid var(--border);
+}
+
+.position-card {
+  background: var(--ink-2);
+  padding: 2.25rem 1.75rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-height: 220px;
+  transition: background 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.position-card:hover { background: var(--ink-3); }
+
+.position-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 24px;
+  height: 0.5px;
+  background: currentColor;
+  opacity: 0.5;
+}
+
+.position-card.not { color: var(--text-3); }
+.position-card.yes { color: var(--amber); }
+
+.position-label {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: inherit;
+}
+
+.position-head {
+  font-family: var(--display);
+  font-size: clamp(1.5rem, 2.4vw, 1.95rem);
+  font-weight: 300;
+  font-variation-settings: "SOFT" 80;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.position-card.yes .position-head em {
+  font-style: italic;
+  color: var(--amber);
+  font-variation-settings: "SOFT" 100;
+}
+
+.position-desc {
+  font-family: var(--display);
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: var(--text-2);
+  margin-top: auto;
+}
+
+/* METHOD */
+.method-intro {
+  max-width: 52ch;
+  margin-bottom: 4rem;
+  font-family: var(--display);
+  font-size: clamp(1.4rem, 2.2vw, 2rem);
+  line-height: 1.3;
+  color: var(--text);
+  font-weight: 300;
+}
+
+.method-intro em {
+  font-style: italic;
+  background: linear-gradient(135deg, var(--cyan), var(--violet));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  font-variation-settings: "SOFT" 100;
+}
+
+/* Sample chain card */
+.chain {
+  margin: 0 0 5rem;
+  padding: 2.5rem 2rem;
+  border: 0.5px solid var(--border);
+  background: var(--glass);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  position: relative;
+  border-radius: 6px;
+}
+
+.chain-label {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.chain-label em {
+  font-style: normal;
+  color: var(--cyan);
+}
+
+.chain-flow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.chain-node {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  padding: 0.8rem 1.2rem;
+  border: 0.5px solid var(--border-2);
+  background: rgba(15, 23, 42, 0.7);
+  color: var(--text);
+  min-width: 110px;
+  text-align: center;
+  position: relative;
+  border-radius: 4px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.chain-node .role {
+  display: block;
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  color: var(--text-3);
+  margin-bottom: 0.3rem;
+  text-transform: uppercase;
+}
+
+.chain-node:nth-child(1) { border-color: rgba(196, 181, 253, 0.4); }
+.chain-node:nth-child(1) .role { color: var(--violet); }
+.chain-node:nth-child(3) { border-color: rgba(103, 232, 249, 0.4); }
+.chain-node:nth-child(3) .role { color: var(--cyan); }
+.chain-node:nth-child(5) { border-color: rgba(125, 211, 252, 0.35); }
+.chain-node:nth-child(5) .role { color: var(--sky); }
+.chain-node:nth-child(7) { border-color: rgba(240, 171, 252, 0.35); }
+.chain-node:nth-child(7) .role { color: var(--fuchsia); }
+
+.chain-node.master {
+  border-color: var(--amber);
+  color: var(--amber);
+  box-shadow: 0 0 24px rgba(251, 191, 36, 0.15);
+}
+.chain-node.master .role { color: var(--amber); }
+
+.chain-arrow {
+  color: var(--text-3);
+  font-family: var(--mono);
+  font-size: 0.9rem;
+}
+
+.chain-note {
+  margin-top: 2rem;
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 0.98rem;
+  color: var(--text-2);
+  text-align: center;
+  max-width: 62ch;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+/* Stage cards */
+.stages {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 0.5px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.stage {
+  background: var(--ink-2);
+  padding: 2.5rem 1.75rem 3rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  min-height: 340px;
+  transition: background 0.4s ease;
+}
+
+.stage:hover { background: var(--ink-3); }
+
+.stage-num {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: var(--text-3);
+}
+
+.stage-name {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.25em;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.stage-bar { width: 40px; height: 2px; margin: 0.5rem 0; }
+
+.stage:nth-child(1) .stage-bar { background: var(--violet); box-shadow: 0 0 12px rgba(196, 181, 253, 0.5); }
+.stage:nth-child(2) .stage-bar { background: var(--cyan); box-shadow: 0 0 12px rgba(103, 232, 249, 0.5); }
+.stage:nth-child(3) .stage-bar { background: var(--sky); box-shadow: 0 0 12px rgba(125, 211, 252, 0.5); }
+.stage:nth-child(4) .stage-bar { background: var(--fuchsia); box-shadow: 0 0 12px rgba(240, 171, 252, 0.4); }
+.stage:nth-child(5) .stage-bar { background: var(--amber); box-shadow: 0 0 12px rgba(251, 191, 36, 0.5); }
+
+.stage:nth-child(1) .stage-name { color: var(--violet); }
+.stage:nth-child(2) .stage-name { color: var(--cyan); }
+.stage:nth-child(3) .stage-name { color: var(--sky); }
+.stage:nth-child(4) .stage-name { color: var(--fuchsia); }
+.stage:nth-child(5) .stage-name { color: var(--amber); }
+
+.stage-desc {
+  font-family: var(--display);
+  font-size: 0.98rem;
+  line-height: 1.55;
+  color: var(--text-2);
+  margin-top: auto;
+}
+
+.stage-desc em { font-style: italic; color: var(--text); }
+
+.method-footer {
+  margin-top: 4rem;
+  font-family: var(--display);
+  font-style: italic;
+  font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+  font-variation-settings: "SOFT" 80;
+  color: var(--text-3);
+  max-width: 68ch;
+  padding-left: 3rem;
+  border-left: 0.5px solid var(--border-cyan);
+}
+
+/* UNIVERSAL */
+.universal {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 5rem;
+  align-items: center;
+}
+
+.universal h2 {
+  font-family: var(--display);
+  font-size: clamp(2.3rem, 4.8vw, 4.3rem);
+  font-weight: 300;
+  font-variation-settings: "SOFT" 60;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+
+.universal h2 em {
+  font-style: italic;
+  background: linear-gradient(135deg, var(--cyan-soft), var(--violet));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  font-variation-settings: "SOFT" 100;
+}
+
+.universal-body {
+  font-family: var(--display);
+  font-size: 1.1rem;
+  line-height: 1.65;
+  color: var(--text-2);
+  max-width: 54ch;
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+}
+
+.universal-body em {
+  font-style: italic;
+  color: var(--cyan);
+}
+
+.domains {
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem 2rem;
+}
+
+.domain {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  padding: 0.6rem 0;
+  border-top: 0.5px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: color 0.3s ease;
+}
+
+.domain:hover { color: var(--cyan); }
+
+.domain::after {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--cyan);
+  opacity: 0.5;
+  transition: box-shadow 0.3s ease;
+}
+
+.domain:hover::after { box-shadow: 0 0 8px var(--cyan); opacity: 1; }
+
+/* MODULES */
+.modules-intro {
+  max-width: 50ch;
+  margin-bottom: 4rem;
+  font-family: var(--display);
+  font-size: clamp(1.3rem, 2vw, 1.8rem);
+  line-height: 1.3;
+  color: var(--text);
+  font-weight: 300;
+}
+
+.modules-intro em {
+  font-style: italic;
+  background: linear-gradient(135deg, var(--cyan), var(--violet));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.modules {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.module {
+  background: var(--glass);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 0.5px solid var(--border);
+  padding: 2.75rem 2rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-height: 380px;
+  transition: all 0.4s ease;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+}
+
+.module::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(103, 232, 249, 0) 0%, rgba(103, 232, 249, 0) 100%);
+  pointer-events: none;
+  transition: background 0.4s ease;
+}
+
+.module:nth-child(1):hover {
+  border-color: var(--border-amber);
+  box-shadow: 0 10px 40px -10px rgba(251, 191, 36, 0.15);
+}
+.module:nth-child(1):hover::before {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.04) 0%, rgba(251, 191, 36, 0) 60%);
+}
+
+.module:nth-child(2):hover {
+  border-color: var(--border-violet);
+  box-shadow: 0 10px 40px -10px rgba(196, 181, 253, 0.18);
+}
+.module:nth-child(2):hover::before {
+  background: linear-gradient(135deg, rgba(196, 181, 253, 0.05) 0%, rgba(196, 181, 253, 0) 60%);
+}
+
+.module:nth-child(3):hover {
+  border-color: var(--border-cyan);
+  box-shadow: 0 10px 40px -10px rgba(103, 232, 249, 0.18);
+}
+.module:nth-child(3):hover::before {
+  background: linear-gradient(135deg, rgba(103, 232, 249, 0.05) 0%, rgba(103, 232, 249, 0) 60%);
+}
+
+.module-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  position: relative;
+  z-index: 1;
+}
+
+.module-head .status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.module-head .status::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 8px var(--cyan);
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+.module-name {
+  font-family: var(--display);
+  font-size: clamp(2rem, 3vw, 2.6rem);
+  font-weight: 300;
+  font-variation-settings: "SOFT" 70;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.module-tagline {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+  position: relative;
+  z-index: 1;
+}
+
+.module:nth-child(1) .module-tagline { color: var(--amber); }
+.module:nth-child(2) .module-tagline { color: var(--violet); }
+.module:nth-child(3) .module-tagline { color: var(--cyan); }
+
+.module-desc {
+  font-family: var(--display);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-2);
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.module-arrow {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  transition: color 0.3s ease, transform 0.3s ease;
+  display: inline-flex;
+  gap: 0.6rem;
+  position: relative;
+  z-index: 1;
+}
+
+.module:nth-child(1):hover .module-arrow { color: var(--amber); transform: translateX(4px); }
+.module:nth-child(2):hover .module-arrow { color: var(--violet); transform: translateX(4px); }
+.module:nth-child(3):hover .module-arrow { color: var(--cyan); transform: translateX(4px); }
+
+/* FEATURE SECTIONS */
+.feature {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 5rem;
+  align-items: center;
+}
+
+.feature.reverse { grid-template-columns: 1fr 1.1fr; }
+.feature.reverse .feature-text { order: 2; }
+.feature.reverse .feature-visual { order: 1; }
+
+.feature h2 {
+  font-family: var(--display);
+  font-size: clamp(2.2rem, 4.8vw, 4.2rem);
+  font-weight: 300;
+  font-variation-settings: "SOFT" 70;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  margin-bottom: 2rem;
+}
+
+.feature h2 em {
+  font-style: italic;
+  font-variation-settings: "SOFT" 100;
+  background: linear-gradient(135deg, var(--violet), var(--fuchsia));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.feature.skrapr h2 em {
+  background: linear-gradient(135deg, var(--cyan), var(--sky));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.feature-body {
+  font-family: var(--display);
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--text-2);
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  max-width: 52ch;
+}
+
+.feature-tag {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--violet);
+  margin-top: 1.5rem;
+  padding: 0.65rem 1rem;
+  border-top: 0.5px solid var(--border-violet);
+  border-bottom: 0.5px solid var(--border-violet);
+  max-width: fit-content;
+}
+
+.feature.skrapr .feature-tag {
+  color: var(--cyan);
+  border-top-color: var(--border-cyan);
+  border-bottom-color: var(--border-cyan);
+}
+
+.feature-visual {
+  position: relative;
+  border: 0.5px solid var(--border);
+  background: var(--glass);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  overflow: hidden;
+  border-radius: 6px;
+}
+
+.feature-visual svg { width: 100%; height: auto; display: block; }
+
+.skrapr-guarantees {
+  margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.skrapr-guarantees span {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  padding: 0.45rem 0.9rem;
+  border: 0.5px solid var(--border-cyan);
+  background: rgba(103, 232, 249, 0.04);
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* CONNECTED VENTURES */
+.connected-intro {
+  max-width: 48ch;
+  margin-bottom: 3rem;
+}
+
+.connected-intro p {
+  font-family: var(--display);
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: var(--text-2);
+  font-style: italic;
+  font-variation-settings: "SOFT" 70;
+}
+
+.ventures {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+.venture {
+  background: var(--glass);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 0.5px solid var(--border);
+  padding: 2.5rem 2rem;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: all 0.4s ease;
+  border-radius: 6px;
+}
+
+.venture:hover {
+  border-color: var(--border-cyan);
+  box-shadow: 0 10px 40px -10px rgba(103, 232, 249, 0.15);
+}
+
+.venture-role {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.venture-name {
+  font-family: var(--display);
+  font-size: clamp(1.6rem, 2.4vw, 2.2rem);
+  font-weight: 300;
+  font-variation-settings: "SOFT" 80;
+  line-height: 1;
+  color: var(--text);
+}
+
+.venture-desc {
+  font-family: var(--display);
+  font-size: 0.98rem;
+  line-height: 1.55;
+  color: var(--text-2);
+  max-width: 42ch;
+}
+
+.venture-link {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-top: 0.5rem;
+}
+
+/* CTA */
+.cta {
+  text-align: center;
+  padding-top: 9rem;
+  padding-bottom: 9rem;
+}
+
+.cta-section-label {
+  display: inline-flex;
+  margin-bottom: 2.5rem;
+  justify-content: center;
+}
+
+.cta h2 {
+  font-family: var(--display);
+  font-size: clamp(3rem, 7vw, 6.5rem);
+  font-weight: 300;
+  font-variation-settings: "SOFT" 60;
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  margin-bottom: 2rem;
+  max-width: 14ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cta h2 em {
+  font-style: italic;
+  background: linear-gradient(135deg, var(--cyan-soft), var(--sky), var(--violet));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  font-variation-settings: "SOFT" 100;
+}
+
+.cta-sub {
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--text-2);
+  max-width: 52ch;
+  margin: 0 auto 3rem;
+  line-height: 1.55;
+  font-variation-settings: "SOFT" 80;
+}
+
+.cta-form {
+  display: flex;
+  gap: 0;
+  max-width: 520px;
+  margin: 0 auto;
+  border: 0.5px solid var(--border-2);
+  background: var(--glass);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: border-color 0.3s ease;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.cta-form:focus-within { border-color: var(--amber); box-shadow: 0 0 0 1px rgba(251, 191, 36, 0.2); }
+
+.cta-form input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 1.3rem 1.5rem;
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--text);
+  letter-spacing: 0.05em;
+  outline: none;
+}
+
+.cta-form input::placeholder {
+  color: var(--text-3);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}
+
+.cta-form button {
+  background: var(--amber);
+  color: var(--ink);
+  border: none;
+  padding: 0 2rem;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cta-form button:hover { background: var(--amber-soft); }
+
+.cta-note {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-top: 1.5rem;
+}
+
+.cta-secondary {
+  margin-top: 3.5rem;
+  padding-top: 2.5rem;
+  border-top: 0.5px solid var(--border);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cta-secondary .label {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 1rem;
+}
+
+.cta-secondary p {
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 1.02rem;
+  color: var(--text-2);
+  line-height: 1.55;
+  font-variation-settings: "SOFT" 80;
+}
+
+.cta-secondary a {
+  color: var(--cyan);
+  text-decoration: none;
+  border-bottom: 0.5px solid var(--cyan);
+  padding-bottom: 2px;
+  transition: opacity 0.3s ease;
+}
+
+.cta-secondary a:hover { opacity: 0.75; }
+
+/* FOOTER */
+footer {
+  border-top: 0.5px solid var(--border);
+  padding: 3rem 2.5rem 4rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 2rem;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+}
+
+.footer-mark {
+  font-family: var(--display);
+  font-size: clamp(3rem, 12vw, 7rem);
+  font-weight: 300;
+  font-variation-settings: "SOFT" 100;
+  letter-spacing: -0.02em;
+  line-height: 0.9;
+  color: var(--text);
+}
+
+.footer-mark em {
+  font-style: italic;
+  background: linear-gradient(135deg, var(--cyan-soft), var(--violet));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.footer-meta {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  text-align: right;
+  line-height: 2;
+  max-width: 320px;
+}
+
+.footer-meta a {
+  color: var(--text-2);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-meta a:hover { color: var(--cyan); }
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 1.2s cubic-bezier(0.23, 1, 0.32, 1), transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 900px) {
+  nav { padding: 1.25rem 1.5rem; }
+  .nav-menu { display: none; }
+  section { padding: 5rem 1.5rem; }
+  .hero { padding-top: 7rem; gap: 2.5rem; }
+  .trap { grid-template-columns: 1fr; gap: 2.5rem; }
+  .positioning { grid-template-columns: 1fr; margin-top: 2.5rem; }
+  .position-card { min-height: auto; padding: 2rem 1.5rem; }
+  .stages { grid-template-columns: 1fr; }
+  .stage { min-height: auto; padding: 2rem 1.5rem 2.5rem; }
+  .modules { grid-template-columns: 1fr; }
+  .module { min-height: auto; padding: 2.5rem 1.75rem 3rem; }
+  .feature, .feature.reverse { grid-template-columns: 1fr; gap: 3rem; }
+  .feature.reverse .feature-text { order: 1; }
+  .feature.reverse .feature-visual { order: 2; }
+  .universal { grid-template-columns: 1fr; gap: 2.5rem; }
+  .domains { grid-template-columns: 1fr; }
+  .ventures { grid-template-columns: 1fr; }
+  .chain-flow { flex-direction: column; }
+  .chain-arrow { transform: rotate(90deg); }
+  footer { flex-direction: column; align-items: flex-start; }
+  .footer-meta { text-align: left; }
+  .method-footer { padding-left: 1.5rem; }
+  .light-rays { opacity: 0.3; }
+}
+</style>
+</head>
+<body>
+
+<div class="light-rays" aria-hidden="true">
+  <div class="ray-1"></div>
+  <div class="ray-2"></div>
+  <div class="ray-3"></div>
+  <div class="ray-4"></div>
+  <div class="ray-5"></div>
+</div>
+
+<nav>
+  <a href="#" class="wordmark">Kaskade</a>
+  <ul class="nav-menu">
+    <li><a href="#method">Method</a></li>
+    <li><a href="#architekt">Architekt</a></li>
+    <li><a href="#skrapr">SKRAPR</a></li>
+    <li><a href="#access">Early Access</a></li>
+  </ul>
+</nav>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-chip">Multi-model orchestration platform</div>
+    <h1>One prompt.<br>Many models.<br>One <em>master channel.</em></h1>
+    <p class="hero-sub">Kaskade routes your work through a sequence of models &mdash; each playing a different role, each feeding the next &mdash; and returns an artifact none of them could have produced alone. Writing, research, code, image, launch. Any task.</p>
+    <div class="hero-cta">
+      <a href="#access" class="btn btn-primary">Request early access <span class="btn-arrow">&rarr;</span></a>
+      <a href="#method" class="btn btn-ghost">See the kaskade <span class="btn-arrow">&darr;</span></a>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hero-visual-label">
+        <span>KASKADE / PREVIEW</span>
+        <span class="right">LIVE</span>
+      </div>
+      <svg class="prism-svg" viewBox="0 0 680 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The Kaskade preview">
+        <title>The Kaskade</title>
+        <g opacity="0.08">
+          <line x1="40" y1="100" x2="640" y2="100" stroke="#67e8f9" stroke-width="0.5" stroke-dasharray="2 6"/>
+          <line x1="40" y1="300" x2="640" y2="300" stroke="#67e8f9" stroke-width="0.5" stroke-dasharray="2 6"/>
+        </g>
+        <g transform="translate(60, 200)">
+          <circle r="22" fill="none" stroke="#ffffff" stroke-width="0.5" opacity="0.3">
+            <animate attributeName="r" values="12;30;12" dur="2.6s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.55;0;0.55" dur="2.6s" repeatCount="indefinite"/>
+          </circle>
+          <circle r="12" fill="#ffffff" opacity="0.18"/>
+          <circle r="6" fill="#ffffff"/>
+        </g>
+        <text x="60" y="252" text-anchor="middle" fill="#94a3b8" font-family="'IBM Plex Mono', monospace" font-size="9" letter-spacing="3">PROMPT</text>
+        <line x1="72" y1="200" x2="210" y2="200" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4 6" opacity="0.85">
+          <animate attributeName="stroke-dashoffset" values="0;-20" dur="1.2s" repeatCount="indefinite"/>
+        </line>
+        <g transform="translate(250, 200)">
+          <polygon points="0,-42 42,0 0,42 -42,0" fill="#0b1120" stroke="#67e8f9" stroke-width="1.2"/>
+          <polygon points="0,-42 42,0 0,42 -42,0" fill="none" stroke="#ffffff" stroke-width="0.5" opacity="0.25"/>
+          <line x1="-24" y1="-14" x2="24" y2="14" stroke="#67e8f9" stroke-width="0.5" opacity="0.4"/>
+          <line x1="-24" y1="14" x2="24" y2="-14" stroke="#67e8f9" stroke-width="0.5" opacity="0.4"/>
+          <circle r="3" fill="#ffffff">
+            <animate attributeName="opacity" values="0.3;1;0.3" dur="1.8s" repeatCount="indefinite"/>
+          </circle>
+        </g>
+        <path d="M 292 200 Q 345 200, 365 120 L 530 120" fill="none" stroke="#c4b5fd" stroke-width="1.5" stroke-dasharray="6 8" opacity="0.9">
+          <animate attributeName="stroke-dashoffset" values="0;-28" dur="1.8s" repeatCount="indefinite"/>
+        </path>
+        <path d="M 292 200 Q 345 200, 365 160 L 530 160" fill="none" stroke="#67e8f9" stroke-width="1.5" stroke-dasharray="6 8" opacity="0.9">
+          <animate attributeName="stroke-dashoffset" values="0;-28" dur="2.1s" repeatCount="indefinite"/>
+        </path>
+        <path d="M 292 200 L 530 200" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-dasharray="6 8">
+          <animate attributeName="stroke-dashoffset" values="0;-28" dur="1.5s" repeatCount="indefinite"/>
+        </path>
+        <path d="M 292 200 Q 345 200, 365 240 L 530 240" fill="none" stroke="#7dd3fc" stroke-width="1.5" stroke-dasharray="6 8" opacity="0.9">
+          <animate attributeName="stroke-dashoffset" values="0;-28" dur="2.3s" repeatCount="indefinite"/>
+        </path>
+        <path d="M 292 200 Q 345 200, 365 280 L 530 280" fill="none" stroke="#f0abfc" stroke-width="1.5" stroke-dasharray="6 8" opacity="0.9">
+          <animate attributeName="stroke-dashoffset" values="0;-28" dur="1.95s" repeatCount="indefinite"/>
+        </path>
+        <g font-family="'IBM Plex Mono', monospace" font-size="8" letter-spacing="2" fill="#64748b" text-anchor="middle">
+          <text x="447" y="108">ANALYZE</text>
+          <text x="447" y="148">EXPAND</text>
+          <text x="447" y="188" fill="#cbd5e1">REFINE</text>
+          <text x="447" y="232">CRITIQUE</text>
+          <text x="447" y="272">SYNTHESIZE</text>
+        </g>
+        <path d="M 530 120 Q 575 120, 590 200" fill="none" stroke="#c4b5fd" stroke-width="1.5" stroke-dasharray="6 8" opacity="0.9">
+          <animate attributeName="stroke-dashoffset" values="0;-28" dur="1.8s" repeatCount="indefinite"/>
+        </path>
+        <path d="M 530 160 Q 575 160, 590 200" fill="none" stroke="#67e8f9" stroke-width="1.5" stroke-dasharray="6 8" opacity="0.9">
+          <animate attributeName="stroke-dashoffset" values="0;-28" dur="2.1s" repeatCount="indefinite"/>
+        </path>
+        <path d="M 530 200 L 590 200" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-dasharray="6 8">
+          <animate attributeName="stroke-dashoffset" values="0;-28" dur="1.5s" repeatCount="indefinite"/>
+        </path>
+        <path d="M 530 240 Q 575 240, 590 200" fill="none" stroke="#7dd3fc" stroke-width="1.5" stroke-dasharray="6 8" opacity="0.9">
+          <animate attributeName="stroke-dashoffset" values="0;-28" dur="2.3s" repeatCount="indefinite"/>
+        </path>
+        <path d="M 530 280 Q 575 280, 590 200" fill="none" stroke="#f0abfc" stroke-width="1.5" stroke-dasharray="6 8" opacity="0.9">
+          <animate attributeName="stroke-dashoffset" values="0;-28" dur="1.95s" repeatCount="indefinite"/>
+        </path>
+        <g transform="translate(605, 200)">
+          <circle r="11" fill="#0b1120" stroke="#fbbf24" stroke-width="1"/>
+          <circle r="5" fill="#fbbf24" opacity="0.4"/>
+          <circle r="2.5" fill="#fef3c7">
+            <animate attributeName="opacity" values="0.5;1;0.5" dur="1.3s" repeatCount="indefinite"/>
+          </circle>
+        </g>
+        <line x1="616" y1="200" x2="640" y2="200" stroke="#fbbf24" stroke-width="2" stroke-dasharray="3 4">
+          <animate attributeName="stroke-dashoffset" values="0;-14" dur="0.8s" repeatCount="indefinite"/>
+        </line>
+        <g transform="translate(652, 200)">
+          <circle r="18" fill="none" stroke="#fbbf24" stroke-width="0.5" opacity="0.4">
+            <animate attributeName="r" values="10;24;10" dur="2.0s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.6;0;0.6" dur="2.0s" repeatCount="indefinite"/>
+          </circle>
+          <circle r="9" fill="#fbbf24" opacity="0.28"/>
+          <circle r="5" fill="#fef3c7"/>
+        </g>
+        <text x="652" y="252" text-anchor="middle" fill="#fbbf24" font-family="'IBM Plex Mono', monospace" font-size="9" letter-spacing="3">OUTPUT</text>
+      </svg>
+    </div>
+  </section>
+
+  <!-- TRAP -->
+  <section class="trap reveal">
+    <div>
+      <div class="section-label">01 &nbsp;/&nbsp; The trap</div>
+      <h2>A single model gives you <em>one angle</em> on a problem you couldn't solve alone.</h2>
+    </div>
+    <div class="trap-body">
+      <p>Every frontier model has a personality. One hedges. One qualifies. One chatters. One flattens. You can feel the house style bleeding into the output before you've finished the prompt.</p>
+      <p>The prevailing answer is to pick a favorite and live with its blind spots. Some teams paste the same query into three tabs and squint at the differences by hand. Neither scales. Neither compounds. Neither produces something better than what any single model returned.</p>
+      <p>Kaskade is the third option: one pipeline that routes your prompt through a deliberate sequence of models, each playing a different role, with the output of each informing the next. Not comparison. Transformation.</p>
+    </div>
+
+    <div class="positioning">
+      <div class="position-card not">
+        <div class="position-label">&mdash; Not this</div>
+        <div class="position-head">A comparison tool.</div>
+        <p class="position-desc">Kaskade isn't a side-by-side model picker. You're not squinting at three tabs trying to pick a winner. The kaskade runs end-to-end and returns one result.</p>
+      </div>
+      <div class="position-card not">
+        <div class="position-label">&mdash; Not this</div>
+        <div class="position-head">A wrapper.</div>
+        <p class="position-desc">The value isn't access. Anyone can route a prompt through an API. The value is the orchestration &mdash; decomposition, routing, carry-forward, critique, synthesis.</p>
+      </div>
+      <div class="position-card yes">
+        <div class="position-label">&rarr; This</div>
+        <div class="position-head"><em>Transformation</em> across models.</div>
+        <p class="position-desc">A universal-task engine. Any prompt, any domain, any stage of the work. Each model contributes, none dictates. The final result carries the lineage of all of them.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- METHOD -->
+  <section class="reveal" id="method">
+    <div class="section-label">02 &nbsp;/&nbsp; The method</div>
+    <div class="method-intro">Five roles. Any models. Each pass <em>sharpens</em> what the last one returned &mdash; carried forward, not compared.</div>
+
+    <div class="chain">
+      <div class="chain-label">
+        <span>SAMPLE CASCADE / YOUR CONFIG</span>
+        <em>CARRY-FORWARD</em>
+      </div>
+      <div class="chain-flow">
+        <div class="chain-node"><span class="role">Analyze</span>Claude</div>
+        <span class="chain-arrow">&rarr;</span>
+        <div class="chain-node"><span class="role">Expand</span>GPT</div>
+        <span class="chain-arrow">&rarr;</span>
+        <div class="chain-node"><span class="role">Refine</span>Specialist</div>
+        <span class="chain-arrow">&rarr;</span>
+        <div class="chain-node"><span class="role">Critique</span>Grok</div>
+        <span class="chain-arrow">&rarr;</span>
+        <div class="chain-node master"><span class="role">Synthesize</span>Gemini</div>
+      </div>
+      <p class="chain-note">Any model can play any role. Swap instruments, reorder stages, add specialist passes, set a stop threshold. The shape is the product &mdash; the specific models are yours.</p>
+    </div>
+
+    <div class="stages">
+      <div class="stage">
+        <div class="stage-num">01</div>
+        <div class="stage-name">Analyze</div>
+        <div class="stage-bar"></div>
+        <div class="stage-desc">A wide-context model <em>dismantles</em> the prompt into its load-bearing assumptions, constraints, and unknowns. What is actually being asked.</div>
+      </div>
+      <div class="stage">
+        <div class="stage-num">02</div>
+        <div class="stage-name">Expand</div>
+        <div class="stage-bar"></div>
+        <div class="stage-desc">A generative model widens the surface area. Multiple directions, deliberate divergence, <em>no pre-commitment</em> to a single answer.</div>
+      </div>
+      <div class="stage">
+        <div class="stage-num">03</div>
+        <div class="stage-name">Refine</div>
+        <div class="stage-bar"></div>
+        <div class="stage-desc">A precision model rewrites each direction for clarity, structure, and signal. The <em>craft pass</em>. Tightens without collapsing.</div>
+      </div>
+      <div class="stage">
+        <div class="stage-num">04</div>
+        <div class="stage-name">Critique</div>
+        <div class="stage-bar"></div>
+        <div class="stage-desc">An adversarial model attacks the refined drafts. What's weak, what's missing, what's derivative. <em>The honest reader</em>.</div>
+      </div>
+      <div class="stage">
+        <div class="stage-num">05</div>
+        <div class="stage-name">Synthesize</div>
+        <div class="stage-bar"></div>
+        <div class="stage-desc">The master channel compresses the surviving material into one output. <em>One voice. One artifact.</em> Traceable back to every stage above.</div>
+      </div>
+    </div>
+
+    <div class="method-footer">
+      Stop at a threshold, a budget, or a constraint. Run three passes or thirty. The kaskade keeps going until the result is strong enough &mdash; or until you say it is.
+    </div>
+  </section>
+
+  <!-- UNIVERSAL -->
+  <section class="universal reveal">
+    <div>
+      <div class="section-label">03 &nbsp;/&nbsp; Universal engine</div>
+      <h2>Any task. Any domain. <em>Any stage</em> of the work.</h2>
+    </div>
+    <div class="universal-body">
+      <p>Kaskade isn't tied to one vertical. The value is in the orchestration &mdash; decomposing work, routing it, carrying outputs forward, synthesizing. That engine doesn't care whether you're writing a contract, debugging a function, drafting a launch plan, or rendering a hero image.</p>
+      <p>If it's a task a model can do, it's a task a kaskade can do <em>better</em>.</p>
+      <div class="domains">
+        <div class="domain">Writing &amp; editorial</div>
+        <div class="domain">Code &amp; debugging</div>
+        <div class="domain">Research &amp; synthesis</div>
+        <div class="domain">Business &amp; strategy</div>
+        <div class="domain">Image &amp; visual work</div>
+        <div class="domain">Launch workflows</div>
+        <div class="domain">Analysis &amp; review</div>
+        <div class="domain">Mixed-format tasks</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODULES -->
+  <section class="reveal">
+    <div class="section-label">04 &nbsp;/&nbsp; The stack</div>
+    <div class="modules-intro">Three modules. <em>One orchestration layer</em> underneath them all.</div>
+
+    <div class="modules">
+      <a href="#method" class="module">
+        <div class="module-head">
+          <span>01 / CORE</span>
+          <span class="status">Engine</span>
+        </div>
+        <div>
+          <div class="module-tagline">The orchestration</div>
+          <h3 class="module-name">Kaskade Core</h3>
+        </div>
+        <p class="module-desc">The engine everything else runs on. Task decomposition, model routing, carry-forward sequencing, critique and iteration, synthesis. Configurable stages, configurable stops.</p>
+        <span class="module-arrow">See the method &rarr;</span>
+      </a>
+
+      <a href="#architekt" class="module">
+        <div class="module-head">
+          <span>02 / ARCHITEKT</span>
+          <span class="status">Preview</span>
+        </div>
+        <div>
+          <div class="module-tagline">The visual layer</div>
+          <h3 class="module-name">Architekt</h3>
+        </div>
+        <p class="module-desc">Multi-pass image kaskades: draft, block, render, critique, finish. For creative work with a lineage. The first visible wedge of the platform.</p>
+        <span class="module-arrow">See Architekt &rarr;</span>
+      </a>
+
+      <a href="#skrapr" class="module">
+        <div class="module-head">
+          <span>03 / SKRAPR</span>
+          <span class="status">Preview</span>
+        </div>
+        <div>
+          <div class="module-tagline">The continuity layer</div>
+          <h3 class="module-name">SKRAPR</h3>
+        </div>
+        <p class="module-desc">Permissioned context import. Turns your chats, notes, and docs into structured input the kaskade can actually use. Privacy-first. Reviewable. Deletable.</p>
+        <span class="module-arrow">See SKRAPR &rarr;</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ARCHITEKT -->
+  <section class="feature reverse reveal" id="architekt">
+    <div class="feature-text">
+      <div class="section-label">05 &nbsp;/&nbsp; Architekt</div>
+      <h2>When the output is a picture, the kaskade becomes a <em>studio.</em></h2>
+      <div class="feature-body">
+        <p>Architekt is the image-focused kaskade layer inside Kaskade. Same principle, different instruments: a concept model drafts, a compositional model blocks, a detail model renders, a critic flags, a master finishes.</p>
+        <p>The output isn't an image. It's an image with a lineage &mdash; every pass logged, every model credited, every revision reversible. Built for creative directors, brand teams, and independent operators who care what goes out under their name.</p>
+        <div class="feature-tag">Now in private preview</div>
+      </div>
+    </div>
+    <div class="feature-visual">
+      <svg viewBox="0 0 400 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Architekt kaskading image refinement">
+        <!-- Header -->
+        <text x="20" y="28" fill="#fbbf24" font-family="'IBM Plex Mono', monospace" font-size="7" letter-spacing="3" opacity="0.8">ARCHITEKT / IMAGE CASCADE</text>
+        <text x="20" y="44" fill="#64748b" font-family="'IBM Plex Mono', monospace" font-size="6" letter-spacing="2">INPUT &rarr; OUTPUT &middot; 5 PASSES &middot; REVERSIBLE</text>
+
+        <!-- Faint guide line showing the kaskade axis -->
+        <line x1="30" y1="70" x2="30" y2="470" stroke="#fbbf24" stroke-width="0.3" stroke-dasharray="3 4" opacity="0.25"/>
+
+        <!-- Pass 01: Draft -->
+        <g opacity="0.4">
+          <rect x="20" y="64" width="220" height="42" fill="none" stroke="#c4b5fd" stroke-width="0.5"/>
+          <text x="30" y="80" fill="#c4b5fd" font-family="'IBM Plex Mono', monospace" font-size="7" letter-spacing="2.5">PASS 01 / DRAFT</text>
+          <text x="30" y="95" fill="#94a3b8" font-family="'IBM Plex Mono', monospace" font-size="7.5">concept model &middot; initial interpretation</text>
+        </g>
+        <path d="M 50 106 L 50 122 L 60 122" fill="none" stroke="#67e8f9" stroke-width="0.5" opacity="0.6"/>
+
+        <!-- Pass 02: Block -->
+        <g opacity="0.55">
+          <rect x="60" y="122" width="220" height="42" fill="none" stroke="#67e8f9" stroke-width="0.5"/>
+          <text x="70" y="138" fill="#67e8f9" font-family="'IBM Plex Mono', monospace" font-size="7" letter-spacing="2.5">PASS 02 / BLOCK</text>
+          <text x="70" y="153" fill="#94a3b8" font-family="'IBM Plex Mono', monospace" font-size="7.5">compositional model &middot; structure</text>
+        </g>
+        <path d="M 90 164 L 90 180 L 100 180" fill="none" stroke="#7dd3fc" stroke-width="0.5" opacity="0.7"/>
+
+        <!-- Pass 03: Render -->
+        <g opacity="0.72">
+          <rect x="100" y="180" width="220" height="42" fill="none" stroke="#7dd3fc" stroke-width="0.5"/>
+          <text x="110" y="196" fill="#7dd3fc" font-family="'IBM Plex Mono', monospace" font-size="7" letter-spacing="2.5">PASS 03 / RENDER</text>
+          <text x="110" y="211" fill="#94a3b8" font-family="'IBM Plex Mono', monospace" font-size="7.5">detail model &middot; full fidelity</text>
+        </g>
+        <path d="M 130 222 L 130 238 L 140 238" fill="none" stroke="#f0abfc" stroke-width="0.5" opacity="0.8"/>
+
+        <!-- Pass 04: Critique -->
+        <g opacity="0.88">
+          <rect x="140" y="238" width="220" height="42" fill="none" stroke="#f0abfc" stroke-width="0.5"/>
+          <text x="150" y="254" fill="#f0abfc" font-family="'IBM Plex Mono', monospace" font-size="7" letter-spacing="2.5">PASS 04 / CRITIQUE</text>
+          <text x="150" y="269" fill="#94a3b8" font-family="'IBM Plex Mono', monospace" font-size="7.5">adversarial pass &middot; flaws flagged</text>
+        </g>
+        <path d="M 170 280 L 170 298 L 180 298" fill="none" stroke="#fbbf24" stroke-width="0.6"/>
+
+        <!-- Pass 05: Master — expanded with finished output -->
+        <g>
+          <rect x="180" y="298" width="210" height="170" fill="#0b1120" stroke="#fbbf24" stroke-width="1"/>
+          <text x="190" y="316" fill="#fbbf24" font-family="'IBM Plex Mono', monospace" font-size="7" letter-spacing="2.5">PASS 05 / MASTER</text>
+          <text x="190" y="330" fill="#fef3c7" font-family="'IBM Plex Mono', monospace" font-size="7">finished output</text>
+
+          <!-- Finished output visualization: concentric amber rings -->
+          <g transform="translate(285, 400)">
+            <circle r="52" fill="none" stroke="#fbbf24" stroke-width="0.5" opacity="0.22"/>
+            <circle r="38" fill="none" stroke="#fbbf24" stroke-width="0.5" opacity="0.4"/>
+            <circle r="24" fill="none" stroke="#fbbf24" stroke-width="0.5" opacity="0.65"/>
+            <circle r="11" fill="#fbbf24" opacity="0.35"/>
+            <circle r="5" fill="#fef3c7">
+              <animate attributeName="opacity" values="0.6;1;0.6" dur="1.8s" repeatCount="indefinite"/>
+            </circle>
+          </g>
+
+          <!-- Thin divider line inside master card -->
+          <line x1="190" y1="440" x2="380" y2="440" stroke="#fbbf24" stroke-width="0.3" opacity="0.3"/>
+          <text x="190" y="455" fill="#fbbf24" font-family="'IBM Plex Mono', monospace" font-size="6" letter-spacing="2" opacity="0.75">LINEAGE &middot; EVERY PASS LOGGED &middot; REVERSIBLE</text>
+        </g>
+
+        <!-- Entry indicator -->
+        <text x="20" y="58" fill="#64748b" font-family="'IBM Plex Mono', monospace" font-size="6" letter-spacing="2" opacity="0.7">INPUT &darr;</text>
+
+        <!-- Exit indicator -->
+        <text x="360" y="508" text-anchor="end" fill="#fbbf24" font-family="'IBM Plex Mono', monospace" font-size="6" letter-spacing="2" opacity="0.7">OUTPUT &rarr;</text>
+      </svg>
+    </div>
+  </section>
+
+  <!-- SKRAPR -->
+  <section class="feature skrapr reveal" id="skrapr">
+    <div class="feature-text">
+      <div class="section-label">06 &nbsp;/&nbsp; SKRAPR</div>
+      <h2>Every kaskade starts with <em>context.</em> SKRAPR is where that context comes from.</h2>
+      <div class="feature-body">
+        <p>You already have the material. It's in your chats, your docs, your Slack history, your Notion pages, your inbox. SKRAPR imports what you choose to share, extracts goals, preferences, projects, and recurring themes, deduplicates the noise, and produces a structured context layer the kaskade can actually reason over.</p>
+        <p>Nothing about SKRAPR is opaque. You see exactly what was imported, exactly what was extracted, and exactly what Kaskade will use. Edit any of it. Delete any of it. Re-import anytime.</p>
+        <div class="skrapr-guarantees">
+          <span>Permissioned</span>
+          <span>Reviewable</span>
+          <span>Editable</span>
+          <span>Deletable</span>
+          <span>Private by default</span>
+        </div>
+      </div>
+    </div>
+    <div class="feature-visual">
+      <svg viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SKRAPR context normalization">
+        <g font-family="'IBM Plex Mono', monospace" font-size="7" letter-spacing="1.5" fill="#64748b">
+          <text x="20" y="40">INPUT / UNSTRUCTURED</text>
+        </g>
+        <g opacity="0.85">
+          <rect x="20" y="60" width="120" height="38" fill="none" stroke="#64748b" stroke-width="0.5" transform="rotate(-2 80 79)"/>
+          <text x="28" y="75" fill="#cbd5e1" font-family="'IBM Plex Mono', monospace" font-size="7" transform="rotate(-2 80 79)">chat / 4,312 msgs</text>
+          <text x="28" y="87" fill="#64748b" font-family="'IBM Plex Mono', monospace" font-size="6" transform="rotate(-2 80 79)">2023.06 &mdash; present</text>
+        </g>
+        <g opacity="0.85">
+          <rect x="30" y="115" width="120" height="38" fill="none" stroke="#64748b" stroke-width="0.5" transform="rotate(1.5 90 134)"/>
+          <text x="38" y="130" fill="#cbd5e1" font-family="'IBM Plex Mono', monospace" font-size="7" transform="rotate(1.5 90 134)">notes / 218 docs</text>
+          <text x="38" y="142" fill="#64748b" font-family="'IBM Plex Mono', monospace" font-size="6" transform="rotate(1.5 90 134)">notion + apple</text>
+        </g>
+        <g opacity="0.85">
+          <rect x="15" y="175" width="120" height="38" fill="none" stroke="#64748b" stroke-width="0.5" transform="rotate(-1 75 194)"/>
+          <text x="23" y="190" fill="#cbd5e1" font-family="'IBM Plex Mono', monospace" font-size="7" transform="rotate(-1 75 194)">email / 1,894 msgs</text>
+          <text x="23" y="202" fill="#64748b" font-family="'IBM Plex Mono', monospace" font-size="6" transform="rotate(-1 75 194)">filtered, permissioned</text>
+        </g>
+        <g opacity="0.85">
+          <rect x="35" y="235" width="120" height="38" fill="none" stroke="#64748b" stroke-width="0.5" transform="rotate(2 95 254)"/>
+          <text x="43" y="250" fill="#cbd5e1" font-family="'IBM Plex Mono', monospace" font-size="7" transform="rotate(2 95 254)">transcripts / 64 hrs</text>
+          <text x="43" y="262" fill="#64748b" font-family="'IBM Plex Mono', monospace" font-size="6" transform="rotate(2 95 254)">meetings + calls</text>
+        </g>
+
+        <g transform="translate(175, 40)">
+          <line x1="0" y1="20" x2="0" y2="420" stroke="#67e8f9" stroke-width="0.5" stroke-dasharray="3 4" opacity="0.5"/>
+          <circle cx="0" cy="230" r="22" fill="#0b1120" stroke="#67e8f9" stroke-width="0.8"/>
+          <circle cx="0" cy="230" r="8" fill="#67e8f9" opacity="0.4"/>
+          <circle cx="0" cy="230" r="3" fill="#67e8f9">
+            <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/>
+          </circle>
+          <text x="0" y="270" text-anchor="middle" fill="#67e8f9" font-family="'IBM Plex Mono', monospace" font-size="7" letter-spacing="3">SKRAPR</text>
+          <text x="0" y="282" text-anchor="middle" fill="#64748b" font-family="'IBM Plex Mono', monospace" font-size="6" letter-spacing="1.5">NORMALIZE</text>
+        </g>
+
+        <g font-family="'IBM Plex Mono', monospace" font-size="7" letter-spacing="1.5" fill="#67e8f9">
+          <text x="230" y="40">OUTPUT / STRUCTURED</text>
+        </g>
+        <g>
+          <rect x="230" y="60" width="150" height="34" fill="none" stroke="#67e8f9" stroke-width="0.5" opacity="0.8"/>
+          <text x="238" y="75" fill="#67e8f9" font-family="'IBM Plex Mono', monospace" font-size="7">GOALS / 12</text>
+          <text x="238" y="87" fill="#cbd5e1" font-family="'IBM Plex Mono', monospace" font-size="6">ship mvp &middot; raise &middot; hire</text>
+        </g>
+        <g>
+          <rect x="230" y="105" width="150" height="34" fill="none" stroke="#67e8f9" stroke-width="0.5" opacity="0.8"/>
+          <text x="238" y="120" fill="#67e8f9" font-family="'IBM Plex Mono', monospace" font-size="7">PROJECTS / 4</text>
+          <text x="238" y="132" fill="#cbd5e1" font-family="'IBM Plex Mono', monospace" font-size="6">kaskade &middot; architekt &middot; skrapr</text>
+        </g>
+        <g>
+          <rect x="230" y="150" width="150" height="34" fill="none" stroke="#67e8f9" stroke-width="0.5" opacity="0.8"/>
+          <text x="238" y="165" fill="#67e8f9" font-family="'IBM Plex Mono', monospace" font-size="7">PREFERENCES / 38</text>
+          <text x="238" y="177" fill="#cbd5e1" font-family="'IBM Plex Mono', monospace" font-size="6">tone &middot; style &middot; anti-hype</text>
+        </g>
+        <g>
+          <rect x="230" y="195" width="150" height="34" fill="none" stroke="#67e8f9" stroke-width="0.5" opacity="0.8"/>
+          <text x="238" y="210" fill="#67e8f9" font-family="'IBM Plex Mono', monospace" font-size="7">CONSTRAINTS / 9</text>
+          <text x="238" y="222" fill="#cbd5e1" font-family="'IBM Plex Mono', monospace" font-size="6">budget &middot; legal &middot; timing</text>
+        </g>
+        <g>
+          <rect x="230" y="240" width="150" height="34" fill="none" stroke="#67e8f9" stroke-width="0.5" opacity="0.8"/>
+          <text x="238" y="255" fill="#67e8f9" font-family="'IBM Plex Mono', monospace" font-size="7">THEMES / 17</text>
+          <text x="238" y="267" fill="#cbd5e1" font-family="'IBM Plex Mono', monospace" font-size="6">orchestration &middot; craft</text>
+        </g>
+
+        <line x1="20" y1="460" x2="380" y2="460" stroke="#fbbf24" stroke-width="0.3" opacity="0.3"/>
+        <text x="20" y="478" fill="#fbbf24" font-family="'IBM Plex Mono', monospace" font-size="7" letter-spacing="2" opacity="0.8">AUDIT LOG / EVERY IMPORT / REVOCABLE</text>
+      </svg>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta reveal" id="access">
+    <div class="cta-section-label">
+      <div class="section-label" style="margin-bottom: 0;">07 &nbsp;/&nbsp; Early access</div>
+    </div>
+    <h2>Built for the work you <em>won't</em> ship without a second pass.</h2>
+    <p class="cta-sub">Kaskade is in public concept validation. Join the waitlist for progress, previews, and early access as Architekt, SKRAPR, and the orchestration core come online.</p>
+    <form class="cta-form" onsubmit="event.preventDefault(); const b=this.querySelector('button'); b.textContent='Received'; b.disabled=true;">
+      <input type="email" placeholder="your@email" required>
+      <button type="submit">Join waitlist &rarr;</button>
+    </form>
+    <div class="cta-note">Public concept &middot; Serious build &middot; 2026</div>
+
+    <div class="cta-secondary">
+      <div class="label">For partnership or aligned backing</div>
+      <p>If you're building adjacent, investing in AI infrastructure, or want to collaborate on a specific workflow — the inbox is open. Keep it direct and product-focused. <a href="mailto:hello@kaskade.systems">Get in touch &rarr;</a></p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-mark">Kaskade<em>.</em></div>
+  <div class="footer-meta">
+    <div><a href="#method">Method</a> &nbsp;&middot;&nbsp; <a href="#architekt">Architekt</a> &nbsp;&middot;&nbsp; <a href="#skrapr">SKRAPR</a></div>
+    <div><a href="#">Doctrine</a> &nbsp;&middot;&nbsp; <a href="#">Privacy</a> &nbsp;&middot;&nbsp; <a href="#">Contact</a></div>
+    <div style="opacity: 0.5;">&copy; 2026 &middot; Built by operators</div>
+  </div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
