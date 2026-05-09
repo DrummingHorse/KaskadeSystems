@@ -1,0 +1,461 @@
+/* ==========================================================================
+   /styles/evolution.css
+   The Evolution — kaskade.systems
+   Doctrine, not deck. Amber on navy. Fraunces + IBM Plex Mono.
+   No glassmorphism. No gradients. No vapor.
+   ========================================================================== */
+
+
+/* ----- fonts (self-hosted; drop into /fonts/) ----------------------------- */
+
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/fonts/Fraunces.woff2') format('woff2-variations'),
+       url('/fonts/Fraunces.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('/fonts/IBMPlexMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('/fonts/IBMPlexMono-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: block;
+}
+
+
+/* ----- root tokens ------------------------------------------------------- */
+
+:root {
+  --navy:           #020617;
+  --amber:          #fbbf24;
+  --bone:           #f5f0e8;
+  --bone-dim:       #a7a097;
+  --bone-faint:     #5c574f;
+
+  --hairline:       rgba(245, 240, 232, 0.12);
+  --hairline-amber: rgba(251, 191, 36, 0.28);
+
+  --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --mono:  'IBM Plex Mono', 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  --max-width: 720px;
+  --gutter:    2rem;
+}
+
+
+/* ----- reset ------------------------------------------------------------- */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  font-size: 17px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--navy);
+  color: var(--bone);
+  font-family: var(--serif);
+  font-variation-settings: "SOFT" 50, "opsz" 14, "wght" 400;
+  line-height: 1.6;
+  min-height: 100vh;
+  padding: 3rem var(--gutter) 6rem;
+}
+
+::selection { background: var(--amber); color: var(--navy); }
+
+a { color: var(--amber); text-decoration: none; }
+
+code {
+  font-family: var(--mono);
+  font-size: 0.92em;
+  color: var(--amber);
+  background: rgba(251, 191, 36, 0.06);
+  padding: 0.08em 0.4em;
+  border: 1px solid var(--hairline-amber);
+  border-radius: 1px;
+}
+
+
+/* ----- frame ------------------------------------------------------------- */
+
+.frame { max-width: var(--max-width); margin: 0 auto; }
+
+
+/* ----- site header (top breadcrumb) -------------------------------------- */
+
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--hairline);
+  margin-bottom: 4rem;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.site-header .wordmark { font-weight: 500; color: var(--amber); }
+.site-header .breadcrumb { color: var(--bone-dim); }
+.site-header .breadcrumb a { color: var(--bone-dim); border-bottom: 1px solid transparent; }
+.site-header .breadcrumb a:hover { color: var(--amber); border-bottom-color: var(--hairline-amber); }
+
+
+/* ----- section title (spine page) ---------------------------------------- */
+
+.section-title { margin-bottom: 4rem; }
+
+.section-title .label,
+.loop-header .label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--amber);
+  display: block;
+  margin-bottom: 1.25rem;
+}
+
+.section-title h1 {
+  font-family: var(--serif);
+  font-variation-settings: "SOFT" 100, "WONK" 0, "opsz" 144, "wght" 350;
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.025em;
+  margin-bottom: 1.75rem;
+}
+
+.section-title .subtitle {
+  font-size: 1.125rem;
+  color: var(--bone-dim);
+  max-width: 38em;
+  font-style: italic;
+  line-height: 1.55;
+}
+
+
+/* ----- spine ------------------------------------------------------------- */
+
+.spine { list-style: none; }
+
+.spine-entry {
+  padding: 2.25rem 0;
+  border-top: 1px solid var(--hairline);
+  display: grid;
+  grid-template-columns: 4rem 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.spine-entry:last-child { border-bottom: 1px solid var(--hairline); }
+
+.spine-entry .step-num {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--bone-faint);
+  letter-spacing: 0.12em;
+  padding-top: 0.55rem;
+}
+
+.spine-entry .meta {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bone-dim);
+  margin-bottom: 0.75rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.spine-entry .type-tag {
+  color: var(--amber);
+  border: 1px solid var(--hairline-amber);
+  padding: 0.2rem 0.55rem 0.18rem;
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+}
+
+.spine-entry h2 {
+  font-family: var(--serif);
+  font-variation-settings: "SOFT" 75, "opsz" 36, "wght" 400;
+  font-size: 1.65rem;
+  line-height: 1.18;
+  letter-spacing: -0.012em;
+  margin-bottom: 0.6rem;
+}
+
+.spine-entry h2 a {
+  color: var(--bone);
+  border-bottom: 1px solid transparent;
+  transition: color 0.18s ease, border-color 0.18s ease;
+}
+
+.spine-entry h2 a:hover {
+  color: var(--amber);
+  border-bottom-color: var(--hairline-amber);
+}
+
+.spine-entry .summary {
+  color: var(--bone-dim);
+  font-style: italic;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+
+/* ----- loop header ------------------------------------------------------- */
+
+.loop-header { margin-bottom: 4rem; }
+
+.loop-header h1 {
+  font-family: var(--serif);
+  font-variation-settings: "SOFT" 100, "opsz" 96, "wght" 350;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  line-height: 1.05;
+  letter-spacing: -0.022em;
+  margin-bottom: 1.75rem;
+}
+
+.loop-header .meta {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bone-dim);
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.loop-header .meta .models { color: var(--amber); }
+
+
+/* ----- loop sections (desire / friction / scar / carry-forward) --------- */
+
+.loop-section { margin-bottom: 3.5rem; }
+
+.loop-section .stage {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.loop-section .stage::before {
+  content: '';
+  display: inline-block;
+  width: 1.5rem;
+  height: 1px;
+  background: var(--amber);
+}
+
+.loop-section p {
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  margin-bottom: 1rem;
+  color: var(--bone);
+}
+
+.loop-section p:last-child { margin-bottom: 0; }
+
+.loop-section ul {
+  list-style: none;
+  margin-top: 0.5rem;
+}
+
+.loop-section ul li {
+  padding: 0.4rem 0 0.4rem 1.5rem;
+  position: relative;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+}
+
+.loop-section ul li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--amber);
+}
+
+
+/* ----- the five-gate ----------------------------------------------------- */
+
+.gate {
+  border: 1px solid var(--hairline-amber);
+  padding: 2.5rem 2.25rem;
+  margin: 4rem 0;
+  position: relative;
+}
+
+.gate .corner {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-color: var(--amber);
+  border-style: solid;
+  border-width: 0;
+}
+
+.gate .corner.tl { top: -1px; left: -1px;  border-top-width: 1px; border-left-width: 1px; }
+.gate .corner.tr { top: -1px; right: -1px; border-top-width: 1px; border-right-width: 1px; }
+.gate .corner.bl { bottom: -1px; left: -1px;  border-bottom-width: 1px; border-left-width: 1px; }
+.gate .corner.br { bottom: -1px; right: -1px; border-bottom-width: 1px; border-right-width: 1px; }
+
+.gate-title {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 1.75rem;
+  text-align: center;
+}
+
+.gate-fields { list-style: none; }
+
+.gate-field {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  gap: 1.5rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--hairline);
+  align-items: baseline;
+}
+
+.gate-field:first-child { border-top: none; padding-top: 0; }
+
+.gate-field .key {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--bone-dim);
+}
+
+.gate-field .value {
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--bone);
+}
+
+
+/* ----- membrane note ----------------------------------------------------- */
+
+.membrane {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px dashed var(--hairline-amber);
+}
+
+.membrane .label {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 1.25rem;
+  display: block;
+}
+
+.membrane p {
+  color: var(--bone-dim);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  font-style: italic;
+  margin-bottom: 0.85rem;
+}
+
+.membrane p:last-child { margin-bottom: 0; }
+
+.membrane ul { list-style: none; margin-top: 0.5rem; }
+
+.membrane ul li {
+  padding: 0.3rem 0 0.3rem 1.25rem;
+  position: relative;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--bone-dim);
+  font-style: italic;
+}
+
+.membrane ul li::before {
+  content: '·';
+  position: absolute;
+  left: 0;
+  color: var(--amber);
+  font-style: normal;
+}
+
+
+/* ----- page footer ------------------------------------------------------- */
+
+.page-footer {
+  margin-top: 6rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--hairline);
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bone-faint);
+}
+
+.page-footer a {
+  color: var(--bone-faint);
+  border-bottom: 1px solid transparent;
+}
+
+.page-footer a:hover {
+  color: var(--amber);
+  border-bottom-color: var(--hairline-amber);
+}
+
+
+/* ----- responsive -------------------------------------------------------- */
+
+@media (max-width: 600px) {
+  body { padding: 2rem 1.25rem 4rem; }
+
+  .site-header { margin-bottom: 2.5rem; }
+
+  .spine-entry {
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+    padding: 1.75rem 0;
+  }
+
+  .spine-entry .step-num { padding-top: 0; }
+
+  .gate { padding: 2rem 1.25rem; }
+
+  .gate-field {
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+  }
+
+  .loop-header .meta { gap: 1rem; }
+}
