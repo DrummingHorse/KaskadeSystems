@@ -39,11 +39,18 @@
 :root {
   --navy:           #020617;
   --amber:          #fbbf24;
-  --bone:           #f5f0e8;
-  --bone-dim:       #a7a097;
-  --bone-faint:     #5c574f;
+  --amber-soft:     #fef3c7;
+  --cyan:           #67e8f9;
+  --bone:           #f8fafc;
+  --bone-dim:       rgba(248, 250, 252, 0.72);
+  --bone-faint:     rgba(248, 250, 252, 0.35);
 
-  --hairline:       rgba(245, 240, 232, 0.12);
+  --border:         rgba(255, 255, 255, 0.08);
+  --border-2:       rgba(255, 255, 255, 0.14);
+  --border-amber:   rgba(251, 191, 36, 0.28);
+  --border-cyan:    rgba(103, 232, 249, 0.22);
+
+  --hairline:       rgba(248, 250, 252, 0.1);
   --hairline-amber: rgba(251, 191, 36, 0.28);
 
   --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
@@ -62,6 +69,7 @@ html {
   font-size: 17px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -71,7 +79,21 @@ body {
   font-variation-settings: "SOFT" 50, "opsz" 14, "wght" 400;
   line-height: 1.6;
   min-height: 100vh;
-  padding: 3rem var(--gutter) 6rem;
+  padding: 6rem var(--gutter) 6rem; /* top padding clears fixed nav */
+  overflow-x: hidden;
+}
+
+/* subtle ambient atmosphere to match main site */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 50% 40% at 20% 10%, rgba(103, 232, 249, 0.06), transparent 65%),
+    radial-gradient(ellipse 40% 30% at 80% 20%, rgba(251, 191, 36, 0.04), transparent 65%),
+    linear-gradient(to bottom, #0b1120 0%, #020617 60%, #01040d 100%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 ::selection { background: var(--amber); color: var(--navy); }
@@ -89,30 +111,101 @@ code {
 }
 
 
-/* ----- frame ------------------------------------------------------------- */
+/* ----- NAV (exact match to main site) ------------------------------------ */
 
-.frame { max-width: var(--max-width); margin: 0 auto; }
-
-
-/* ----- site header (top breadcrumb) -------------------------------------- */
-
-.site-header {
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid var(--hairline);
-  margin-bottom: 4rem;
+  align-items: center;
+  padding: 1.75rem 2.5rem;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: rgba(2, 6, 23, 0.65);
+  border-bottom: 0.5px solid var(--border);
+}
+
+.wordmark {
   font-family: var(--mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.12em;
+  font-weight: 500;
+  font-size: 0.95rem;
+  letter-spacing: 0.5em;
+  color: var(--bone);
+  text-transform: uppercase;
+  text-decoration: none;
+  padding-left: 0.5em;
+  display: inline-flex;
+  align-items: center;
+}
+
+.wordmark::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--cyan);
+  margin-right: 0.9em;
+  animation: pulse 2.4s ease-in-out infinite;
+  box-shadow: 0 0 12px var(--cyan);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(1.2); }
+}
+
+.nav-menu {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
 }
 
-.site-header .wordmark { font-weight: 500; color: var(--amber); }
-.site-header .breadcrumb { color: var(--bone-dim); }
-.site-header .breadcrumb a { color: var(--bone-dim); border-bottom: 1px solid transparent; }
-.site-header .breadcrumb a:hover { color: var(--amber); border-bottom-color: var(--hairline-amber); }
+.nav-menu a {
+  color: var(--bone-dim);
+  text-decoration: none;
+  transition: color 0.3s ease;
+  position: relative;
+}
+
+.nav-menu a:hover,
+.nav-menu a.nav-active {
+  color: var(--amber);
+}
+
+.nav-menu a::after {
+  content: '';
+  position: absolute;
+  bottom: -6px; left: 0;
+  width: 0; height: 0.5px;
+  background: var(--amber);
+  transition: width 0.3s ease;
+}
+
+.nav-menu a:hover::after,
+.nav-menu a.nav-active::after {
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  nav { padding: 1.25rem 1.5rem; }
+  .nav-menu { display: none; }
+}
+
+
+/* ----- frame ------------------------------------------------------------- */
+
+.frame {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
 
 
 /* ----- section title (spine page) ---------------------------------------- */
@@ -280,10 +373,7 @@ code {
 
 .loop-section p:last-child { margin-bottom: 0; }
 
-.loop-section ul {
-  list-style: none;
-  margin-top: 0.5rem;
-}
+.loop-section ul { list-style: none; margin-top: 0.5rem; }
 
 .loop-section ul li {
   padding: 0.4rem 0 0.4rem 1.5rem;
@@ -311,15 +401,14 @@ code {
 
 .gate .corner {
   position: absolute;
-  width: 10px;
-  height: 10px;
+  width: 10px; height: 10px;
   border-color: var(--amber);
   border-style: solid;
   border-width: 0;
 }
 
-.gate .corner.tl { top: -1px; left: -1px;  border-top-width: 1px; border-left-width: 1px; }
-.gate .corner.tr { top: -1px; right: -1px; border-top-width: 1px; border-right-width: 1px; }
+.gate .corner.tl { top: -1px;    left: -1px;  border-top-width: 1px; border-left-width: 1px; }
+.gate .corner.tr { top: -1px;    right: -1px; border-top-width: 1px; border-right-width: 1px; }
 .gate .corner.bl { bottom: -1px; left: -1px;  border-bottom-width: 1px; border-left-width: 1px; }
 .gate .corner.br { bottom: -1px; right: -1px; border-bottom-width: 1px; border-right-width: 1px; }
 
@@ -438,24 +527,15 @@ code {
 /* ----- responsive -------------------------------------------------------- */
 
 @media (max-width: 600px) {
-  body { padding: 2rem 1.25rem 4rem; }
-
-  .site-header { margin-bottom: 2.5rem; }
-
+  body { padding: 5rem 1.25rem 4rem; }
+  .section-title { margin-bottom: 2.5rem; }
   .spine-entry {
     grid-template-columns: 1fr;
     gap: 0.4rem;
     padding: 1.75rem 0;
   }
-
   .spine-entry .step-num { padding-top: 0; }
-
   .gate { padding: 2rem 1.25rem; }
-
-  .gate-field {
-    grid-template-columns: 1fr;
-    gap: 0.4rem;
-  }
-
+  .gate-field { grid-template-columns: 1fr; gap: 0.4rem; }
   .loop-header .meta { gap: 1rem; }
 }
