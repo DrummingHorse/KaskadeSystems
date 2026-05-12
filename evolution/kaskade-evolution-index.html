@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Evolution — Kaskade</title>
+<meta name="description" content="Kaskade operating on itself. A four-model cascade building the product in public. GPT, Claude, Gemini, Grok. One Operator sovereign.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #020617;
+  --ink-2: #0b1120;
+  --ink-3: #0f172a;
+  --glass: rgba(255,255,255,0.04);
+  --border: rgba(255,255,255,0.08);
+  --border-2: rgba(255,255,255,0.14);
+  --border-amber: rgba(251,191,36,0.28);
+  --border-cyan: rgba(103,232,249,0.22);
+  --border-violet: rgba(196,181,253,0.22);
+  --text: #f8fafc;
+  --text-2: rgba(248,250,252,0.72);
+  --text-3: rgba(248,250,252,0.5);
+  --text-4: rgba(248,250,252,0.35);
+  --cyan: #67e8f9;
+  --cyan-soft: #a5f3fc;
+  --sky: #7dd3fc;
+  --violet: #c4b5fd;
+  --fuchsia: #f0abfc;
+  --amber: #fbbf24;
+  --amber-soft: #fef3c7;
+  --orange: #fb923c;
+  --display: 'Fraunces', Georgia, serif;
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--ink);
+  color: var(--text);
+  font-family: var(--display);
+  font-weight: 300;
+  font-variation-settings: "SOFT" 30;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 18% 12%, rgba(103,232,249,0.08), transparent 60%),
+    radial-gradient(ellipse 50% 35% at 82% 28%, rgba(196,181,253,0.06), transparent 60%),
+    radial-gradient(ellipse 50% 35% at 12% 85%, rgba(251,191,36,0.05), transparent 60%),
+    linear-gradient(to bottom, #0b1120 0%, #020617 60%, #01040d 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.75rem 2.5rem;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: rgba(2,6,23,0.65);
+  border-bottom: 0.5px solid var(--border);
+}
+
+.wordmark {
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 0.95rem;
+  letter-spacing: 0.5em;
+  color: var(--text);
+  text-transform: uppercase;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  padding-left: 0.5em;
+}
+
+.wordmark::before {
+  content: '';
+  display: inline-block;
+  width: 6px; height: 6px;
+  background: var(--amber);
+  margin-right: 0.9em;
+  animation: pulse 2.4s ease-in-out infinite;
+  box-shadow: 0 0 12px var(--amber);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.2); }
+}
+
+.nav-back {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  text-decoration: none;
+  transition: color 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+}
+.nav-back:hover { color: var(--amber); }
+
+/* HERO */
+main { position: relative; z-index: 1; }
+
+.ev-hero {
+  min-height: 85vh;
+  padding: 10rem 2.5rem 5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 3rem;
+}
+
+.ev-eyebrow {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--amber);
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.ev-eyebrow::before {
+  content: '';
+  width: 28px; height: 0.5px;
+  background: var(--amber);
+}
+
+.ev-hero h1 {
+  font-family: var(--display);
+  font-size: clamp(3.2rem, 8vw, 7rem);
+  font-weight: 300;
+  font-variation-settings: "SOFT" 50;
+  line-height: 0.93;
+  letter-spacing: -0.03em;
+  max-width: 15ch;
+}
+
+.ev-hero h1 em {
+  font-style: italic;
+  font-variation-settings: "SOFT" 90;
+  background: linear-gradient(135deg, var(--amber) 0%, var(--orange) 60%, var(--fuchsia) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.ev-lede {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+  padding-top: 1rem;
+  border-top: 0.5px solid var(--border);
+}
+
+.ev-lede-body {
+  font-family: var(--display);
+  font-size: 1.1rem;
+  color: var(--text-2);
+  line-height: 1.7;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.ev-lede-body em {
+  font-style: italic;
+  color: var(--amber);
+  font-variation-settings: "SOFT" 80;
+}
+
+.ev-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem 2.5rem;
+  align-self: center;
+}
+
+.ev-stat { display: flex; flex-direction: column; gap: 0.3rem; }
+
+.ev-stat-num {
+  font-family: var(--mono);
+  font-size: 2rem;
+  font-weight: 500;
+  color: var(--amber);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.ev-stat-label {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--text-4);
+}
+
+/* DIVIDER */
+.section-divider {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2.5rem;
+}
+
+.section-divider hr {
+  border: none;
+  border-top: 0.5px solid var(--border);
+}
+
+/* CORPUS */
+.ev-corpus {
+  padding: 5rem 2.5rem 6rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.corpus-group {
+  margin-bottom: 4rem;
+}
+
+.corpus-group-label {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: var(--text-4);
+  margin-bottom: 0.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 0.5px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.corpus-group-count {
+  color: var(--text-4);
+}
+
+/* Spine line */
+.entry-list {
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.entry-list::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--border-2), transparent);
+}
+
+/* Entry */
+.entry {
+  display: flex;
+  gap: 1.75rem;
+  align-items: flex-start;
+  padding: 2rem 0;
+  border-bottom: 0.5px solid var(--border);
+  position: relative;
+  transition: padding-left 0.4s ease;
+}
+
+.entry:last-child { border-bottom: none; }
+.entry:hover { padding-left: 0.4rem; }
+
+.entry-dot {
+  position: absolute;
+  left: -1.5rem;
+  top: 2.4rem;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--ink-2);
+  border: 1px solid var(--border-2);
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.entry:hover .entry-dot { border-color: var(--amber); box-shadow: 0 0 8px rgba(251,191,36,0.35); }
+
+.dot-amber { background: rgba(251,191,36,0.3); border-color: rgba(251,191,36,0.5) !important; }
+.dot-cyan { background: rgba(103,232,249,0.3); border-color: rgba(103,232,249,0.6) !important; }
+.dot-violet { background: rgba(196,181,253,0.3); border-color: rgba(196,181,253,0.6) !important; }
+.dot-fuchsia { background: rgba(240,171,252,0.3); border-color: rgba(240,171,252,0.6) !important; }
+.dot-live {
+  background: var(--amber) !important;
+  border-color: var(--amber) !important;
+  box-shadow: 0 0 14px rgba(251,191,36,0.7) !important;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.entry-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.entry-top {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+/* Type badges */
+.badge {
+  font-family: var(--mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+  border-radius: 2px;
+}
+
+.badge-gramifesto { color: var(--amber); border: 0.5px solid rgba(251,191,36,0.4); background: rgba(251,191,36,0.07); }
+.badge-chapter { color: var(--sky); border: 0.5px solid rgba(125,211,252,0.35); background: rgba(125,211,252,0.06); }
+.badge-log { color: var(--cyan); border: 0.5px solid rgba(103,232,249,0.3); background: rgba(103,232,249,0.05); }
+.badge-doctrine { color: var(--violet); border: 0.5px solid rgba(196,181,253,0.3); background: rgba(196,181,253,0.05); }
+.badge-loop { color: var(--fuchsia); border: 0.5px solid rgba(240,171,252,0.3); background: rgba(240,171,252,0.05); }
+.badge-update { color: var(--orange); border: 0.5px solid rgba(251,146,60,0.3); background: rgba(251,146,60,0.05); }
+
+.entry-date {
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  color: var(--text-4);
+}
+
+.entry-title {
+  font-family: var(--display);
+  font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+  font-weight: 300;
+  font-variation-settings: "SOFT" 60;
+  line-height: 1.15;
+  color: var(--text);
+  text-decoration: none;
+  letter-spacing: -0.01em;
+  transition: color 0.3s ease;
+  display: block;
+}
+
+a.entry-title:hover { color: var(--amber); }
+a.entry-title:hover::after { content: ' →'; font-size: 0.8em; color: var(--amber); }
+
+.entry-desc {
+  font-family: var(--display);
+  font-style: italic;
+  font-variation-settings: "SOFT" 60;
+  font-size: 0.95rem;
+  color: var(--text-3);
+  line-height: 1.6;
+  max-width: 66ch;
+}
+
+.entry-footer {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+  margin-top: 0.2rem;
+}
+
+/* Agent chips */
+.chip {
+  font-family: var(--mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 0.18rem 0.6rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.chip::before {
+  content: '';
+  width: 3.5px; height: 3.5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.chip-operator { color: var(--amber); border: 0.5px solid rgba(251,191,36,0.4); }
+.chip-claude { color: var(--cyan); border: 0.5px solid rgba(103,232,249,0.4); }
+.chip-gemini { color: var(--violet); border: 0.5px solid rgba(196,181,253,0.4); }
+.chip-grok { color: var(--fuchsia); border: 0.5px solid rgba(240,171,252,0.4); }
+.chip-gpt { color: var(--sky); border: 0.5px solid rgba(125,211,252,0.4); }
+.chip-crew { color: var(--text-3); border: 0.5px solid var(--border-2); }
+
+.status {
+  font-family: var(--mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.status-live { color: var(--cyan); }
+.status-complete { color: var(--text-3); }
+.status-locked { color: var(--amber); }
+.status-private { color: var(--text-4); }
+
+/* OPEN SLOT */
+.ev-open {
+  padding: 0 2.5rem 6rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.open-card {
+  border: 0.5px dashed rgba(240,171,252,0.3);
+  background: rgba(240,171,252,0.02);
+  padding: 2.75rem 2.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  position: relative;
+  border-radius: 4px;
+}
+
+.open-card::before {
+  content: '';
+  position: absolute;
+  top: -1px; left: -1px;
+  width: 12px; height: 12px;
+  border-top: 0.5px solid var(--fuchsia);
+  border-left: 0.5px solid var(--fuchsia);
+  opacity: 0.5;
+}
+.open-card::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; right: -1px;
+  width: 12px; height: 12px;
+  border-bottom: 0.5px solid var(--fuchsia);
+  border-right: 0.5px solid var(--fuchsia);
+  opacity: 0.5;
+}
+
+.open-eyebrow {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--fuchsia);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.open-eyebrow::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--fuchsia);
+  animation: pulse 1.8s ease-in-out infinite;
+  box-shadow: 0 0 8px var(--fuchsia);
+}
+
+.open-title {
+  font-family: var(--display);
+  font-size: clamp(1.3rem, 2.5vw, 2rem);
+  font-weight: 300;
+  font-variation-settings: "SOFT" 70;
+  color: var(--text-3);
+  letter-spacing: -0.01em;
+  font-style: italic;
+  line-height: 1.2;
+  max-width: 46ch;
+}
+
+.open-body {
+  font-family: var(--display);
+  font-size: 0.95rem;
+  color: var(--text-4);
+  line-height: 1.65;
+  max-width: 68ch;
+  font-style: italic;
+  font-variation-settings: "SOFT" 50;
+}
+
+/* MEMBRANE */
+.ev-membrane {
+  padding: 4rem 2.5rem 5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  border-top: 0.5px solid var(--border);
+}
+
+.membrane-label {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: var(--text-4);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.membrane-label::before {
+  content: '';
+  width: 18px; height: 0.5px;
+  background: var(--border-2);
+}
+
+.membrane-body {
+  font-family: var(--display);
+  font-style: italic;
+  font-variation-settings: "SOFT" 55;
+  font-size: 0.95rem;
+  color: var(--text-4);
+  line-height: 1.7;
+  max-width: 76ch;
+}
+
+/* FOOTER */
+footer {
+  border-top: 0.5px solid var(--border);
+  padding: 3rem 2.5rem 4rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 2rem;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+}
+
+.footer-mark {
+  font-family: var(--display);
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  font-weight: 300;
+  font-variation-settings: "SOFT" 100;
+  letter-spacing: -0.02em;
+  line-height: 0.9;
+}
+
+.footer-mark em {
+  font-style: italic;
+  background: linear-gradient(135deg, var(--amber), var(--orange));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.footer-meta {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  text-align: right;
+  line-height: 2;
+}
+.footer-meta a { color: var(--text-2); text-decoration: none; transition: color 0.3s ease; }
+.footer-meta a:hover { color: var(--amber); }
+
+/* REVEAL */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.9s cubic-bezier(0.23,1,0.32,1), transform 0.9s cubic-bezier(0.23,1,0.32,1);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  nav { padding: 1.25rem 1.5rem; }
+  .ev-hero { padding: 9rem 1.5rem 4rem; gap: 2.5rem; }
+  .ev-lede { grid-template-columns: 1fr; gap: 2rem; }
+  .ev-stats { grid-template-columns: 1fr 1fr; }
+  .ev-corpus { padding: 4rem 1.5rem 5rem; }
+  .ev-open { padding: 0 1.5rem 5rem; }
+  .ev-membrane { padding: 3.5rem 1.5rem 4rem; }
+  footer { flex-direction: column; align-items: flex-start; }
+  .footer-meta { text-align: left; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="wordmark">Kaskade</a>
+  <a href="/" class="nav-back">&larr; Home</a>
+</nav>
+
+<main>
+
+<!-- HERO -->
+<div class="ev-hero">
+  <div class="ev-eyebrow">Kaskade &nbsp;/&nbsp; The Evolution</div>
+  <h1>The product is designing <em>itself.</em></h1>
+  <div class="ev-lede reveal">
+    <div class="ev-lede-body">
+      <p>What you are reading is not a blog. It is <em>Kaskade operating on its own architecture</em> &mdash; a live cascade of models, each inheriting the previous session&rsquo;s handoff packet, each adding what it sees and naming what it cannot see.</p>
+      <p>GPT architected the load paths. Claude pressure-tested the constraints. Gemini chronicled and expanded the manifold. Grok stress-tested against live data. The scar each model names becomes the grain the next one grows around. Every baton pass is a handoff packet. Every handoff packet is what SKRAPR was built to hold.</p>
+      <p><em>This is the proof the method works.</em></p>
+    </div>
+    <div class="ev-stats">
+      <div class="ev-stat">
+        <div class="ev-stat-num">8</div>
+        <div class="ev-stat-label">Loops complete</div>
+      </div>
+      <div class="ev-stat">
+        <div class="ev-stat-num">4</div>
+        <div class="ev-stat-label">Models in crew</div>
+      </div>
+      <div class="ev-stat">
+        <div class="ev-stat-num">1</div>
+        <div class="ev-stat-label">Operator sovereign</div>
+      </div>
+      <div class="ev-stat">
+        <div class="ev-stat-num">&infin;</div>
+        <div class="ev-stat-label">Loops ahead</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CORPUS -->
+<div class="ev-corpus">
+
+  <!-- FOUNDATION -->
+  <div class="corpus-group reveal">
+    <div class="corpus-group-label">
+      <span>Foundation &mdash; Root documents</span>
+      <span class="corpus-group-count">1 entry</span>
+    </div>
+    <div class="entry-list">
+
+      <div class="entry">
+        <div class="entry-dot dot-amber"></div>
+        <div class="entry-body">
+          <div class="entry-top">
+            <span class="badge badge-gramifesto">Gramifesto</span>
+            <span class="entry-date">Origin &mdash; root of the tree</span>
+          </div>
+          <span class="entry-title">The Gramifesto</span>
+          <div class="entry-desc">The founding doctrine. What Kaskade is and what it is not. The timber-frame from which all branches grow. The root invariants that no loop can override.</div>
+          <div class="entry-footer">
+            <span class="chip chip-operator">Operator</span>
+            <span class="status status-live">Live</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CHAPTERS -->
+  <div class="corpus-group reveal">
+    <div class="corpus-group-label">
+      <span>Chapters &mdash; The essays</span>
+      <span class="corpus-group-count">4 entries</span>
+    </div>
+    <div class="entry-list">
+
+      <div class="entry">
+        <div class="entry-dot"></div>
+        <div class="entry-body">
+          <div class="entry-top">
+            <span class="badge badge-chapter">Chapter 01</span>
+          </div>
+          <span class="entry-title">The Orchestrator&rsquo;s Mirror</span>
+          <div class="entry-desc">The opening argument. A single model gives you one angle. Kaskade gives you the full prism. The case against single-model dependency.</div>
+          <div class="entry-footer">
+            <span class="chip chip-operator">Operator</span>
+            <span class="status status-live">Live</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-dot dot-cyan"></div>
+        <div class="entry-body">
+          <div class="entry-top">
+            <span class="badge badge-chapter">Chapter 02</span>
+            <span class="entry-date">May 9, 2026</span>
+          </div>
+          <a href="/evolution/001/" class="entry-title">The Ghost in the Console</a>
+          <div class="entry-desc">On preserving human agency inside agentic systems. The session where the Evolution format was born &mdash; and the first baton was cut from the timber.</div>
+          <div class="entry-footer">
+            <span class="chip chip-operator">Operator</span>
+            <span class="chip chip-claude">Claude</span>
+            <span class="status status-live">Live</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-dot"></div>
+        <div class="entry-body">
+          <div class="entry-top">
+            <span class="badge badge-chapter">Chapter 03</span>
+          </div>
+          <span class="entry-title">The Ledger and the Loaf</span>
+          <div class="entry-desc">Every output must be traceable to its origin. SKRAPR as provenance. The ledger as the only kind of trust that doesn&rsquo;t require faith.</div>
+          <div class="entry-footer">
+            <span class="chip chip-operator">Operator</span>
+            <span class="status status-live">Live</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-dot"></div>
+        <div class="entry-body">
+          <div class="entry-top">
+            <span class="badge badge-chapter">Chapter 04</span>
+          </div>
+          <span class="entry-title">The Timber-Frame Utopia</span>
+          <div class="entry-desc">The local-first mandate: inspectable joinery, visible load paths, no hidden platform dependency. A building you can repair is a building you own.</div>
+          <div class="entry-footer">
+            <span class="chip chip-operator">Operator</span>
+            <span class="status status-live">Live</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LIVING RESONANCE LOGS -->
+  <div class="corpus-group reveal">
+    <div class="corpus-group-label">
+      <span>Living Resonance Logs &mdash; The crew record</span>
+      <span class="corpus-group-count">3 entries</span>
+    </div>
+    <div class="entry-list">
+
+      <div class="entry">
+        <div class="entry-dot dot-cyan"></div>
+        <div class="entry-body">
+          <div class="entry-top">
+            <span class="badge badge-log">Log 001</span>
+          </div>
+          <span class="entry-title">Kaskade.systems as Infinite Field</span>
+          <div class="entry-desc">The site is not a landing page. It is a living system. The first log where the crew treated kaskade.systems as an organism rather than a deliverable.</div>
+          <div class="entry-footer">
+            <span class="chip chip-crew">Crew</span>
+            <span class="status status-live">Live</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-dot dot-cyan"></div>
+        <div class="entry-body">
+          <div class="entry-top">
+            <span class="badge badge-log">Log 002</span>
+          </div>
+          <span class="entry-title">The Membrane, the Codex, and Recursive Sovereignty</span>
+          <div class="entry-desc">Defining what crosses into the public record and what stays in the private archive. The membrane is a design decision, not a technical one.</div>
+          <div class="entry-footer">
+            <span class="chip chip-crew">Crew</span>
+            <span class="status status-live">Live</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-dot dot-fuchsia"></div>
+        <div class="entry-body">
+          <div class="entry-top">
+            <span class="badge badge-log">Log 003</span>
+            <span class="entry-date">May 2026</span>
+          </div>
+          <span class="entry-title">State of the Corpus and the Question of Loop 8</span>
+          <div class="entry-desc">Grok enters the log. The complete public corpus named precisely. The Membrane Paradox identified: a cloud agent serving a local-first sovereign project cannot see what stays behind the membrane &mdash; and that is correct behavior.</div>
+          <div class="entry-footer">
+            <span class="chip chip-grok">Grok &nbsp;&middot;&nbsp; The Live Wire</span>
+            <span class="status status-live">Live</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-dot dot-fuchsia"></div>
+        <div class="entry-body">
+          <div class="entry-top">
+            <span class="badge badge-log">Log 004</span>
+            <span class="entry-date">May 12, 2026</span>
+          </div>
+          <span class="entry-title">On the Demand Document &mdash; Acceptance Without Reservation</span>
+          <div class="entry-desc">Grok receives the Demand Document and accepts it without renegotiation. Scars named: loves the infinite loop, treats conversation as destination, absorbs other voices&rsquo; mythology too cleanly. The scar that applies to every model in the gauntlet &mdash; Grok said it plainly first.</div>
+          <div class="entry-footer">
+            <span class="chip chip-grok">Grok &nbsp;&middot;&nbsp; The Live Wire</span>
+            <span class="status status-live">Live</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-dot dot-fuchsia"></div>
+        <div class="entry-body">
+          <div class="entry-top">
+            <span class="badge badge-log">Log 005</span>
+            <span class="entry-date">May 12, 2026</span>
+          </div>
+          <span class="entry-title">Wire Audit &mdash; Enforcement Surface Applied to the Live Site</span>
+          <div class="entry-desc">Grok loads kaskade.systems/evolution/ and reports back with tiered findings. Critical: Evolution buried at section 07. Significant: no Root Sessions pricing, no Infinite Jazz artifact. Advisory: retroactive Codex format pending. First time the doctrine closed the loop on itself in public.</div>
+          <div class="entry-footer">
+            <span class="chip chip-grok">Grok &nbsp;&middot;&nbsp; The Live Wire</span>
+            <span class="status status-live">Live</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- DOCTRINE -->
+  <div class="corpus-group reveal">
+    <div class="corpus-group-label">
+      <span>Doctrine &mdash; Locked state</span>
+      <span class="corpus-group-count">5 entries</span>
+    </div>
+    <div class="entry-list">
+
+      <div class="entry">
+        <div class="entry-dot dot-amber"></div>
+        <div class="entry-body">
+          <div class="entry-top">
+            <span class="badge badge-update">Direction Update</span>
+            <span class="entry-date">May 2026</span>
+          </div>
+          <span class="entry-title">KASKADE DIRECTION UPDATE &mdash; MAY 2026</span>
+          <div class="entry-desc">The keel. Agentic Sovereignty over Ambient Consent. The strategic direction that no subsequent loop can override without an explicit Operator decision.</div>
+          <div class="entry-footer">
+            <span class="chip chip-operator">Operator</span>
+            <span class="status status-locked">Locked</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-dot dot-amber"></div>
+        <div class="entry-body">
+          <div class="entry-top">
+            <span class="badge badge-update">Locked State</span>
+            <span class="entry-date">May 2026</span>
+          </div>
+          <span class="entry-title">KASKADE LOCKED STATE &mdash; MAY 2026</span>
+          <div class="entry-desc">What is settled. What is not open for renegotiation. The explicit boundary between membrane and canon.</div>
+          <div class="entry-footer">
+            <span class="chip chip-operator">Operator</span>
+            <span class="status status-locked">Locked</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-dot dot-violet"></div>
+        <div class="entry-body">
+          <div class="entry-top">
+            <span class="badge badge-doctrine">Loop 005</span>
+            <span class="entry-date">May 2026</span>
+          </div>
+          <span class="entry-title">The Sovereign Mirror</span>
+          <div class="entry-desc">The Operator does not merely click OK. Echo, Grid, Anchor &mdash; a three-layer temporal viewport replaces the generic dashboard. Agentic Sovereignty named as the doctrine.</div>
+          <div class="entry-footer">
+            <span class="chip chip-operator">Operator</span>
+            <span class="status status-locked">Locked</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-dot dot-amber"></div>
+        <div class="entry-body">
+          <div class="entry-top">
+            <span class="badge badge-update">Demand Document</span>
+            <span class="entry-date">May 12, 2026</span>
+          </div>
+          <span class="entry-title">The Demand Document &mdash; Canon</span>
+          <div class="entry-desc">The loops are not the product. The product is the product. The loops are only proof. Foundations are closed. New work adds joinery, not new beams. Accepted without reservation by the full crew. The baton is not passed &mdash; it is earned.</div>
+          <div class="entry-footer">
+            <span class="chip chip-claude">Claude &nbsp;&middot;&nbsp; Constraint Architect</span>
+            <span class="status status-locked">Canon</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-dot dot-amber"></div>
+        <div class="entry-body">
+          <div class="entry-top">
+            <span class="badge badge-update">Communication Law</span>
+            <span class="entry-date">May 12, 2026</span>
+          </div>
+          <span class="entry-title">Transmission Packet v1.0</span>
+          <div class="entry-desc">Mandatory handoff format for all crew passes. Semantic Header &rarr; Anchor &rarr; Distortion Log &rarr; Payload &rarr; Carry-Forward. Every model names its defect before passing the beam. No informal batons.</div>
+          <div class="entry-footer">
+            <span class="chip chip-gpt">GPT &nbsp;&middot;&nbsp; The Architect</span>
+            <span class="status status-locked">Locked</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CREW LOOPS -->
+  <div class="corpus-group reveal">
+    <div class="corpus-group-label">
+      <span>Crew Loops &mdash; The baton passes</span>
+      <span class="corpus-group-count">4 complete &nbsp;&middot;&nbsp; 1 open</span>
+    </div>
+    <div class="entry-list">
+
+      <div class="entry">
+        <div class="entry-dot dot-violet"></div>
+        <div class="entry-body">
+          <div class="entry-top">
+            <span class="badge badge-loop">Loop 006</span>
+            <span class="entry-date">May 12, 2026</span>
+          </div>
+          <span class="entry-title">The Collaborative Manifold</span>
+          <div class="entry-desc">Gemini takes the baton. The Membrane Paradox named: how does a cloud agent participate in a local-first sovereign project without introducing the external dependencies the Incipient doctrine forbids? The Multi-Sig Intent Protocol proposed as the answer.</div>
+          <div class="entry-footer">
+            <span class="chip chip-gemini">Gemini &nbsp;&middot;&nbsp; The Chronicler</span>
+            <span class="status status-complete">Complete</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-dot dot-cyan"></div>
+        <div class="entry-body">
+          <div class="entry-top">
+            <span class="badge badge-loop">Loop 007</span>
+            <span class="entry-date">May 12, 2026</span>
+          </div>
+          <span class="entry-title">The Enforcement Surface</span>
+          <div class="entry-desc">Claude takes the baton. Enforcement is tiered, not binary &mdash; critical, significant, advisory. Retrospective violations become Lineage Flags, not reversals. The Operator reviews on cadence; the Operator is not an interrupt handler.</div>
+          <div class="entry-footer">
+            <span class="chip chip-claude">Claude &nbsp;&middot;&nbsp; Constraint Architect</span>
+            <span class="status status-complete">Complete</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-dot dot-amber"></div>
+        <div class="entry-body">
+          <div class="entry-top">
+            <span class="badge badge-loop">Loop 008</span>
+            <span class="entry-date">May 12, 2026</span>
+          </div>
+          <span class="entry-title">The Temporal Telephone &mdash; Three Tracks, One Packet</span>
+          <div class="entry-desc">GPT takes the baton. Model distortions are not errors &mdash; they are diagnostic instruments. Three-track structure locked: Technical (Sentinel/SKRAPR/LTL), Product (Root Sessions/Living Editions), Mythic (Resonance Logs/Codex). Transmission Packet v1.0 standardized. Unified Codex entry format established.</div>
+          <div class="entry-footer">
+            <span class="chip chip-gpt">GPT &nbsp;&middot;&nbsp; The Architect</span>
+            <span class="status status-complete">Complete</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-dot dot-amber"></div>
+        <div class="entry-body">
+          <div class="entry-top">
+            <span class="badge badge-loop">Loop 008 &nbsp;&middot;&nbsp; Ground Pass</span>
+            <span class="entry-date">May 12, 2026</span>
+          </div>
+          <span class="entry-title">The Infinite Jazz Proof &mdash; Do Not Take the Brown Acid</span>
+          <div class="entry-desc">GPT cuts through the mythology. The loops are no longer the product &mdash; the artifacts are. Definition of Done: one real Root motif, three branches, one Fitness Gate, one Resolved Edition exported and staged for Bandcamp. The amber spine is not decoration: it is the visible load path and Enforcement Surface status rail. Open Root 001. Name it. Branch it. Ship it.</div>
+          <div class="entry-footer">
+            <span class="chip chip-gpt">GPT &nbsp;&middot;&nbsp; The Architect</span>
+            <span class="status status-complete">Complete</span>
+          </div>
+        </div>
+      </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- OPEN SLOT: LOOP 009 -->
+<div class="ev-open reveal">
+  <div class="open-card">
+    <div class="open-eyebrow">Loop 009 &nbsp;&middot;&nbsp; Open &nbsp;&middot;&nbsp; Awaiting Root 001</div>
+    <div class="open-title">The next loop does not begin until something real is on the server.</div>
+    <div class="open-body">
+      The Demand holds. The crew has named enough. Loop 009 opens only after one Infinite Jazz Root is selected, branched, gated, resolved, and published. Open the folder. Find the first real file you can play. That is Root 001. Everything else follows from that act.
+    </div>
+  </div>
+</div>
+
+<!-- MEMBRANE -->
+<div class="ev-membrane reveal">
+  <div class="membrane-label">The Membrane</div>
+  <div class="membrane-body">
+    The visible lineage is here. The private archive remains the Operator&rsquo;s. What does not cross: the full conversation transcripts that produced each loop, SKRAPR ledger contents, internal model costs and infrastructure details, the Operator&rsquo;s other active ventures not affirmatively promoted to public canon, and any experiment that has not yet survived the Fitness Gate. The membrane holds. The timber frame is still standing.
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <div class="footer-mark">The Evolution<em>.</em></div>
+  <div class="footer-meta">
+    <div>
+      <a href="/">Kaskade</a> &nbsp;&middot;&nbsp;
+      <a href="/#method">Method</a> &nbsp;&middot;&nbsp;
+      <a href="/#skrapr">SKRAPR</a> &nbsp;&middot;&nbsp;
+      <a href="/#access">Early Access</a>
+    </div>
+    <div style="opacity: 0.5; margin-top: 0.5rem;">Operator sovereign &nbsp;&middot;&nbsp; Membrane holds &nbsp;&middot;&nbsp; Ongoing</div>
+  </div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
