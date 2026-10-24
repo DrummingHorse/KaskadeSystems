@@ -3,12 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kaskade — Multi-model orchestration</title>
-<meta name="description" content="One prompt. Many models. One master channel. Multi-model AI orchestration for work that deserves more than a single opinion.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Kaskade — Human-led work across AI models</title>
+<meta name="description" content="An independent project exploring how several AI models can contribute to one human-led workflow. Read the method, an illustrative example, and development notes.">
+<link rel="canonical" href="https://kaskade.systems/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Kaskade — Human-led work across AI models">
+<meta property="og:description" content="The method, the current stage, and the evidence still needed.">
+<meta property="og:url" content="https://kaskade.systems/">
+<meta name="twitter:card" content="summary">
 <style>
+@font-face { font-family: 'Fraunces'; src: url('/fonts/Fraunces.woff2') format('woff2'); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: 'IBM Plex Mono'; src: url('/fonts/IBMPlexMono-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'IBM Plex Mono'; src: url('/fonts/IBMPlexMono-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
 :root {
   --ink: #020617;
   --ink-2: #0b1120;
@@ -1331,9 +1337,40 @@ footer {
   .light-rays { opacity: 0.3; }
   .ev-bridge-cta { align-items: stretch; }
 }
+
+/* Public review: readable status, accessible links, and usable mobile navigation. */
+:focus-visible { outline: 2px solid var(--amber); outline-offset: 5px; }
+[id] { scroll-margin-top: 7rem; }
+.skip-link { position: fixed; top: .5rem; left: 1rem; z-index: 999; padding: .8rem; color: var(--ink); background: var(--amber); transform: translateY(-160%); }
+.skip-link:focus { transform: none; }
+.project-status { max-width: 70ch; padding: 1.25rem 1.5rem; border-left: 2px solid var(--amber); background: rgba(251,191,36,.035); color: var(--text-2); font-size: 1.05rem; }
+.project-status strong { color: var(--amber-soft); font-weight: 500; }
+.example-steps { display: grid; gap: 1rem; margin-top: 1.5rem; }
+.example-steps p { border-top: 1px solid var(--border-2); padding-top: 1rem; }
+.example-steps strong { color: var(--cyan-soft); font-weight: 500; }
+.sample-output { margin-top: 1.5rem; border-left: 2px solid var(--violet); padding: 1rem 1.5rem; color: var(--text-2); }
+.contact-links { display: flex; flex-wrap: wrap; gap: 1.25rem; margin-top: 1rem; }
+.contact-links a { color: var(--cyan-soft); text-underline-offset: .25em; overflow-wrap: anywhere; }
+.contact-detail { margin-top: 1rem; font-size: 1rem; color: var(--text-2); }
+.reveal { opacity: 1; transform: none; }
+.hero-chip::before { animation: none; box-shadow: none; }
+.hero-sub { font-style: normal; max-width: 54ch; }
+.hero-visual-label .right::before { animation: none; background: var(--amber); box-shadow: none; }
+@media (max-width: 900px) {
+  nav { flex-wrap: wrap; gap: .7rem; }
+  .nav-menu { display: flex; flex-wrap: wrap; gap: .7rem 1rem; }
+  .nav-menu a { font-size: .58rem; letter-spacing: .09em; }
+  .hero { padding-top: 9rem; }
+  .btn { letter-spacing: .08em; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
 </style>
 </head>
-<body>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
 
 <div class="light-rays" aria-hidden="true">
   <div class="ray-1"></div>
@@ -1344,32 +1381,33 @@ footer {
 </div>
 
 <nav>
-  <a href="#" class="wordmark">Kaskade</a>
+  <a href="#top" class="wordmark">Kaskade</a>
   <ul class="nav-menu">
     <li><a href="#method">Method</a></li>
     <li><a href="#architekt">Architekt</a></li>
     <li><a href="#skrapr">SKRAPR</a></li>
     <li><a href="#evolution">Evolution</a></li>
-    <li><a href="#access">Early Access</a></li>
+    <li><a href="#access">Updates &amp; contact</a></li>
   </ul>
 </nav>
 
-<main>
+<main id="main">
 
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-chip">Multi-model orchestration platform</div>
-    <h1>One prompt.<br>Many models.<br>One <em>master channel.</em></h1>
-    <p class="hero-sub">Kaskade routes your work through a sequence of models &mdash; each playing a different role, each feeding the next &mdash; and returns an artifact none of them could have produced alone. Writing, research, code, image, launch. Any task.</p>
+    <div class="hero-chip">Independent project · Early development</div>
+    <h1>Several AI models.<br>One <em>human-led workflow.</em></h1>
+    <p class="hero-sub">Kaskade explores a practical question: can a deliberate sequence of AI drafts, criticism, and revision make work more useful? A person sets the goal, checks the evidence, and decides what to keep.</p>
+    <p class="project-status"><strong>Current stage: concept and workflow development.</strong> This website explains the approach and records design work. Its diagrams are illustrations; this page does not run AI models. The proposed modules below are development directions.</p>
     <div class="hero-cta">
-      <a href="#access" class="btn btn-primary">Request early access <span class="btn-arrow">&rarr;</span></a>
-      <a href="#method" class="btn btn-ghost">See the kaskade <span class="btn-arrow">&darr;</span></a>
+      <a href="#example" class="btn btn-primary">Read an example <span class="btn-arrow">&darr;</span></a>
+      <a href="#access" class="btn btn-ghost">Join the waitlist <span class="btn-arrow">&rarr;</span></a>
     </div>
 
     <div class="hero-visual">
       <div class="hero-visual-label">
-        <span>KASKADE / PREVIEW</span>
-        <span class="right">LIVE</span>
+        <span>KASKADE / WORKFLOW DIAGRAM</span>
+        <span class="right">ILLUSTRATION</span>
       </div>
       <svg class="prism-svg" viewBox="0 0 680 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The Kaskade preview">
         <title>The Kaskade</title>
@@ -1461,42 +1499,30 @@ footer {
   <!-- TRAP -->
   <section class="trap reveal">
     <div>
-      <div class="section-label">01 &nbsp;/&nbsp; The trap</div>
-      <h2>A single model gives you <em>one angle</em> on a problem you couldn't solve alone.</h2>
+      <div class="section-label">01 &nbsp;/&nbsp; The question</div>
+      <h2>Can a second perspective <em>improve the work?</em></h2>
     </div>
     <div class="trap-body">
-      <p>Every frontier model has a personality. One hedges. One qualifies. One chatters. One flattens. You can feel the house style bleeding into the output before you've finished the prompt.</p>
-      <p>The prevailing answer is to pick a favorite and live with its blind spots. Some teams paste the same query into three tabs and squint at the differences by hand. Neither scales. Neither compounds. Neither produces something better than what any single model returned.</p>
-      <p>Kaskade is the third option: one pipeline that routes your prompt through a deliberate sequence of models, each playing a different role, with the output of each informing the next. Not comparison. Transformation.</p>
+      <p>AI systems can produce useful drafts and still miss an assumption, repeat an error, or sound more certain than the evidence allows.</p>
+      <p>Kaskade explores an explicit handoff: pass the task, constraints, source material, and unresolved questions into the next stage, then inspect what changed.</p>
+      <p>Additional stages also add cost, delay, and opportunities to repeat mistakes. The useful question is whether a workflow improves a defined task enough to justify them.</p>
     </div>
 
     <div class="positioning">
-      <div class="position-card not">
-        <div class="position-label">&mdash; Not this</div>
-        <div class="position-head">A comparison tool.</div>
-        <p class="position-desc">Kaskade isn't a side-by-side model picker. You're not squinting at three tabs trying to pick a winner. The kaskade runs end-to-end and returns one result.</p>
-      </div>
-      <div class="position-card not">
-        <div class="position-label">&mdash; Not this</div>
-        <div class="position-head">A wrapper.</div>
-        <p class="position-desc">The value isn't access. Anyone can route a prompt through an API. The value is the orchestration &mdash; decomposition, routing, carry-forward, critique, synthesis.</p>
-      </div>
-      <div class="position-card yes">
-        <div class="position-label">&rarr; This</div>
-        <div class="position-head"><em>Transformation</em> across models.</div>
-        <p class="position-desc">A universal-task engine. Any prompt, any domain, any stage of the work. Each model contributes, none dictates. The final result carries the lineage of all of them.</p>
-      </div>
+      <div class="position-card"><div class="position-label">01 / CONTEXT</div><div class="position-head">Keep the brief intact.</div><p class="position-desc">Carry the goal, constraints, and source material between stages.</p></div>
+      <div class="position-card"><div class="position-label">02 / REVIEW</div><div class="position-head">Make criticism specific.</div><p class="position-desc">Ask what is unsupported, missing, or inconsistent, and record the revision.</p></div>
+      <div class="position-card yes"><div class="position-label">03 / JUDGMENT</div><div class="position-head">Keep a person in charge.</div><p class="position-desc">Model agreement is not verification. A person checks the sources and chooses the result.</p></div>
     </div>
   </section>
 
   <!-- METHOD -->
   <section class="reveal" id="method">
     <div class="section-label">02 &nbsp;/&nbsp; The method</div>
-    <div class="method-intro">Five roles. Any models. Each pass <em>sharpens</em> what the last one returned &mdash; carried forward, not compared.</div>
+    <div class="method-intro">A proposed workflow in five roles. Each pass has <em>a defined job</em> and carries the brief forward.</div>
 
     <div class="chain">
       <div class="chain-label">
-        <span>SAMPLE CASCADE / YOUR CONFIG</span>
+        <span>ILLUSTRATIVE ROLE SEQUENCE</span>
         <em>CARRY-FORWARD</em>
       </div>
       <div class="chain-flow">
@@ -1510,7 +1536,7 @@ footer {
         <span class="chain-arrow">&rarr;</span>
         <div class="chain-node master"><span class="role">Synthesize</span>Gemini</div>
       </div>
-      <p class="chain-note">Any model can play any role. Swap instruments, reorder stages, add specialist passes, set a stop threshold. The shape is the product &mdash; the specific models are yours.</p>
+      <p class="chain-note">Model names here illustrate possible role assignments. They do not imply a commercial partnership or that this site connects to those services. A useful workflow may need fewer stages.</p>
     </div>
 
     <div class="stages">
@@ -1547,74 +1573,67 @@ footer {
     </div>
 
     <div class="method-footer">
-      Stop at a threshold, a budget, or a constraint. Run three passes or thirty. The kaskade keeps going until the result is strong enough &mdash; or until you say it is.
+      Define a stopping rule, a time budget, and a quality check before starting. More passes do not guarantee a better answer.
     </div>
   </section>
 
-  <!-- UNIVERSAL -->
-  <section class="universal reveal">
-    <div>
-      <div class="section-label">03 &nbsp;/&nbsp; Universal engine</div>
-      <h2>Any task. Any domain. <em>Any stage</em> of the work.</h2>
-    </div>
+  <!-- WORKED EXAMPLE -->
+  <section class="universal" id="example">
+    <div><div class="section-label">03 &nbsp;/&nbsp; A worked example</div><h2>From a rough claim to <em>a checkable update.</em></h2><p class="contact-detail">Constructed illustration. These sample edits explain the process; they are not a recorded model run or a performance comparison.</p></div>
     <div class="universal-body">
-      <p>Kaskade isn't tied to one vertical. The value is in the orchestration &mdash; decomposing work, routing it, carrying outputs forward, synthesizing. That engine doesn't care whether you're writing a contract, debugging a function, drafting a launch plan, or rendering a hero image.</p>
-      <p>If it's a task a model can do, it's a task a kaskade can do <em>better</em>.</p>
-      <div class="domains">
-        <div class="domain">Writing &amp; editorial</div>
-        <div class="domain">Code &amp; debugging</div>
-        <div class="domain">Research &amp; synthesis</div>
-        <div class="domain">Business &amp; strategy</div>
-        <div class="domain">Image &amp; visual work</div>
-        <div class="domain">Launch workflows</div>
-        <div class="domain">Analysis &amp; review</div>
-        <div class="domain">Mixed-format tasks</div>
+      <p><strong>The sample brief:</strong> explain an early prototype clearly, preserve uncertainty, and invite useful feedback.</p>
+      <div class="example-steps">
+        <p><strong>Draft:</strong> &ldquo;Our tool transforms your notes into perfect project plans.&rdquo;</p>
+        <p><strong>Review:</strong> &ldquo;Perfect&rdquo; is unsupported. What does the prototype do today? What still needs checking?</p>
+        <p><strong>Revision:</strong> &ldquo;We are testing a prototype that organises project notes into a draft plan. It still needs human review for missing tasks and incorrect assumptions.&rdquo;</p>
+        <p><strong>Human check:</strong> compare the revision with the actual prototype and source notes before publishing.</p>
       </div>
+      <blockquote class="sample-output">The evidence needed next: compare this process with one model on the same task, using predefined quality criteria, elapsed time, cost, and failure cases.</blockquote>
     </div>
   </section>
 
   <!-- MODULES -->
   <section class="reveal">
     <div class="section-label">04 &nbsp;/&nbsp; The stack</div>
-    <div class="modules-intro">Three modules. <em>One orchestration layer</em> underneath them all.</div>
+    <div class="modules-intro">Three proposed modules. <em>One development direction.</em></div>
 
     <div class="modules">
       <a href="#method" class="module">
         <div class="module-head">
           <span>01 / CORE</span>
-          <span class="status">Engine</span>
+          <span class="status">Proposed</span>
         </div>
         <div>
           <div class="module-tagline">The orchestration</div>
           <h3 class="module-name">Kaskade Core</h3>
         </div>
-        <p class="module-desc">The engine everything else runs on. Task decomposition, model routing, carry-forward sequencing, critique and iteration, synthesis. Configurable stages, configurable stops.</p>
+        <p class="module-desc">The proposed orchestration layer: task stages, handoff context, review, synthesis, and explicit stopping rules.</p>
         <span class="module-arrow">See the method &rarr;</span>
       </a>
 
       <a href="#architekt" class="module">
         <div class="module-head">
           <span>02 / ARCHITEKT</span>
-          <span class="status">Preview</span>
+          <span class="status">Concept</span>
         </div>
         <div>
           <div class="module-tagline">The visual layer</div>
           <h3 class="module-name">Architekt</h3>
         </div>
-        <p class="module-desc">Multi-pass image kaskades: draft, block, render, critique, finish. For creative work with a lineage. The first visible wedge of the platform.</p>
+        <p class="module-desc">A proposed image workflow: draft, compose, render, review, and finish, with an inspectable revision history.</p>
         <span class="module-arrow">See Architekt &rarr;</span>
       </a>
 
       <a href="#skrapr" class="module">
         <div class="module-head">
           <span>03 / SKRAPR</span>
-          <span class="status">Preview</span>
+          <span class="status">Concept</span>
         </div>
         <div>
           <div class="module-tagline">The continuity layer</div>
           <h3 class="module-name">SKRAPR</h3>
         </div>
-        <p class="module-desc">Permissioned context import. Turns your chats, notes, and docs into structured input the kaskade can actually use. Privacy-first. Reviewable. Deletable.</p>
+        <p class="module-desc">A proposed context tool for material a person chooses to share. Review, editing, and deletion are design requirements.</p>
         <span class="module-arrow">See SKRAPR &rarr;</span>
       </a>
     </div>
@@ -1624,11 +1643,11 @@ footer {
   <section class="feature reverse reveal" id="architekt">
     <div class="feature-text">
       <div class="section-label">05 &nbsp;/&nbsp; Architekt</div>
-      <h2>When the output is a picture, the kaskade becomes a <em>studio.</em></h2>
+      <h2>An image workflow with <em>visible revisions.</em></h2>
       <div class="feature-body">
-        <p>Architekt is the image-focused kaskade layer inside Kaskade. Same principle, different instruments: a concept model drafts, a compositional model blocks, a detail model renders, a critic flags, a master finishes.</p>
-        <p>The output isn't an image. It's an image with a lineage &mdash; every pass logged, every model credited, every revision reversible. Built for creative directors, brand teams, and independent operators who care what goes out under their name.</p>
-        <div class="feature-tag">Now in private preview</div>
+        <p>Architekt is a proposed way to organise image work into explicit stages, from a brief and composition through rendering and review.</p>
+        <p>The goal is to retain prompts, model attribution, and the reason for each revision. The diagram shows the intended process; this website does not provide image generation or a revision service.</p>
+        <div class="feature-tag">Concept illustration</div>
       </div>
     </div>
     <div class="feature-visual">
@@ -1686,10 +1705,10 @@ footer {
   <section class="feature skrapr reveal" id="skrapr">
     <div class="feature-text">
       <div class="section-label">06 &nbsp;/&nbsp; SKRAPR</div>
-      <h2>Every kaskade starts with <em>context.</em> SKRAPR is where that context comes from.</h2>
+      <h2>Context you can <em>choose and review.</em></h2>
       <div class="feature-body">
-        <p>You already have the material. It's in your chats, your docs, your Slack history, your Notion pages, your inbox. SKRAPR imports what you choose to share, extracts goals, preferences, projects, and recurring themes, deduplicates the noise, and produces a structured context layer the kaskade can actually reason over.</p>
-        <p>Nothing about SKRAPR is opaque. You see exactly what was imported, exactly what was extracted, and exactly what Kaskade will use. Edit any of it. Delete any of it. Re-import anytime.</p>
+        <p>SKRAPR is a proposed tool for turning selected notes and documents into a brief that can travel between stages. Import connectors and automated extraction are development goals; this site does not connect to or read your accounts.</p>
+        <p>The design requirements are explicit permission, visible source material, editable summaries, and a clear way to remove material. The quantities in the diagram are fictional examples.</p>
         <div class="skrapr-guarantees">
           <span>Permissioned</span>
           <span>Reviewable</span>
@@ -1772,36 +1791,37 @@ footer {
   <section class="reveal evolution-bridge" id="evolution">
     <div class="trap">
       <div>
-        <div class="section-label">07 &nbsp;/&nbsp; The proof</div>
-        <h2>The product is <em>designing itself.</em></h2>
+        <div class="section-label">07 &nbsp;/&nbsp; Development notes</div>
+        <h2>A record you can <em>question.</em></h2>
       </div>
       <div class="trap-body">
-        <p>What you will find at /evolution is not a blog. It is Kaskade operating on its own architecture &mdash; a live cascade of models, each inheriting the previous session&rsquo;s handoff packet, each adding what it sees and naming what it cannot see.</p>
-        <p>Claude analyzed the foundations. Gemini expanded into the Collaborative Manifold. Grok stress-tested against live data. The scar each model names becomes the grain the next one grows around. Every baton pass is a handoff packet. Every handoff packet is what SKRAPR was built to hold.</p>
-        <p>Seven loops in. The product is building itself in public, one loop at a time. This is the proof the method works.</p>
+        <p>Evolution is the public development log: what changed, why it changed, what can be inspected, and what remains unresolved.</p>
+        <p>AI tools have helped draft and critique this project. A person remains responsible for claims, source checking, and publication. A design conversation is useful process material; an evaluation is needed to establish effectiveness.</p>
+        <p>The next useful evidence is a small, reproducible example with its inputs, revisions, costs, and limitations. Critical feedback is welcome.</p>
       </div>
     </div>
     <div class="ev-bridge-cta">
       <a href="/evolution/" class="btn btn-ghost" style="border-color: var(--border-amber); color: var(--amber);">
         Read the Evolution <span class="btn-arrow">&rarr;</span>
       </a>
-      <div class="ev-bridge-stats">7 loops &nbsp;&middot;&nbsp; 3 models &nbsp;&middot;&nbsp; 1 operator &nbsp;&middot;&nbsp; ongoing</div>
+      <div class="ev-bridge-stats">Design notes &nbsp;&middot;&nbsp; Human review &nbsp;&middot;&nbsp; Open questions</div>
     </div>
   </section>
 
   <!-- CTA -->
   <section class="cta reveal" id="access">
     <div class="cta-section-label">
-      <div class="section-label" style="margin-bottom: 0;">08 &nbsp;/&nbsp; Early access</div>
+      <div class="section-label" style="margin-bottom: 0;">08 &nbsp;/&nbsp; Updates &amp; contact</div>
     </div>
-    <h2>Built for the work you <em>won't</em> ship without a second pass.</h2>
-    <p class="cta-sub">Kaskade is in public concept validation. Join the waitlist for progress, previews, and early access as Architekt, SKRAPR, and the orchestration core come online.</p>
+    <h2>Follow the work. <em>Question the method.</em></h2>
+    <p class="cta-sub">Join the waitlist for project updates and future access announcements. This is an early project; signing up does not provide access to a working product today.</p>
     <a href="https://forms.gle/daoYHEXbE6d6dqwPA" target="_blank" rel="noopener" class="btn btn-primary" style="margin: 0 auto;">Join the waitlist &nbsp;<span class="btn-arrow">&rarr;</span></a>
-    <div class="cta-note">Public concept &middot; Serious build &middot; 2026</div>
+    <div class="cta-note">Opens Google Forms &middot; Email address required</div>
 
     <div class="cta-secondary">
-      <div class="label">For partnership or aligned backing</div>
-      <p>If you're building adjacent, investing in AI infrastructure, or want to collaborate on a specific workflow — the inbox is open. Keep it direct and product-focused. <a href="mailto:kaskade.systems@gmail.com">kaskade.systems@gmail.com &rarr;</a> &nbsp;&middot;&nbsp; <a href="https://x.com/gramlincodex">@gramlincodex on X</a></p>
+      <div class="label">Contact &amp; feedback</div>
+      <p>Have a workflow to test, a correction, or a collaboration idea? Email the project with the question, a relevant example, and what you would like to discuss.</p>
+      <div class="contact-links"><a href="mailto:kaskade.systems@gmail.com">kaskade.systems@gmail.com</a><a href="https://x.com/gramlincodex">X · @gramlincodex</a><a href="https://github.com/DrummingHorse/KaskadeSystems">Source on GitHub</a></div>
     </div>
   </section>
 
@@ -1811,23 +1831,11 @@ footer {
   <div class="footer-mark">Kaskade<em>.</em></div>
   <div class="footer-meta">
     <div><a href="#method">Method</a> &nbsp;&middot;&nbsp; <a href="#architekt">Architekt</a> &nbsp;&middot;&nbsp; <a href="#skrapr">SKRAPR</a> &nbsp;&middot;&nbsp; <a href="/evolution/">Evolution</a></div>
-    <div><a href="https://x.com/gramlincodex">X &middot; @gramlincodex</a> &nbsp;&middot;&nbsp; <a href="mailto:kaskade.systems@gmail.com">Contact</a></div>
-    <div style="opacity: 0.5;">&copy; 2026 &middot; Built by operators</div>
+    <div><a href="/evolution/">Development notes</a> &nbsp;&middot;&nbsp; <a href="/privacy/">Site privacy</a> &nbsp;&middot;&nbsp; <a href="#access">Contact</a></div>
+    <div style="opacity: 0.5;">&copy; 2026 &middot; Independent project &middot; AI-assisted development</div>
   </div>
 </footer>
 
-<script>
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
-
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-</script>
-
 </body>
 </html>
+
