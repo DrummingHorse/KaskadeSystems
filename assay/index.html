@@ -1,0 +1,819 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- SOFT LAUNCH: asks search engines not to index this page.
+     Delete the next line once you're cleared to launch publicly. -->
+<meta name="robots" content="noindex, nofollow">
+<title>PROSPEKTOR Assay Office</title>
+<meta name="description" content="Independent checks of AI-made lead lists and research against your own requirements. Free design-partner pilots.">
+<meta name="theme-color" content="#020617">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<!-- Social preview. If the site lives somewhere other than kaskade.systems/assay/, change these two URLs. -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Pay for gold, not pyrite.">
+<meta property="og:description" content="PROSPEKTOR Assay Office: independent checks of AI-made lead lists and research against your requirements. Free design-partner pilots.">
+<meta property="og:url" content="https://kaskade.systems/assay/">
+<meta property="og:image" content="https://kaskade.systems/assay/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Pay for gold, not pyrite. PROSPEKTOR Assay Office.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="fonts/fraunces-normal.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+/* Design plan.
+   Layout: an assay-office ledger. A left-aligned serif column, with two
+   specimens set wide: the touchstone (hero) and the findings report.
+   Gold corner brackets mark specimens and nothing else.
+   Color: stone (Kaskade navy) for the ground, slab for the touchstone,
+   quartz text, ash for quiet text, gold (Kaskade amber) as the one accent,
+   pyrite for failed streaks; paper, ink and seal red on the report.
+   Cascade spectrum, one hue per stage, only in "Where this is going".
+   Type: Fraunces variable (SOFT 100, optical sizing) for display and body;
+   IBM Plex Mono only for machine data: IDs, hashes, field labels. */
+:root {
+  --stone: #020617;
+  --slab: #0b1222;
+  --rule: #1e293b;
+  --rule-2: #334155;
+  --quartz: #f1ead8;
+  --mist: #cbd5e1;
+  --ash: #94a3b8;
+  --gold: #fbbf24;
+  --gold-hi: #fcd34d;
+  --gold-line: rgba(251, 191, 36, 0.45);
+  --pyrite: #47513f;
+  --violet: #a78bfa;
+  --cyan: #22d3ee;
+  --sky: #38bdf8;
+  --fuchsia: #e879f9;
+  --paper: #efe7d4;
+  --ink: #1b1f2a;
+  --ink-2: #3d3a33;
+  --ink-3: #5b5547;
+  --ink-4: #8a8270;
+  --seal: #9f2d20;
+  --bronze: #8a6d3b;
+  --hair: #c9bb9a;
+  --hair-2: #d6cbb0;
+  --serif: "Fraunces", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --gutter: max(20px, 4vw);
+  color-scheme: dark;
+}
+@font-face { font-family: "Fraunces"; src: url("fonts/fraunces-normal.woff2") format("woff2"); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "Fraunces"; src: url("fonts/fraunces-italic.woff2") format("woff2"); font-weight: 100 900; font-style: italic; font-display: swap; }
+@font-face { font-family: "IBM Plex Mono"; src: url("fonts/ibm-plex-mono-400.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "IBM Plex Mono"; src: url("fonts/ibm-plex-mono-500.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: "IBM Plex Mono"; src: url("fonts/ibm-plex-mono-600.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: swap; }
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--stone);
+  color: var(--quartz);
+  font-family: var(--serif);
+  font-optical-sizing: auto;
+  font-variation-settings: "SOFT" 100, "WONK" 0;
+  font-weight: 380;
+  font-size: 18px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+a { color: var(--gold); }
+a:hover { color: #fde68a; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+p { margin: 0; }
+img, svg { max-width: 100%; }
+
+.skip { position: absolute; left: 16px; top: -64px; z-index: 20; padding: 10px 16px; border-radius: 4px; background: var(--gold); color: var(--stone); font-weight: 600; text-decoration: none; }
+.skip:focus { top: 16px; }
+
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: max(var(--gutter), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--gutter), env(safe-area-inset-right, 0px));
+}
+.band { padding-block: clamp(72px, 9vw, 128px); }
+.ruled { border-bottom: 1px solid var(--rule); }
+.mono { font-family: var(--mono); }
+h2 { max-width: 15em; font-size: clamp(34px, 4.4vw, 58px); line-height: 1.05; font-weight: 400; letter-spacing: -0.015em; }
+.lead { margin-top: 20px; max-width: 38em; font-size: clamp(18px, 1.5vw, 20px); line-height: 1.6; color: var(--mist); }
+.tag { display: inline-block; margin-left: 14px; padding: 3px 9px; border: 1px solid var(--rule-2); border-radius: 3px; font: 500 12.5px/1.4 var(--mono); color: var(--ash); vertical-align: middle; letter-spacing: 0; }
+
+/* Header */
+.site-head .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 32px; padding-block: 12px; }
+.brand { display: flex; align-items: center; gap: 12px; min-height: 48px; color: var(--quartz); text-decoration: none; }
+.brand:hover { color: var(--quartz); }
+.brand-word { font-size: 19px; font-weight: 600; letter-spacing: 0.16em; }
+.brand-sub { font-size: 16px; font-style: italic; color: var(--ash); }
+.site-nav { display: flex; flex-wrap: wrap; gap: 0 28px; font-size: 16px; }
+.site-nav a { display: inline-flex; align-items: center; min-height: 44px; color: var(--mist); text-decoration: none; }
+.site-nav a:hover { color: var(--quartz); }
+.site-nav a.nav-cta { color: var(--gold); font-weight: 500; }
+
+/* Buttons and links */
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 24px; border: 0; border-radius: 4px; background: var(--gold); color: var(--stone); font-family: inherit; font-size: 17px; font-weight: 600; text-decoration: none; cursor: pointer; }
+.btn:hover { background: var(--gold-hi); color: var(--stone); }
+.link-quiet { display: inline-flex; align-items: center; min-height: 44px; color: var(--quartz); font-size: 17px; text-decoration: underline; text-decoration-color: var(--gold-line); text-decoration-thickness: 1px; text-underline-offset: 6px; }
+.link-quiet:hover { color: var(--gold); }
+
+/* Hero */
+.hero { position: relative; overflow: hidden; }
+.rays { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.hero .wrap { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 56px 48px; padding-block: clamp(56px, 8vw, 112px) clamp(64px, 8vw, 112px); }
+.hero-copy { flex: 1 1 540px; min-width: 0; }
+h1 { font-size: clamp(48px, 6.6vw, 92px); line-height: 0.98; font-weight: 420; letter-spacing: -0.02em; }
+.hero-sub { margin-top: 28px; max-width: 31em; font-size: clamp(18px, 1.55vw, 21px); line-height: 1.55; color: var(--mist); }
+.actions { margin-top: 36px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; }
+
+/* Touchstone */
+.stone-fig { flex: 1 1 400px; min-width: 0; margin: 0; }
+.slab { position: relative; padding: 26px 24px 22px; border: 1px solid var(--rule); border-radius: 4px; background: var(--slab); }
+.slab-inner { position: relative; }
+.grain { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.6; }
+.defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+.bracket { position: absolute; width: 14px; height: 14px; border: 0 solid var(--gold); pointer-events: none; }
+.bracket.tl { top: -1px; left: -1px; border-top-width: 2px; border-left-width: 2px; }
+.bracket.tr { top: -1px; right: -1px; border-top-width: 2px; border-right-width: 2px; }
+.bracket.bl { bottom: -1px; left: -1px; border-bottom-width: 2px; border-left-width: 2px; }
+.bracket.br { bottom: -1px; right: -1px; border-bottom-width: 2px; border-right-width: 2px; }
+.bracket.lg { width: 18px; height: 18px; }
+.bracket.lg.tl { top: -10px; left: -10px; }
+.bracket.lg.tr { top: -10px; right: -10px; }
+.bracket.lg.bl { bottom: -10px; left: -10px; }
+.bracket.lg.br { bottom: -10px; right: -10px; }
+.slab-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; font: 12.5px/1.5 var(--mono); color: var(--ash); }
+.slab-title { margin: 10px 0 18px; font-size: 17px; line-height: 1.45; }
+.streaks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+.streak { display: flex; flex-direction: column; gap: 4px; }
+.streak-label { display: flex; flex-direction: column; gap: 1px; font: 12.5px/1.45 var(--mono); }
+.firm { color: var(--quartz); }
+.res-gold { color: var(--gold); }
+.res-pyrite { color: var(--ash); }
+.streak-svg { display: block; width: 100%; height: 22px; overflow: visible; }
+.streak-path { stroke-dasharray: 420; stroke-dashoffset: 0; }
+.slab-foot { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 20px; }
+.verdict { flex: 1 1 220px; min-width: 0; font-size: 16px; line-height: 1.45; }
+.btn-ghost { min-height: 44px; padding: 0 16px; border: 1px solid var(--gold-line); border-radius: 4px; background: transparent; color: var(--quartz); font: 13px var(--mono); cursor: pointer; }
+.btn-ghost:hover { border-color: var(--gold); }
+.stone-fig figcaption { margin-top: 14px; font-size: 15px; line-height: 1.5; font-style: italic; color: var(--ash); }
+.slab.run .streak-path { animation: pk-draw 640ms cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: calc(150ms + var(--i) * 280ms); }
+.slab.run .res { animation: pk-fade 360ms ease-out both; animation-delay: calc(560ms + var(--i) * 280ms); }
+.slab.run .verdict { animation: pk-fade 420ms ease-out 1900ms both; }
+@keyframes pk-draw { from { stroke-dashoffset: 420; } to { stroke-dashoffset: 0; } }
+@keyframes pk-fade { from { opacity: 0; } to { opacity: 1; } }
+
+/* Columns and figures */
+.cols { margin-top: 52px; display: flex; flex-wrap: wrap; gap: 32px; }
+.col { flex: 1 1 280px; min-width: 0; padding-top: 20px; border-top: 1px solid var(--rule-2); }
+.col.is-gold { padding-top: 19px; border-top: 2px solid var(--gold); }
+.col-tag { margin-bottom: 10px; font: 13px/1.4 var(--mono); color: var(--ash); }
+.col.is-gold .col-tag { color: var(--gold); }
+.col-text { max-width: 18em; font-size: 22px; line-height: 1.35; }
+.evidence-h { margin-top: 88px; font-size: 22px; line-height: 1.3; font-weight: 400; font-style: italic; color: var(--mist); }
+.figs { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 44px 32px; }
+.fig { flex: 1 1 280px; min-width: 0; }
+.fig-n { font-size: clamp(42px, 4.6vw, 60px); line-height: 1; font-weight: 340; letter-spacing: -0.02em; color: var(--gold); font-variant-numeric: lining-nums; }
+.fig-t { margin-top: 16px; max-width: 24em; font-size: 17px; line-height: 1.55; color: var(--mist); }
+.fig-s { margin-top: 10px; font: 12.5px/1.5 var(--mono); }
+.fig-s a { color: var(--ash); text-underline-offset: 3px; }
+
+/* Steps */
+.steps { list-style: none; margin: 56px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 40px 28px; }
+.step { flex: 1 1 220px; min-width: 0; padding-top: 18px; border-top: 2px solid var(--c, var(--gold)); }
+.step-n { font-size: 44px; line-height: 1; font-weight: 300; color: var(--c, var(--gold)); }
+.step h3 { margin: 14px 0 8px; font-size: 21px; line-height: 1.25; font-weight: 500; }
+.step p:last-child { font-size: 16.5px; line-height: 1.55; color: var(--mist); }
+.steps.five .step { flex-basis: 180px; }
+.fine { margin-top: 48px; max-width: 44em; font-size: 16px; line-height: 1.6; color: var(--ash); }
+
+/* Report specimen */
+.report-wrap { position: relative; margin-top: 56px; }
+.report { position: relative; overflow: hidden; padding: clamp(22px, 3.4vw, 40px); border-radius: 2px; background: var(--paper); color: var(--ink); line-height: 1.5; }
+.guilloche { position: absolute; top: 10px; left: 10px; width: calc(100% - 20px); height: calc(100% - 20px); overflow: visible; pointer-events: none; }
+.report-frame { position: relative; padding: clamp(20px, 3.4vw, 44px); border: 3px double var(--bronze); }
+.overprint { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-14deg); font-size: clamp(72px, 13vw, 176px); font-weight: 700; letter-spacing: 0.18em; line-height: 1; color: var(--seal); opacity: 0.1; white-space: nowrap; pointer-events: none; user-select: none; }
+.report-head { position: relative; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 16px 32px; }
+.office { font-size: 13px; line-height: 1.4; font-weight: 600; letter-spacing: 0.16em; color: var(--ink-3); }
+.report-title { margin-top: 8px; font-size: clamp(32px, 4.2vw, 50px); line-height: 1.02; font-weight: 400; font-style: italic; letter-spacing: -0.01em; }
+.report-meta { font: 13px/1.7 var(--mono); color: var(--ink-2); }
+.report-meta .warn { font-weight: 600; color: var(--seal); }
+.marks { position: relative; margin-top: 32px; padding: 22px 0; border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair); display: flex; flex-wrap: wrap; gap: 22px 28px; }
+.mark { flex: 1 1 120px; min-width: 0; }
+.mark-name { margin-top: 10px; font-size: 15px; line-height: 1.3; font-weight: 600; }
+.mark-note { margin-top: 2px; font-size: 14.5px; line-height: 1.4; color: var(--ink-3); }
+.report-body { position: relative; margin-top: 28px; display: flex; flex-wrap: wrap; gap: 28px 40px; }
+.facts { flex: 1 1 250px; min-width: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+.facts dt { font: 12px/1.5 var(--mono); color: var(--ink-3); }
+.facts dd { margin: 2px 0 0; font-size: 16px; line-height: 1.4; }
+.results { flex: 2 1 420px; min-width: 0; }
+.table-box { overflow-x: auto; }
+table { width: 100%; min-width: 440px; border-collapse: collapse; font-size: 15px; line-height: 1.35; }
+caption { padding-bottom: 10px; text-align: left; font: 12px var(--mono); color: var(--ink-3); }
+th, td { padding: 9px 6px; border-bottom: 1px solid var(--hair-2); text-align: center; }
+thead th { padding-top: 8px; padding-bottom: 8px; border-bottom: 1px solid var(--ink); font-weight: 600; }
+th:first-child { padding-left: 0; padding-right: 10px; text-align: left; }
+tbody th { font-weight: 400; }
+td.skip-cell { color: var(--ink-4); }
+.icon { vertical-align: middle; }
+.table-note { margin-top: 12px; font-size: 14px; line-height: 1.5; color: var(--ink-3); }
+.report-foot { position: relative; margin-top: 30px; padding-top: 22px; border-top: 3px double var(--bronze); display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px 40px; }
+.report-verdict { flex: 1 1 320px; min-width: 0; }
+.report-verdict .label { font: 12px var(--mono); color: var(--ink-3); }
+.report-verdict .big { margin-top: 4px; font-size: clamp(30px, 3.4vw, 40px); line-height: 1.05; font-weight: 600; color: var(--seal); }
+.report-verdict .why { margin-top: 8px; max-width: 32em; font-size: 16px; line-height: 1.5; }
+.report-sig { min-width: 0; font: 12.5px/1.75 var(--mono); color: var(--ink-2); overflow-wrap: anywhere; }
+.caption-dark { margin-top: 18px; font-size: 15px; line-height: 1.5; font-style: italic; color: var(--ash); }
+
+/* Scope */
+.scope { margin-top: 88px; display: flex; flex-wrap: wrap; gap: 56px 64px; }
+.scope > div { flex: 1 1 380px; min-width: 0; }
+.scope h3 { margin-bottom: 18px; font-size: 24px; line-height: 1.3; font-weight: 500; }
+.ledger { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--rule); }
+.ledger li { padding: 14px 0; border-top: 1px solid var(--rule); }
+.ledger .term { font-size: 18px; font-weight: 560; }
+.ledger .def { margin-top: 2px; font-size: 16.5px; line-height: 1.55; color: var(--mist); }
+.never { padding-top: 14px; border-top: 1px solid var(--rule); font-size: clamp(30px, 3.2vw, 42px); line-height: 1.25; font-weight: 340; font-style: italic; color: var(--ash); }
+.never-note { margin-top: 22px; max-width: 30em; font-size: 17px; line-height: 1.6; color: var(--mist); }
+
+/* Grades */
+.grades { margin-top: 72px; display: flex; flex-wrap: wrap; gap: 48px 40px; }
+.grade { flex: 1 1 290px; min-width: 0; padding-top: 24px; border-top: 1px solid var(--rule-2); }
+.grade h3 { margin: 18px 0 2px; font-size: 26px; line-height: 1.2; font-weight: 500; }
+.grade .alias { font-size: 17px; font-style: italic; color: var(--ash); }
+.grade .what { margin-top: 16px; font-size: 17px; line-height: 1.55; color: var(--mist); }
+.status { margin-top: 18px; display: flex; align-items: baseline; gap: 10px; font: 13px/1.5 var(--mono); color: var(--ash); }
+.status::before { content: ""; flex: 0 0 auto; width: 8px; height: 8px; border-radius: 50%; background: var(--dot, var(--ash)); transform: translateY(-1px); }
+.status.live { --dot: var(--gold); color: var(--quartz); }
+.status.hand { --dot: var(--sky); color: var(--quartz); }
+
+/* Principles and rails */
+.split { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 56px 64px; }
+.split > .main { flex: 1 1 520px; min-width: 0; }
+.principles { list-style: none; margin: 40px 0 0; padding: 0; border-bottom: 1px solid var(--rule); }
+.principles li { padding: 18px 0; border-top: 1px solid var(--rule); }
+.principles .term { font-size: 20px; line-height: 1.35; font-weight: 520; }
+.principles .def { margin-top: 4px; font-size: 16.5px; line-height: 1.55; color: var(--mist); }
+.rails { flex: 1 1 360px; min-width: 0; padding: 28px 26px; border: 1px solid var(--rule); border-radius: 4px; background: var(--slab); }
+.rails h3 { font-size: 22px; line-height: 1.3; font-weight: 500; }
+.chips { list-style: none; margin: 18px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.chips li { padding: 5px 10px; border: 1px solid var(--rule-2); border-radius: 3px; font: 13px/1.4 var(--mono); color: #e2e8f0; }
+.rails dl { margin: 24px 0 0; display: flex; flex-direction: column; gap: 16px; }
+.rails dt { font: 13px/1.5 var(--mono); color: var(--gold); }
+.rails dd { margin: 4px 0 0; font-size: 16px; line-height: 1.5; color: var(--mist); }
+.rails .motto { margin-top: 26px; padding-top: 20px; border-top: 1px solid var(--rule); font-size: 22px; line-height: 1.35; font-style: italic; }
+
+/* Pilot form */
+.pilot-grid { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 40px 64px; }
+.pilot-grid > .copy { flex: 1 1 380px; min-width: 0; }
+.pilot-grid h2 { font-size: clamp(40px, 5.2vw, 72px); line-height: 1; letter-spacing: -0.02em; }
+.pilot-grid .copy p { margin-top: 20px; max-width: 30em; font-size: 19px; line-height: 1.55; color: var(--mist); }
+form { flex: 1 1 460px; min-width: 0; display: flex; flex-direction: column; gap: 18px; }
+.field { display: flex; flex-direction: column; gap: 8px; }
+.field label { font: 13px/1.4 var(--mono); color: var(--ash); }
+select, textarea { width: 100%; min-height: 48px; padding: 10px 14px; border: 1px solid var(--rule-2); border-radius: 4px; background: var(--slab); color: var(--quartz); font-family: inherit; font-size: 17px; line-height: 1.4; }
+textarea { min-height: 112px; resize: vertical; }
+select:focus, textarea:focus { border-color: var(--gold); }
+.form-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
+.direct { font-size: 16px; color: var(--mist); }
+.direct a { overflow-wrap: anywhere; }
+.setup-note { padding: 12px 14px; border: 1px solid var(--seal); border-radius: 4px; font: 13px/1.5 var(--mono); color: #fca5a5; }
+.stage { margin-top: 36px; font: 13px/1.6 var(--mono); color: var(--ash); }
+
+/* Integration: status and collaboration additions; original landing copy retained. */
+.pilot-status { background: rgba(251, 191, 36, 0.045); }
+.pilot-status .wrap { padding-block: 24px; }
+.pilot-status p { max-width: 78ch; color: var(--mist); font-size: 16px; line-height: 1.6; }
+.pilot-status p + p { margin-top: 8px; }
+.pilot-status .label { color: var(--gold); font-size: 12px; }
+.collaboration-copy { max-width: 47em; }
+.collaboration-copy p + p { margin-top: 20px; }
+.collaboration-copy .btn { margin-top: 28px; }
+
+/* Footer */
+.site-foot .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 32px 48px; padding-block: 48px 56px; }
+.site-foot .who { flex: 1 1 280px; min-width: 0; }
+.site-foot .who p:first-child { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.site-foot .who p + p { margin-top: 10px; font-size: 16px; line-height: 1.5; color: var(--ash); }
+.site-foot .srcs { flex: 2 1 420px; min-width: 0; }
+.site-foot .srcs > p { font: 12.5px/1.5 var(--mono); color: var(--ash); }
+.site-foot ul { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; font-size: 15px; line-height: 1.45; }
+.site-foot ul a { color: var(--mist); text-underline-offset: 3px; }
+
+@media (max-width: 520px) {
+  body { font-size: 17px; }
+  .rays { opacity: 0.55; }
+  .slab { padding: 22px 16px 18px; }
+  .tag { margin-left: 0; margin-top: 12px; }
+  .rails { padding: 22px 18px; }
+  .report { padding: 14px; }
+  .guilloche { top: 5px; left: 5px; width: calc(100% - 10px); height: calc(100% - 10px); }
+  .report-frame { padding: 18px 14px; }
+  .marks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 16px; }
+  table { min-width: 0; font-size: 13.5px; }
+  th, td { padding: 8px 2px; }
+  thead th { font-size: 11.5px; letter-spacing: -0.01em; }
+  th:first-child { padding-right: 6px; }
+  .icon { width: 14px; height: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .slab.run .streak-path, .slab.run .res, .slab.run .verdict { animation: none; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-head ruled">
+<div class="wrap">
+<a class="brand" href="#top" aria-label="PROSPEKTOR Assay Office, back to top">
+<svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><rect x="2" y="3" width="20" height="18" rx="2.5" fill="#0b1222" stroke="#334155" stroke-width="1"/><path d="M6 16 C 10 13, 14 11, 18 8" fill="none" stroke="#fbbf24" stroke-width="3" stroke-linecap="round"/></svg>
+<span class="brand-word">PROSPEKTOR</span>
+<span class="brand-sub">Assay Office</span>
+</a>
+<nav class="site-nav" aria-label="Page sections">
+<a href="/">Kaskade home</a>
+<a href="#pilots">How a pilot works</a>
+<a href="#report">Findings report</a>
+<a href="#direction">Where this is going</a>
+<a href="#collaborate">Collaborate</a>
+<a class="nav-cta" href="#request">Request a pilot</a>
+</nav>
+</div>
+</header>
+
+<main id="main">
+
+<aside class="pilot-status ruled" aria-label="Current pilot status">
+<div class="wrap">
+<p class="label">Pilot stage · Seeking collaborators</p>
+<p><strong>Validation so far: one 50-case synthetic benchmark.</strong> Pilots are tool-assisted and human-reviewed. Signed certificates, live umpire assays, and ERC-8183 or ERC-8004 integrations are not available. Protocol and settlement sections below describe proposed designs.</p>
+<p><a href="#collaborate">Help test the approach on real work &rarr;</a></p>
+</div>
+</aside>
+
+<section id="top" class="hero ruled" aria-labelledby="hero-h">
+<svg class="rays" aria-hidden="true" viewBox="0 0 1440 900" preserveAspectRatio="xMaxYMin slice">
+<g fill="none" stroke-width="1">
+<line x1="1620" y1="-180" x2="560" y2="1000" stroke="#a78bfa" stroke-opacity="0.22"/>
+<line x1="1620" y1="-180" x2="650" y2="1000" stroke="#22d3ee" stroke-opacity="0.2"/>
+<line x1="1620" y1="-180" x2="740" y2="1000" stroke="#38bdf8" stroke-opacity="0.2"/>
+<line x1="1620" y1="-180" x2="830" y2="1000" stroke="#e879f9" stroke-opacity="0.2"/>
+<line x1="1620" y1="-180" x2="920" y2="1000" stroke="#fbbf24" stroke-opacity="0.32"/>
+</g>
+</svg>
+<div class="wrap">
+<div class="hero-copy">
+<h1 id="hero-h">Pay for gold, not pyrite.</h1>
+<p class="hero-sub">AI can build a lead list or a research report in minutes. The Assay Office checks it against your requirements and its own sources, then hands you the evidence before you accept the work.</p>
+<div class="actions">
+<a class="btn" href="#request">Request a free pilot</a>
+<a class="link-quiet" href="#report">See a specimen report</a>
+</div>
+</div>
+
+<figure class="stone-fig">
+<div class="slab" id="slab">
+<svg class="defs" aria-hidden="true" width="0" height="0">
+<defs>
+<filter id="pk-rough" x="-4%" y="-60%" width="108%" height="220%">
+<feTurbulence type="fractalNoise" baseFrequency="0.8 0.3" numOctaves="2" seed="11" result="pknoise"/>
+<feDisplacementMap in="SourceGraphic" in2="pknoise" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+<linearGradient id="pk-gold" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0" stop-color="#fbbf24" stop-opacity="0.5"/>
+<stop offset="0.16" stop-color="#fbbf24" stop-opacity="1"/>
+<stop offset="0.82" stop-color="#fbbf24" stop-opacity="0.95"/>
+<stop offset="1" stop-color="#fbbf24" stop-opacity="0.45"/>
+</linearGradient>
+<linearGradient id="pk-pyr" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0" stop-color="#47513f" stop-opacity="0.55"/>
+<stop offset="0.18" stop-color="#4b5543" stop-opacity="1"/>
+<stop offset="0.85" stop-color="#47513f" stop-opacity="0.95"/>
+<stop offset="1" stop-color="#47513f" stop-opacity="0.5"/>
+</linearGradient>
+<filter id="pk-grain"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" seed="4" stitchTiles="stitch"/><feColorMatrix type="matrix" values="0 0 0 0 0.62  0 0 0 0 0.68  0 0 0 0 0.78  0 0 0 0.16 0"/></filter>
+</defs>
+</svg>
+<svg class="grain" aria-hidden="true"><rect width="100%" height="100%" filter="url(#pk-grain)"/></svg>
+<span class="bracket tl" aria-hidden="true"></span><span class="bracket tr" aria-hidden="true"></span><span class="bracket bl" aria-hidden="true"></span><span class="bracket br" aria-hidden="true"></span>
+
+<div class="slab-inner">
+<div class="slab-meta"><span>Streak test, job 8183-0417</span><span>Specimen with fictional firms</span></div>
+<p class="slab-title">Five qualified leads: US logistics firms with 50 to 500 staff</p>
+<ul class="streaks">
+<li class="streak" style="--i:0">
+<div class="streak-label"><span class="firm">Quillfeather Freight Co.</span><span class="res res-gold">gold: registered, active, fits</span></div>
+<svg class="streak-svg" viewBox="0 0 400 24" preserveAspectRatio="none" aria-hidden="true"><path class="streak-path" d="M12 12 C 80 9, 150 14, 230 11 S 330 12, 360 10" fill="none" stroke="url(#pk-gold)" stroke-width="11" stroke-linecap="round" filter="url(#pk-rough)"/></svg>
+</li>
+<li class="streak" style="--i:1">
+<div class="streak-label"><span class="firm">Ostrowe &amp; Pike Logistics</span><span class="res res-pyrite">pyrite: no registration found</span></div>
+<svg class="streak-svg" viewBox="0 0 400 24" preserveAspectRatio="none" aria-hidden="true"><path class="streak-path" d="M12 11 C 70 13, 140 9, 200 12 S 260 11, 286 12" fill="none" stroke="url(#pk-pyr)" stroke-width="11" stroke-linecap="round" filter="url(#pk-rough)"/></svg>
+</li>
+<li class="streak" style="--i:2">
+<div class="streak-label"><span class="firm">Tamberlane Haulage</span><span class="res res-gold">gold: registered, active, fits</span></div>
+<svg class="streak-svg" viewBox="0 0 400 24" preserveAspectRatio="none" aria-hidden="true"><path class="streak-path" d="M12 12 C 90 10, 170 13, 250 10 S 350 12, 388 11" fill="none" stroke="url(#pk-gold)" stroke-width="11" stroke-linecap="round" filter="url(#pk-rough)"/></svg>
+</li>
+<li class="streak" style="--i:3">
+<div class="streak-label"><span class="firm">Marrowbone Dray Co.</span><span class="res res-pyrite">pyrite: dissolved in 2025</span></div>
+<svg class="streak-svg" viewBox="0 0 400 24" preserveAspectRatio="none" aria-hidden="true"><path class="streak-path" d="M12 12 C 60 10, 120 14, 180 11 S 230 12, 248 11" fill="none" stroke="url(#pk-pyr)" stroke-width="11" stroke-linecap="round" filter="url(#pk-rough)"/></svg>
+</li>
+<li class="streak" style="--i:4">
+<div class="streak-label"><span class="firm">Vellichor Cargo</span><span class="res res-gold">gold: registered, active, fits</span></div>
+<svg class="streak-svg" viewBox="0 0 400 24" preserveAspectRatio="none" aria-hidden="true"><path class="streak-path" d="M12 11 C 85 13, 165 9, 245 12 S 320 11, 344 12" fill="none" stroke="url(#pk-gold)" stroke-width="11" stroke-linecap="round" filter="url(#pk-rough)"/></svg>
+</li>
+</ul>
+<div class="slab-foot">
+<p class="verdict">Three gold, two pyrite. The spec needs all five to hold up, so this list fails.</p>
+<button type="button" class="btn-ghost" id="rerun">Run the streak test again</button>
+</div>
+</div>
+</div>
+<figcaption>On a touchstone, gold leaves a gold streak and pyrite leaves a greenish-black one. The streak test does the same for machine work.</figcaption>
+</figure>
+</div>
+</section>
+
+<section class="ruled" aria-labelledby="gap-h">
+<div class="wrap band">
+<h2 id="gap-h">AI work looks finished long before anyone checks it.</h2>
+<div class="cols">
+<div class="col">
+<p class="col-tag">The spreadsheet</p>
+<p class="col-text">A tidy list proves the format, not the facts.</p>
+</div>
+<div class="col">
+<p class="col-tag">The citation</p>
+<p class="col-text">A footnote proves nothing until someone opens the source.</p>
+</div>
+<div class="col is-gold">
+<p class="col-tag">The assay</p>
+<p class="col-text">The Assay Office opens every one and checks it against what you asked for.</p>
+</div>
+</div>
+
+<h3 class="evidence-h">The evidence so far</h3>
+<div class="figs">
+<div class="fig">
+<p class="fig-n">A$440,000</p>
+<p class="fig-t">The Australian government report Deloitte agreed to partly refund after it was found to cite papers that don't exist.</p>
+<p class="fig-s"><a href="https://www.ctvnews.ca/business/article/deloitte-to-partially-refund-australian-government-for-report-with-apparent-ai-generated-errors/">AP, October 2025</a></p>
+</div>
+<div class="fig">
+<p class="fig-n">1,380</p>
+<p class="fig-t">Real citations that one frontier model flagged as fake, in a test of 2,889. Asking a single model to check the work is not enough.</p>
+<p class="fig-s"><a href="https://the-decoder.com/hallucinated-references-are-passing-peer-review-at-top-ai-conferences-and-a-new-open-tool-wants-to-fix-that/">The Decoder, March 2026</a></p>
+</div>
+<div class="fig">
+<p class="fig-n">0.6–7.5%</p>
+<p class="fig-t">The share of screened x402 commerce that looks genuinely agent-driven. Even the agent economy's own numbers need an assay.</p>
+<p class="fig-s"><a href="https://www.trmlabs.com/trm-tech-blog/whos-actually-paying-measuring-ai-agent-payments-onchain">TRM Labs, September 2026</a></p>
+</div>
+</div>
+</div>
+</section>
+
+<section id="pilots" class="ruled" aria-labelledby="pilots-h">
+<div class="wrap band">
+<h2 id="pilots-h">How a pilot works</h2>
+<p class="lead">Five design-partner pilots are open, and they're free. You send one real deliverable. You get back findings with the evidence, and the checks get tested against real work instead of synthetic cases.</p>
+<ol class="steps">
+<li class="step">
+<p class="step-n" aria-hidden="true">1</p>
+<h3>Send one deliverable</h3>
+<p>A lead list of up to 25 entries, or a sourced report with up to 15 cited claims, plus the requirements it was meant to meet.</p>
+</li>
+<li class="step">
+<p class="step-n" aria-hidden="true">2</p>
+<h3>Every line gets checked</h3>
+<p>Each entry or claim is tested against your requirements and against its own sources. The checks are tool-assisted and reviewed by a person.</p>
+</li>
+<li class="step">
+<p class="step-n" aria-hidden="true">3</p>
+<h3>Findings in three business days</h3>
+<p>What holds up, what doesn't, the evidence for each, and anything that couldn't be verified, stated plainly.</p>
+</li>
+<li class="step">
+<p class="step-n" aria-hidden="true">4</p>
+<h3>Tell us what it was worth</h3>
+<p>Twenty minutes of honest feedback, and permission to use anonymized results. That's the whole price of a pilot.</p>
+</li>
+</ol>
+<p class="fine">Findings are evidence, not a guarantee. The office doesn't judge whether a lead will buy or a report will be useful. It checks what can be checked and says what couldn't be. Your files are deleted after the pilot unless you ask us to keep them.</p>
+</div>
+</section>
+
+<section id="report" class="ruled" aria-labelledby="report-h">
+<div class="wrap band">
+<h2 id="report-h">What a findings report looks like</h2>
+<p class="lead">Every pilot ends in a findings report. It borrows the parts of a hallmark, which English silver has carried since 1300: who made the work, what standard it was held to, how it scored, who checked it, and when.</p>
+
+<div class="report-wrap">
+<span class="bracket lg tl" aria-hidden="true"></span><span class="bracket lg tr" aria-hidden="true"></span><span class="bracket lg bl" aria-hidden="true"></span><span class="bracket lg br" aria-hidden="true"></span>
+<article class="report" aria-label="Specimen findings report">
+<svg class="guilloche" aria-hidden="true">
+<defs>
+<pattern id="pk-guil" width="22" height="12" patternUnits="userSpaceOnUse">
+<path d="M0 6 C 5.5 0, 16.5 12, 22 6" fill="none" stroke="#8a6d3b" stroke-opacity="0.6" stroke-width="0.8"/>
+<path d="M0 6 C 5.5 12, 16.5 0, 22 6" fill="none" stroke="#8a6d3b" stroke-opacity="0.6" stroke-width="0.8"/>
+</pattern>
+</defs>
+<rect x="0" y="0" width="100%" height="100%" fill="none" stroke="url(#pk-guil)" stroke-width="12"/>
+</svg>
+<div class="report-frame">
+<p class="overprint" aria-hidden="true">SPECIMEN</p>
+<div class="report-head">
+<div>
+<p class="office">PROSPEKTOR ASSAY OFFICE</p>
+<h3 class="report-title">Assay Findings Report</h3>
+</div>
+<div class="report-meta">
+<p>No. PK-0417</p>
+<p>29 October 2026</p>
+<p class="warn">Specimen, not a live result</p>
+</div>
+</div>
+
+<div class="marks">
+<div class="mark">
+<svg viewBox="0 0 72 48" width="72" height="48" aria-hidden="true"><path d="M6 4 H66 V24 C66 36 50 43 36 46 C22 43 6 36 6 24 Z" fill="none" stroke="#1b1f2a" stroke-width="1.6"/><text x="36" y="28" text-anchor="middle" font-family="IBM Plex Mono, ui-monospace, Menlo, monospace" font-size="12" font-weight="600" fill="#1b1f2a">41207</text></svg>
+<p class="mark-name">Maker's mark</p>
+<p class="mark-note">The vendor or tool that made the list</p>
+</div>
+<div class="mark">
+<svg viewBox="0 0 72 48" width="72" height="48" aria-hidden="true"><rect x="4" y="7" width="64" height="34" rx="10" fill="none" stroke="#1b1f2a" stroke-width="1.6"/><text x="36" y="28" text-anchor="middle" font-family="IBM Plex Mono, ui-monospace, Menlo, monospace" font-size="12" font-weight="600" fill="#1b1f2a">AS 0.1</text></svg>
+<p class="mark-name">Standard</p>
+<p class="mark-note">Your criteria, as five checks</p>
+</div>
+<div class="mark">
+<svg viewBox="0 0 72 48" width="72" height="48" aria-hidden="true"><ellipse cx="36" cy="24" rx="32" ry="19" fill="none" stroke="#1b1f2a" stroke-width="1.6"/><text x="36" y="30" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="18" font-weight="600" fill="#1b1f2a">600</text></svg>
+<p class="mark-name">Fineness</p>
+<p class="mark-note">600 of 1000</p>
+</div>
+<div class="mark">
+<svg viewBox="0 0 72 48" width="72" height="48" aria-hidden="true"><rect x="14" y="2" width="44" height="44" rx="3" fill="none" stroke="#1b1f2a" stroke-width="1.6"/><rect x="21" y="11" width="30" height="26" rx="2" fill="#1b1f2a"/><path d="M26 30 C 32 27, 38 23, 46 18" fill="none" stroke="#fbbf24" stroke-width="3.5" stroke-linecap="round"/></svg>
+<p class="mark-name">Office mark</p>
+<p class="mark-note">PROSPEKTOR, human-reviewed</p>
+</div>
+<div class="mark">
+<svg viewBox="0 0 72 48" width="72" height="48" aria-hidden="true"><path d="M14 4 H58 L68 14 V34 L58 44 H14 L4 34 V14 Z" fill="none" stroke="#1b1f2a" stroke-width="1.6"/><text x="36" y="30" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="18" font-weight="600" fill="#1b1f2a">26</text></svg>
+<p class="mark-name">Date letter</p>
+<p class="mark-note">2026, evidence hashed</p>
+</div>
+</div>
+
+<div class="report-body">
+<dl class="facts">
+<div><dt>Job</dt><dd>Five qualified leads: US logistics firms, 50 to 500 staff</dd></div>
+<div><dt>Requested by</dt><dd>A B2B sales team buying the list</dd></div>
+<div><dt>Made by</dt><dd>An AI lead-list vendor</dd></div>
+<div><dt>Criteria</dt><dd>Exists, active, fits the profile, sources under 180 days old, no duplicates</dd></div>
+<div><dt>Checked by</dt><dd>Streak test, then every source read by a person</dd></div>
+</dl>
+<div class="results">
+<div class="table-box">
+<table>
+<caption>Results by lead</caption>
+<thead>
+<tr><th scope="col">Firm</th><th scope="col">Exists</th><th scope="col">Active</th><th scope="col">Fits</th><th scope="col">Fresh</th><th scope="col">Unique</th></tr>
+</thead>
+<tbody>
+<tr><th scope="row">Quillfeather Freight Co.</th><td><svg class="icon" viewBox="0 0 16 16" width="16" height="16" role="img" aria-label="Pass"><path d="M3 8.5 L6.5 12 L13 4.5" fill="none" stroke="#1b1f2a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></td><td><svg class="icon" viewBox="0 0 16 16" width="16" height="16" role="img" aria-label="Pass"><path d="M3 8.5 L6.5 12 L13 4.5" fill="none" stroke="#1b1f2a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></td><td><svg class="icon" viewBox="0 0 16 16" width="16" height="16" role="img" aria-label="Pass"><path d="M3 8.5 L6.5 12 L13 4.5" fill="none" stroke="#1b1f2a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></td><td><svg class="icon" viewBox="0 0 16 16" width="16" height="16" role="img" aria-label="Pass"><path d="M3 8.5 L6.5 12 L13 4.5" fill="none" stroke="#1b1f2a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></td><td><svg class="icon" viewBox="0 0 16 16" width="16" height="16" role="img" aria-label="Pass"><path d="M3 8.5 L6.5 12 L13 4.5" fill="none" stroke="#1b1f2a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></td></tr>
+<tr><th scope="row">Ostrowe &amp; Pike Logistics</th><td><svg class="icon" viewBox="0 0 16 16" width="16" height="16" role="img" aria-label="Fail"><path d="M4 4 L12 12 M12 4 L4 12" fill="none" stroke="#9f2d20" stroke-width="1.9" stroke-linecap="round"/></svg></td><td class="skip-cell">—</td><td class="skip-cell">—</td><td class="skip-cell">—</td><td class="skip-cell">—</td></tr>
+<tr><th scope="row">Tamberlane Haulage</th><td><svg class="icon" viewBox="0 0 16 16" width="16" height="16" role="img" aria-label="Pass"><path d="M3 8.5 L6.5 12 L13 4.5" fill="none" stroke="#1b1f2a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></td><td><svg class="icon" viewBox="0 0 16 16" width="16" height="16" role="img" aria-label="Pass"><path d="M3 8.5 L6.5 12 L13 4.5" fill="none" stroke="#1b1f2a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></td><td><svg class="icon" viewBox="0 0 16 16" width="16" height="16" role="img" aria-label="Pass"><path d="M3 8.5 L6.5 12 L13 4.5" fill="none" stroke="#1b1f2a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></td><td><svg class="icon" viewBox="0 0 16 16" width="16" height="16" role="img" aria-label="Pass"><path d="M3 8.5 L6.5 12 L13 4.5" fill="none" stroke="#1b1f2a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></td><td><svg class="icon" viewBox="0 0 16 16" width="16" height="16" role="img" aria-label="Pass"><path d="M3 8.5 L6.5 12 L13 4.5" fill="none" stroke="#1b1f2a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></td></tr>
+<tr><th scope="row">Marrowbone Dray Co.</th><td><svg class="icon" viewBox="0 0 16 16" width="16" height="16" role="img" aria-label="Pass"><path d="M3 8.5 L6.5 12 L13 4.5" fill="none" stroke="#1b1f2a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></td><td><svg class="icon" viewBox="0 0 16 16" width="16" height="16" role="img" aria-label="Fail"><path d="M4 4 L12 12 M12 4 L4 12" fill="none" stroke="#9f2d20" stroke-width="1.9" stroke-linecap="round"/></svg></td><td class="skip-cell">—</td><td class="skip-cell">—</td><td class="skip-cell">—</td></tr>
+<tr><th scope="row">Vellichor Cargo</th><td><svg class="icon" viewBox="0 0 16 16" width="16" height="16" role="img" aria-label="Pass"><path d="M3 8.5 L6.5 12 L13 4.5" fill="none" stroke="#1b1f2a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></td><td><svg class="icon" viewBox="0 0 16 16" width="16" height="16" role="img" aria-label="Pass"><path d="M3 8.5 L6.5 12 L13 4.5" fill="none" stroke="#1b1f2a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></td><td><svg class="icon" viewBox="0 0 16 16" width="16" height="16" role="img" aria-label="Pass"><path d="M3 8.5 L6.5 12 L13 4.5" fill="none" stroke="#1b1f2a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></td><td><svg class="icon" viewBox="0 0 16 16" width="16" height="16" role="img" aria-label="Pass"><path d="M3 8.5 L6.5 12 L13 4.5" fill="none" stroke="#1b1f2a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></td><td><svg class="icon" viewBox="0 0 16 16" width="16" height="16" role="img" aria-label="Pass"><path d="M3 8.5 L6.5 12 L13 4.5" fill="none" stroke="#1b1f2a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></td></tr>
+</tbody>
+</table>
+</div>
+<p class="table-note">A dash means the check was skipped after an earlier failure. Whether a lead will buy can't be checked on delivery day, so the report doesn't pretend to.</p>
+</div>
+</div>
+
+<div class="report-foot">
+<div class="report-verdict">
+<p class="label">Verdict</p>
+<p class="big">Fails the spec</p>
+<p class="why">Two of five leads don't hold up. The buyer can reject the delivery or ask the vendor for replacements.</p>
+</div>
+<div class="report-sig">
+<p>Evidence sha256:9f3c…e21a</p>
+<p>Sources archived at intake</p>
+<p>Tool-assisted, human-checked</p>
+</div>
+</div>
+</div>
+</article>
+</div>
+<p class="caption-dark">Specimen only. The firms, IDs and hash are fictional. Signed certificates come after the pilots.</p>
+
+<div class="scope">
+<div>
+<h3>Checked on delivery day</h3>
+<ul class="ledger">
+<li><p class="term">Conformance</p><p class="def">Format, count, required fields and deadline.</p></li>
+<li><p class="term">Existence</p><p class="def">Links resolve, firms are registered and active, citations are real.</p></li>
+<li><p class="term">Support</p><p class="def">Each claim is backed by the source it cites.</p></li>
+<li><p class="term">Freshness</p><p class="def">Facts are current as of delivery.</p></li>
+<li><p class="term">Originality</p><p class="def">Nothing duplicated inside the delivery or resold from earlier work.</p></li>
+</ul>
+</div>
+<div>
+<h3>Never on a report</h3>
+<p class="never">“Valuable.” “Insightful.” “Will convert.”</p>
+<p class="never-note">Value shows up later, when buyers see what the work did for them. A report that promised value would eventually be wrong in public, so it sticks to what can be checked.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section id="direction" class="ruled" aria-labelledby="direction-h">
+<div class="wrap band">
+<h2 id="direction-h">Where this is going <span class="tag">In design</span></h2>
+<p class="lead">AI agents have started paying each other for work. The payment rails prove money moved; nothing yet proves the work was real. The Assay Office is designed to sit in that gap, using a rule metals traders already trust: both sides assay, small gaps are split, and big ones go to an umpire named in the contract.</p>
+<ol class="steps five">
+<li class="step" style="--c: var(--violet)"><p class="step-n" aria-hidden="true">1</p><h3>Stake the claim</h3><p>Buyer and provider lock the spec and a splitting limit before work starts.</p></li>
+<li class="step" style="--c: var(--cyan)"><p class="step-n" aria-hidden="true">2</p><h3>Deliver with a self-assay</h3><p>The provider submits the work with its own signed score for each criterion.</p></li>
+<li class="step" style="--c: var(--sky)"><p class="step-n" aria-hidden="true">3</p><h3>Run the streak test</h3><p>Fast checks on every delivery: spec, links, registries and duplicates.</p></li>
+<li class="step" style="--c: var(--fuchsia)"><p class="step-n" aria-hidden="true">4</p><h3>Split or call the umpire</h3><p>Inside the limit, the job settles. Outside it, an umpire assay decides, paid for by the side further from its result.</p></li>
+<li class="step" style="--c: var(--gold)"><p class="step-n" aria-hidden="true">5</p><h3>Stamp the hallmark</h3><p>The result joins the provider's record, which travels between marketplaces.</p></li>
+</ol>
+
+<div class="grades">
+<article class="grade">
+<svg viewBox="0 0 96 56" width="96" height="56" aria-hidden="true"><rect x="4" y="8" width="88" height="40" rx="3" fill="#0b1222" stroke="#334155" stroke-width="1"/><path d="M16 34 C 34 30, 54 27, 80 22" fill="none" stroke="#fbbf24" stroke-width="5" stroke-linecap="round"/></svg>
+<h3>Streak test</h3>
+<p class="alias">The touchstone</p>
+<p class="what">Spec conformance, link checks, registry lookups and duplicate detection, on every delivery.</p>
+<p class="status live">Passed a 50-case synthetic test; running in pilots</p>
+</article>
+<article class="grade">
+<svg viewBox="0 0 96 56" width="96" height="56" aria-hidden="true"><path d="M36 20 C 33 16, 39 13, 36 8" fill="none" stroke="#94a3b8" stroke-width="1.25" stroke-linecap="round"/><path d="M48 20 C 45 16, 51 13, 48 8" fill="none" stroke="#94a3b8" stroke-width="1.25" stroke-linecap="round"/><path d="M60 20 C 57 16, 63 13, 60 8" fill="none" stroke="#94a3b8" stroke-width="1.25" stroke-linecap="round"/><path d="M16 28 H80 C 78 41, 63 48, 48 48 C 33 48, 18 41, 16 28 Z" fill="none" stroke="#cbd5e1" stroke-width="1.5"/><path d="M24 28 C 31 35, 65 35, 72 28" fill="none" stroke="#475569" stroke-width="1"/><circle cx="48" cy="33" r="4" fill="#fbbf24"/></svg>
+<h3>Fire assay</h3>
+<p class="alias">The cupel</p>
+<p class="what">Every claim read against the source it cites. Designed to use models from different labs, with a person on anything disputed.</p>
+<p class="status hand">Done by a person with AI help during pilots</p>
+</article>
+<article class="grade">
+<svg viewBox="0 0 96 56" width="96" height="56" aria-hidden="true"><path d="M48 12 V48" fill="none" stroke="#cbd5e1" stroke-width="1.5"/><path d="M34 48 H62" fill="none" stroke="#cbd5e1" stroke-width="1.5" stroke-linecap="round"/><path d="M18 16 H78" fill="none" stroke="#cbd5e1" stroke-width="1.5" stroke-linecap="round"/><path d="M18 16 L10 32 M18 16 L26 32" fill="none" stroke="#94a3b8" stroke-width="1"/><path d="M78 16 L70 32 M78 16 L86 32" fill="none" stroke="#94a3b8" stroke-width="1"/><path d="M8 32 H28 C 26 38, 10 38, 8 32 Z" fill="none" stroke="#cbd5e1" stroke-width="1.5"/><path d="M68 32 H88 C 86 38, 70 38, 68 32 Z" fill="none" stroke="#cbd5e1" stroke-width="1.5"/><circle cx="48" cy="12" r="3" fill="#fbbf24"/></svg>
+<h3>Umpire assay</h3>
+<p class="alias">The referee</p>
+<p class="what">A second, independent assay when buyer and provider disagree beyond the splitting limit.</p>
+<p class="status">Designed, not offered yet</p>
+</article>
+</div>
+</div>
+</section>
+
+<section class="ruled" aria-labelledby="ind-h">
+<div class="wrap band">
+<div class="split">
+<div class="main">
+<h2 id="ind-h">The assayer is never the miner</h2>
+<ul class="principles">
+<li><p class="term">Standards come before the work.</p><p class="def">Criteria are agreed before checking starts, so nobody grades toward an answer.</p></li>
+<li><p class="term">A different hand judges.</p><p class="def">Lookups go first. Where a model helps, it comes from a different lab than the one that made the work.</p></li>
+<li><p class="term">The office never holds the gold.</p><p class="def">It never holds anyone's money. Payments stay between you and your vendor.</p></li>
+<li><p class="term">The office assays itself.</p><p class="def">Known-bad deliveries get seeded into the queue, and catch rates will be published once there's enough real work to count.</p></li>
+<li><p class="term">Evidence ships with every finding.</p><p class="def">Every cited page is archived at intake, and the report carries its hash.</p></li>
+</ul>
+</div>
+<aside class="rails" aria-labelledby="rails-h">
+<h3 id="rails-h">Designed to plug into the rails</h3>
+<ul class="chips" aria-label="Protocols">
+<li>x402</li><li>MPP</li><li>AP2</li><li>ERC-8004</li><li>ERC-8183</li><li>Stripe</li>
+</ul>
+<dl>
+<div><dt>ERC-8183</dt><dd>The office can act as a job's evaluator, writing the report's hash into the job's reason field.</dd></div>
+<div><dt>ERC-8004</dt><dd>Scores can post to the validation registry, so the office's own record is public.</dd></div>
+<div><dt>x402</dt><dd>An assay can be a paid endpoint, so agents buy it the way they buy any other call.</dd></div>
+</dl>
+<p class="motto">The escrow moves the money. The assay tells it when.</p>
+</aside>
+</div>
+</div>
+</section>
+
+<section id="collaborate" class="ruled" aria-labelledby="collaborate-h">
+<div class="wrap band collaboration-copy">
+<p class="label">An invitation to collaborate</p>
+<h2 id="collaborate-h">Help test the Assay Office on real work.</h2>
+<p class="lead">We’re looking for B2B buyers, revenue and operations teams, researchers, and developers who can help test independent checks of AI-made lead lists and reports.</p>
+<p>Bring a deliverable that let you down, a recurring checking problem from your day-to-day work, or expertise in data verification. Firsthand experience from the people doing the work matters here.</p>
+<p>We want candid feedback on what the checks miss, whether the evidence is clear, and whether the findings would change a decision. Start with a description of the problem; we can agree the scope before you share a deliverable.</p>
+<a class="btn" href="mailto:kaskade.systems@gmail.com?subject=PROSPEKTOR%20Assay%20Office%20collaboration">Discuss collaboration <span aria-hidden="true">&rarr;</span></a>
+<p class="stage">This is an early pilot invitation. The only test so far is a 50-case synthetic benchmark; real-world accuracy and usefulness remain to be established.</p>
+</div>
+</section>
+
+<section id="request" class="ruled" aria-labelledby="request-h">
+<div class="wrap band">
+<div class="pilot-grid">
+<div class="copy">
+<h2 id="request-h">Request a free pilot</h2>
+<p>Pick what you'd like checked. Your email app opens with the request written out, so nothing is sent until you press send.</p>
+</div>
+<form id="pilot-form" novalidate>
+<div class="field">
+<label for="pf-kind">What do you want checked?</label>
+<select id="pf-kind" name="kind">
+<option>A lead list, up to 25 entries</option>
+<option>A sourced report, up to 15 cited claims</option>
+<option>Something else</option>
+</select>
+</div>
+<div class="field">
+<label for="pf-role">You are</label>
+<select id="pf-role" name="role">
+<option>Buying AI-made work</option>
+<option>Selling AI-made work</option>
+<option>Running an agent marketplace</option>
+<option>Something else</option>
+</select>
+</div>
+<div class="field">
+<label for="pf-notes">Anything we should know (optional)</label>
+<textarea id="pf-notes" name="notes" placeholder="Where the work came from and what it was supposed to meet"></textarea>
+</div>
+<p class="setup-note" id="setup-note" hidden>Contact address not set yet. Replace kaskade.systems@gmail.com in index.html before you share this page.</p>
+<div class="form-row">
+<button type="submit" class="btn">Write the request email</button>
+<p class="direct">Or email <a id="contact-email" href="mailto:kaskade.systems@gmail.com">kaskade.systems@gmail.com</a></p>
+</div>
+</form>
+</div>
+<p class="stage">Pilot stage. No signed certificates yet, no token, and the office never holds funds.</p>
+</div>
+</section>
+
+</main>
+
+<footer class="site-foot">
+<div class="wrap">
+<div class="who">
+<p><span class="brand-word">PROSPEKTOR</span><span class="brand-sub">Assay Office</span></p>
+<p>A <a href="/">Kaskade</a> system. Pilot stage, October 2026. <a href="#collaborate">Collaborate with us</a>.</p>
+</div>
+<div class="srcs">
+<p>Sources for the figures on this page</p>
+<ul>
+<li><a href="https://www.ctvnews.ca/business/article/deloitte-to-partially-refund-australian-government-for-report-with-apparent-ai-generated-errors/">Deloitte to partially refund the Australian government, AP via CTV News</a></li>
+<li><a href="https://the-decoder.com/hallucinated-references-are-passing-peer-review-at-top-ai-conferences-and-a-new-open-tool-wants-to-fix-that/">Hallucinated references are passing peer review, The Decoder</a></li>
+<li><a href="https://www.trmlabs.com/trm-tech-blog/whos-actually-paying-measuring-ai-agent-payments-onchain">Who's actually paying? Measuring AI agent payments onchain, TRM Labs</a></li>
+<li><a href="https://www.assayofficelondon.co.uk/about-us/history-of-hallmarking">History of hallmarking, Assay Office London</a></li>
+<li><a href="https://docs.dataminesoftware.com/MineMarket/5.6.0/F-Sales-and-Marketing/03-Sales-Purchase-Contract-Terms/Assay-Rules.htm">Assay rules, splitting limits and umpires, Datamine MineMarket</a></li>
+</ul>
+</div>
+</div>
+</footer>
+
+<script>
+(function () {
+  // Replay the streak test.
+  var slab = document.getElementById('slab');
+  var rerun = document.getElementById('rerun');
+  if (slab && rerun) {
+    rerun.addEventListener('click', function () {
+      slab.classList.remove('run');
+      void slab.offsetWidth;
+      slab.classList.add('run');
+    });
+  }
+
+  // Pilot request: composes an email in the visitor's own mail app.
+  var link = document.getElementById('contact-email');
+  var form = document.getElementById('pilot-form');
+  var note = document.getElementById('setup-note');
+  if (!link || !form) { return; }
+  var address = (link.textContent || '').trim();
+  if (/example\.com$/i.test(address) && note) { note.hidden = false; }
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    var kind = form.elements.kind.value;
+    var role = form.elements.role.value;
+    var notes = (form.elements.notes.value || '').trim();
+    var subject = 'Assay Office pilot request: ' + kind;
+    var body = [
+      'Hello,',
+      '',
+      "I'd like a free design-partner pilot.",
+      '',
+      'What I want checked: ' + kind,
+      'I am: ' + role,
+      notes ? 'Notes: ' + notes : 'Notes: (none)',
+      '',
+      "I'll attach the deliverable and its requirements, or send them once you reply.",
+      ''
+    ].join('\n');
+    window.location.href = 'mailto:' + address + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+  });
+})();
+</script>
+</body>
+</html>

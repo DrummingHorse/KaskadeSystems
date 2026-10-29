@@ -1099,6 +1099,16 @@ section {
 
 /* ── END EVOLUTION SECTION ── */
 
+.assay-bridge { border-top: 0.5px solid var(--border); }
+.assay-bridge .section-label { color: var(--amber); }
+.assay-bridge .section-label::before { background: var(--amber); }
+.assay-actions { margin-top: 2.5rem; display: flex; flex-wrap: wrap; gap: 1rem; }
+.assay-actions .btn { color: var(--amber); border-color: var(--border-amber); }
+.assay-status { margin-top: 1.5rem; font: 0.75rem/1.7 var(--mono); color: var(--text-3); }
+@media (min-width: 901px) { .nav-menu { gap: clamp(1rem, 2vw, 2.5rem); } }
+@media (max-width: 600px) { .assay-actions { flex-direction: column; align-items: stretch; } }
+
+
 .cta {
   text-align: center;
   padding-top: 9rem;
@@ -1232,6 +1242,8 @@ section {
   font-variation-settings: "SOFT" 80;
 }
 
+.cta-secondary p + p { margin-top: 1rem; }
+
 .cta-secondary a {
   color: var(--cyan);
   text-decoration: none;
@@ -1349,6 +1361,7 @@ footer {
     <li><a href="#method">Method</a></li>
     <li><a href="#architekt">Architekt</a></li>
     <li><a href="#skrapr">SKRAPR</a></li>
+    <li><a href="/assay/">Assay Office</a></li>
     <li><a href="#evolution">Evolution</a></li>
     <li><a href="#access">Early Access</a></li>
   </ul>
@@ -1768,6 +1781,26 @@ footer {
     </div>
   </section>
 
+  <!-- PROSPEKTOR — Pilot-stage application -->
+  <section class="reveal assay-bridge" id="assay" aria-labelledby="assay-title">
+    <div class="trap">
+      <div>
+        <div class="section-label">Pilot &nbsp;/&nbsp; PROSPEKTOR Assay Office</div>
+        <h2 id="assay-title">An independent check of <em>AI-made work.</em></h2>
+      </div>
+      <div class="trap-body">
+        <p>PROSPEKTOR Assay Office is a pilot-stage application of Kaskade: checking lead lists and sourced reports against requirements and cited evidence. Pilots are tool-assisted and human-reviewed.</p>
+        <p>Validation so far is one 50-case synthetic benchmark. We’re seeking collaborators to test the approach on real work: buyers who have received a bad list or report, people who check this work every day, and developers with verification expertise.</p>
+        <p>Signed certificates, live umpire assays, and ERC-8183 or ERC-8004 integrations are not available. The landing page distinguishes the pilot from proposed designs.</p>
+      </div>
+    </div>
+    <div class="assay-actions">
+      <a href="/assay/" class="btn btn-ghost">Explore the Assay Office <span class="btn-arrow">&rarr;</span></a>
+      <a href="/assay/#collaborate" class="btn btn-ghost">Collaborate with us <span class="btn-arrow">&rarr;</span></a>
+    </div>
+    <p class="assay-status">Synthetic benchmark only &nbsp;&middot;&nbsp; Real-world accuracy unvalidated</p>
+  </section>
+
   <!-- EVOLUTION — 07 / The proof -->
   <section class="reveal evolution-bridge" id="evolution">
     <div class="trap">
@@ -1799,9 +1832,10 @@ footer {
     <a href="https://forms.gle/daoYHEXbE6d6dqwPA" target="_blank" rel="noopener" class="btn btn-primary" style="margin: 0 auto;">Join the waitlist &nbsp;<span class="btn-arrow">&rarr;</span></a>
     <div class="cta-note">Public concept &middot; Serious build &middot; 2026</div>
 
-    <div class="cta-secondary">
-      <div class="label">For partnership or aligned backing</div>
-      <p>If you're building adjacent, investing in AI infrastructure, or want to collaborate on a specific workflow — the inbox is open. Keep it direct and product-focused. <a href="mailto:kaskade.systems@gmail.com">kaskade.systems@gmail.com &rarr;</a> &nbsp;&middot;&nbsp; <a href="https://x.com/gramlincodex">@gramlincodex on X</a></p>
+    <div class="cta-secondary" id="collaborate">
+      <div class="label">Collaborate with Kaskade</div>
+      <p>We’re looking for collaborators who bring firsthand workflow problems, experience evaluating AI output, or the technical skills to test a useful approach. <a href="/assay/#collaborate">PROSPEKTOR Assay Office</a> is the current invitation: help us test checks of AI-made lead lists and research against real requirements.</p>
+      <p>Introduce your work and what you’d like to explore. <a href="mailto:kaskade.systems@gmail.com?subject=Kaskade%20collaboration">kaskade.systems@gmail.com &rarr;</a> &nbsp;&middot;&nbsp; <a href="https://x.com/gramlincodex">@gramlincodex on X</a></p>
     </div>
   </section>
 
@@ -1810,7 +1844,7 @@ footer {
 <footer>
   <div class="footer-mark">Kaskade<em>.</em></div>
   <div class="footer-meta">
-    <div><a href="#method">Method</a> &nbsp;&middot;&nbsp; <a href="#architekt">Architekt</a> &nbsp;&middot;&nbsp; <a href="#skrapr">SKRAPR</a> &nbsp;&middot;&nbsp; <a href="/evolution/">Evolution</a></div>
+    <div><a href="#method">Method</a> &nbsp;&middot;&nbsp; <a href="#architekt">Architekt</a> &nbsp;&middot;&nbsp; <a href="#skrapr">SKRAPR</a> &nbsp;&middot;&nbsp; <a href="/evolution/">Evolution</a> &nbsp;&middot;&nbsp; <a href="/assay/">Assay Office</a></div>
     <div><a href="https://x.com/gramlincodex">X &middot; @gramlincodex</a> &nbsp;&middot;&nbsp; <a href="mailto:kaskade.systems@gmail.com">Contact</a></div>
     <div style="opacity: 0.5;">&copy; 2026 &middot; Built by operators</div>
   </div>
