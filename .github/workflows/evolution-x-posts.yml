@@ -1,0 +1,37 @@
+# Turns new Evolution posts into GitHub issues with a one-tap "Post on X" link.
+# No X credentials live here. The only token is the repository's own, limited
+# below to reading code and opening issues, and it expires when the run ends.
+name: Evolution posts for X
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - evolution/x-posts.json
+  # Manual run: opens issues for any posts that never got one.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: evolution-x-posts
+  cancel-in-progress: false
+
+jobs:
+  draft-issues:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Open an issue for each new post
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.sha }}
+        run: python3 .github/scripts/x_drafts.py "${BEFORE:-}" "$AFTER"
