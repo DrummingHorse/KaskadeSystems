@@ -182,6 +182,13 @@ h1 { font-size: clamp(48px, 6.6vw, 92px); line-height: 0.98; font-weight: 420; l
 .fig-t { margin-top: 16px; max-width: 24em; font-size: 17px; line-height: 1.55; color: var(--mist); }
 .fig-s { margin-top: 10px; font: 12.5px/1.5 var(--mono); }
 .fig-s a { color: var(--ash); text-underline-offset: 3px; }
+.benchmark-limit { margin-top: 36px; padding: 22px 24px; border-left: 2px solid var(--gold); background: var(--slab); }
+.benchmark-limit h3 { margin-bottom: 10px; font-size: 22px; font-weight: 500; }
+.benchmark-limit p, .benchmark-detail p { max-width: 70ch; font-size: 17px; color: var(--mist); }
+.benchmark-detail { margin-top: 28px; padding-block: 18px; border-block: 1px solid var(--rule-2); }
+.benchmark-detail summary, .protocol-detail summary { cursor: pointer; color: var(--gold); font-size: 17px; line-height: 1.5; }
+.benchmark-detail > div { margin-top: 20px; }
+.benchmark-detail p + p { margin-top: 16px; }
 
 /* Steps */
 .steps { list-style: none; margin: 56px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 40px 28px; }
@@ -267,6 +274,8 @@ td.skip-cell { color: var(--ink-4); }
 .rails dt { font: 13px/1.5 var(--mono); color: var(--gold); }
 .rails dd { margin: 4px 0 0; font-size: 16px; line-height: 1.5; color: var(--mist); }
 .rails .motto { margin-top: 26px; padding-top: 20px; border-top: 1px solid var(--rule); font-size: 22px; line-height: 1.35; font-style: italic; }
+.rails-intro { margin-top: 16px; font-size: 17px; color: var(--mist); }
+.protocol-detail { margin-top: 20px; }
 
 /* Pilot form */
 .pilot-grid { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 40px 64px; }
@@ -282,10 +291,11 @@ select:focus, textarea:focus { border-color: var(--gold); }
 .form-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
 .direct { font-size: 16px; color: var(--mist); }
 .direct a { overflow-wrap: anywhere; }
-.setup-note { padding: 12px 14px; border: 1px solid var(--seal); border-radius: 4px; font: 13px/1.5 var(--mono); color: #fca5a5; }
+.publication-choice { display: flex; align-items: flex-start; gap: 12px; padding-block: 10px; min-height: 44px; color: var(--mist); font-size: 16px; line-height: 1.5; cursor: pointer; }
+.publication-choice input { flex: 0 0 auto; width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--gold); }
 .stage { margin-top: 36px; font: 13px/1.6 var(--mono); color: var(--ash); }
 
-/* Integration: status and collaboration additions; original landing copy retained. */
+/* Pilot status and collaboration. */
 .pilot-status { background: rgba(251, 191, 36, 0.045); }
 .pilot-status .wrap { padding-block: 24px; }
 .pilot-status p { max-width: 78ch; color: var(--mist); font-size: 16px; line-height: 1.6; }
@@ -340,6 +350,7 @@ select:focus, textarea:focus { border-color: var(--gold); }
 <nav class="site-nav" aria-label="Page sections">
 <a href="/">Kaskade home</a>
 <a href="#pilots">How a pilot works</a>
+<a href="#benchmark">First test</a>
 <a href="#report">Findings report</a>
 <a href="#direction">Where this is going</a>
 <a href="#collaborate">Collaborate</a>
@@ -353,7 +364,7 @@ select:focus, textarea:focus { border-color: var(--gold); }
 <aside class="pilot-status ruled" aria-label="Current pilot status">
 <div class="wrap">
 <p class="label">Pilot stage · Seeking collaborators</p>
-<p><strong>Validation so far: one 50-case synthetic benchmark.</strong> Pilots are tool-assisted and human-reviewed. Signed certificates, live umpire assays, and ERC-8183 or ERC-8004 integrations are not available. Protocol and settlement sections below describe proposed designs.</p>
+<p><strong>Validation so far: one offline, deterministic 50-case synthetic benchmark.</strong> Pilots are tool-assisted and human-reviewed. Live-source accuracy has not been established. Signed certificates, independent dispute rulings, and payment or reputation integrations are not available.</p>
 <p><a href="#collaborate">Help test the approach on real work &rarr;</a></p>
 </div>
 </aside>
@@ -371,7 +382,7 @@ select:focus, textarea:focus { border-color: var(--gold); }
 <div class="wrap">
 <div class="hero-copy">
 <h1 id="hero-h">Pay for gold, not pyrite.</h1>
-<p class="hero-sub">AI can build a lead list or a research report in minutes. The Assay Office checks it against your requirements and its own sources, then hands you the evidence before you accept the work.</p>
+<p class="hero-sub">An assay is an independent check. In a pilot, a person uses tools to review an AI-made lead list or research report against your requirements and the sources it cites. You receive findings, supporting references, and a clear account of what could not be verified.</p>
 <div class="actions">
 <a class="btn" href="#request">Request a free pilot</a>
 <a class="link-quiet" href="#report">See a specimen report</a>
@@ -405,7 +416,7 @@ select:focus, textarea:focus { border-color: var(--gold); }
 <span class="bracket tl" aria-hidden="true"></span><span class="bracket tr" aria-hidden="true"></span><span class="bracket bl" aria-hidden="true"></span><span class="bracket br" aria-hidden="true"></span>
 
 <div class="slab-inner">
-<div class="slab-meta"><span>Streak test, job 8183-0417</span><span>Specimen with fictional firms</span></div>
+<div class="slab-meta"><span>Basic checks, example DEMO-0417</span><span>Specimen with fictional firms</span></div>
 <p class="slab-title">Five qualified leads: US logistics firms with 50 to 500 staff</p>
 <ul class="streaks">
 <li class="streak" style="--i:0">
@@ -431,11 +442,11 @@ select:focus, textarea:focus { border-color: var(--gold); }
 </ul>
 <div class="slab-foot">
 <p class="verdict">Three gold, two pyrite. The spec needs all five to hold up, so this list fails.</p>
-<button type="button" class="btn-ghost" id="rerun">Run the streak test again</button>
+<button type="button" class="btn-ghost" id="rerun">Replay the example</button>
 </div>
 </div>
 </div>
-<figcaption>On a touchstone, gold leaves a gold streak and pyrite leaves a greenish-black one. The streak test does the same for machine work.</figcaption>
+<figcaption>Illustration only: three leads meet the example criteria and two do not. Replaying it does not check a new list.</figcaption>
 </figure>
 </div>
 </section>
@@ -454,65 +465,82 @@ select:focus, textarea:focus { border-color: var(--gold); }
 </div>
 <div class="col is-gold">
 <p class="col-tag">The assay</p>
-<p class="col-text">The Assay Office opens every one and checks it against what you asked for.</p>
+<p class="col-text">The pilot reviews the agreed entries and claims, and marks gaps in the evidence.</p>
 </div>
 </div>
 
-<h3 class="evidence-h">The evidence so far</h3>
+</div>
+</section>
+
+<section id="benchmark" class="ruled" aria-labelledby="benchmark-h">
+<div class="wrap band">
+<p class="label">Phase Zero · Recorded run, 29 October 2026</p>
+<h2 id="benchmark-h">What the first test showed.</h2>
+<p class="lead">A deterministic checker was tested offline on fictional five-lead reports, using a frozen fictional registry and supplied source records. Both the basic-check tier and the exact-source-check tier produced the report-level results below.</p>
 <div class="figs">
 <div class="fig">
-<p class="fig-n">A$440,000</p>
-<p class="fig-t">The Australian government report Deloitte agreed to partly refund after it was found to cite papers that don't exist.</p>
-<p class="fig-s"><a href="https://www.ctvnews.ca/business/article/deloitte-to-partially-refund-australian-government-for-report-with-apparent-ai-generated-errors/">AP, October 2025</a></p>
+<p class="fig-n">50</p>
+<p class="fig-t">Synthetic reports: 25 clean and 25 with planted errors. No customer work or live web sources were tested.</p>
 </div>
 <div class="fig">
-<p class="fig-n">1,380</p>
-<p class="fig-t">Real citations that one frontier model flagged as fake, in a test of 2,889. Asking a single model to check the work is not enough.</p>
-<p class="fig-s"><a href="https://the-decoder.com/hallucinated-references-are-passing-peer-review-at-top-ai-conferences-and-a-new-open-tool-wants-to-fix-that/">The Decoder, March 2026</a></p>
+<p class="fig-n">25 / 25</p>
+<p class="fig-t">Corrupted reports flagged by each tier. No corrupted report was accepted in this particular set.</p>
 </div>
 <div class="fig">
-<p class="fig-n">0.6–7.5%</p>
-<p class="fig-t">The share of screened x402 commerce that looks genuinely agent-driven. Even the agent economy's own numbers need an assay.</p>
-<p class="fig-s"><a href="https://www.trmlabs.com/trm-tech-blog/whos-actually-paying-measuring-ai-agent-payments-onchain">TRM Labs, September 2026</a></p>
+<p class="fig-n">25 / 25</p>
+<p class="fig-t">Clean reports accepted by each tier. No clean report was rejected in this particular set.</p>
 </div>
 </div>
+<div class="benchmark-limit">
+<h3>The important limitation</h3>
+<p>The fictional registry contained enough information to flag every corrupted report, including the misquotation cases, without checking the quotations themselves. That makes this fixture easier than real research. These counts do not establish live accuracy, semantic reasoning, or the value of an AI judging panel.</p>
+</div>
+<details class="benchmark-detail">
+<summary>Method, scoring, and remaining evidence gaps</summary>
+<div>
+<p>Predictions were frozen before the separate answer key was opened. The recorded gate required at least 23 of 25 corrupted reports flagged, at least 23 of 25 clean reports accepted, and at least four of five reports flagged in each planted error family. Both tiers met those narrow synthetic gates.</p>
+<p>The deeper tier compared exact quotations with supplied source text. It did not test an AI model, semantic paraphrases, independent judges, or live dispute resolution. There were zero external model or API calls.</p>
+<p>This is a summary of the internal recorded run, not an independent reproduction. The checker and fixtures are not released on this page. No production accuracy or commercial cost claim follows from the result.</p>
+<p>The next useful test is a new, independently labelled holdout with real dated sources, ambiguous or inaccessible evidence, and errors that a complete registry cannot reveal. False rejections and missed errors both need to be measured.</p>
+</div>
+</details>
 </div>
 </section>
 
 <section id="pilots" class="ruled" aria-labelledby="pilots-h">
 <div class="wrap band">
 <h2 id="pilots-h">How a pilot works</h2>
-<p class="lead">Five design-partner pilots are open, and they're free. You send one real deliverable. You get back findings with the evidence, and the checks get tested against real work instead of synthetic cases.</p>
+<p class="lead">We’re inviting up to five free design-partner pilots. Start with a description of one deliverable. We’ll agree the checks, reviewer, sharing arrangements, and timing before you send files. The purpose is to learn how well this approach handles real work.</p>
 <ol class="steps">
 <li class="step">
 <p class="step-n" aria-hidden="true">1</p>
-<h3>Send one deliverable</h3>
-<p>A lead list of up to 25 entries, or a sourced report with up to 15 cited claims, plus the requirements it was meant to meet.</p>
+<h3>Agree a small scope</h3>
+<p>A lead list of up to 25 entries, or a sourced report with up to 15 cited claims, plus the requirements it was meant to meet. Confirm what can be shared before sending it.</p>
 </li>
 <li class="step">
 <p class="step-n" aria-hidden="true">2</p>
-<h3>Every line gets checked</h3>
-<p>Each entry or claim is tested against your requirements and against its own sources. The checks are tool-assisted and reviewed by a person.</p>
+<h3>Review the evidence</h3>
+<p>A person uses tools to review the agreed entries or claims against the requirements and accessible sources. Findings distinguish supported, unsupported, and unverifiable claims.</p>
 </li>
 <li class="step">
 <p class="step-n" aria-hidden="true">3</p>
-<h3>Findings in three business days</h3>
-<p>What holds up, what doesn't, the evidence for each, and anything that couldn't be verified, stated plainly.</p>
+<h3>Agree a delivery date</h3>
+<p>The target is three business days after scope and inputs are agreed; we’ll confirm the date with you. The report identifies evidence, source dates, and unresolved questions.</p>
 </li>
 <li class="step">
 <p class="step-n" aria-hidden="true">4</p>
 <h3>Tell us what it was worth</h3>
-<p>Twenty minutes of honest feedback, and permission to use anonymized results. That's the whole price of a pilot.</p>
+<p>We ask for twenty minutes of honest feedback. Publication is optional: any anonymized example or case study needs your separate approval. Declining public use does not affect the free pilot.</p>
 </li>
 </ol>
-<p class="fine">Findings are evidence, not a guarantee. The office doesn't judge whether a lead will buy or a report will be useful. It checks what can be checked and says what couldn't be. Your files are deleted after the pilot unless you ask us to keep them.</p>
+<p class="fine">Findings support your decision; they do not guarantee conversion, usefulness, or error-free work. Before files are shared, we’ll agree how tools may be used and a retention/deletion date covering the deliverable, review notes, and any saved source copies. Email correspondence also remains subject to the mail provider’s retention settings.</p>
 </div>
 </section>
 
 <section id="report" class="ruled" aria-labelledby="report-h">
 <div class="wrap band">
 <h2 id="report-h">What a findings report looks like</h2>
-<p class="lead">Every pilot ends in a findings report. It borrows the parts of a hallmark, which English silver has carried since 1300: who made the work, what standard it was held to, how it scored, who checked it, and when.</p>
+<p class="lead">The pilot output is a findings report: what was reviewed, the requirements, the results, the reviewer, and the review date. This fictional example shows the format. It is not an accredited hallmark or a signed certificate.</p>
 
 <div class="report-wrap">
 <span class="bracket lg tl" aria-hidden="true"></span><span class="bracket lg tr" aria-hidden="true"></span><span class="bracket lg bl" aria-hidden="true"></span><span class="bracket lg br" aria-hidden="true"></span>
@@ -543,28 +571,28 @@ select:focus, textarea:focus { border-color: var(--gold); }
 <div class="marks">
 <div class="mark">
 <svg viewBox="0 0 72 48" width="72" height="48" aria-hidden="true"><path d="M6 4 H66 V24 C66 36 50 43 36 46 C22 43 6 36 6 24 Z" fill="none" stroke="#1b1f2a" stroke-width="1.6"/><text x="36" y="28" text-anchor="middle" font-family="IBM Plex Mono, ui-monospace, Menlo, monospace" font-size="12" font-weight="600" fill="#1b1f2a">41207</text></svg>
-<p class="mark-name">Maker's mark</p>
+<p class="mark-name">Made by</p>
 <p class="mark-note">The vendor or tool that made the list</p>
 </div>
 <div class="mark">
 <svg viewBox="0 0 72 48" width="72" height="48" aria-hidden="true"><rect x="4" y="7" width="64" height="34" rx="10" fill="none" stroke="#1b1f2a" stroke-width="1.6"/><text x="36" y="28" text-anchor="middle" font-family="IBM Plex Mono, ui-monospace, Menlo, monospace" font-size="12" font-weight="600" fill="#1b1f2a">AS 0.1</text></svg>
-<p class="mark-name">Standard</p>
+<p class="mark-name">Requirements</p>
 <p class="mark-note">Your criteria, as five checks</p>
 </div>
 <div class="mark">
-<svg viewBox="0 0 72 48" width="72" height="48" aria-hidden="true"><ellipse cx="36" cy="24" rx="32" ry="19" fill="none" stroke="#1b1f2a" stroke-width="1.6"/><text x="36" y="30" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="18" font-weight="600" fill="#1b1f2a">600</text></svg>
-<p class="mark-name">Fineness</p>
-<p class="mark-note">600 of 1000</p>
+<svg viewBox="0 0 72 48" width="72" height="48" aria-hidden="true"><ellipse cx="36" cy="24" rx="32" ry="19" fill="none" stroke="#1b1f2a" stroke-width="1.6"/><text x="36" y="30" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="18" font-weight="600" fill="#1b1f2a">3/5</text></svg>
+<p class="mark-name">Result</p>
+<p class="mark-note">3 of 5 leads meet every criterion</p>
 </div>
 <div class="mark">
 <svg viewBox="0 0 72 48" width="72" height="48" aria-hidden="true"><rect x="14" y="2" width="44" height="44" rx="3" fill="none" stroke="#1b1f2a" stroke-width="1.6"/><rect x="21" y="11" width="30" height="26" rx="2" fill="#1b1f2a"/><path d="M26 30 C 32 27, 38 23, 46 18" fill="none" stroke="#fbbf24" stroke-width="3.5" stroke-linecap="round"/></svg>
-<p class="mark-name">Office mark</p>
+<p class="mark-name">Reviewed by</p>
 <p class="mark-note">PROSPEKTOR, human-reviewed</p>
 </div>
 <div class="mark">
 <svg viewBox="0 0 72 48" width="72" height="48" aria-hidden="true"><path d="M14 4 H58 L68 14 V34 L58 44 H14 L4 34 V14 Z" fill="none" stroke="#1b1f2a" stroke-width="1.6"/><text x="36" y="30" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="18" font-weight="600" fill="#1b1f2a">26</text></svg>
-<p class="mark-name">Date letter</p>
-<p class="mark-note">2026, evidence hashed</p>
+<p class="mark-name">Review date</p>
+<p class="mark-note">2026, illustrative review</p>
 </div>
 </div>
 
@@ -574,7 +602,7 @@ select:focus, textarea:focus { border-color: var(--gold); }
 <div><dt>Requested by</dt><dd>A B2B sales team buying the list</dd></div>
 <div><dt>Made by</dt><dd>An AI lead-list vendor</dd></div>
 <div><dt>Criteria</dt><dd>Exists, active, fits the profile, sources under 180 days old, no duplicates</dd></div>
-<div><dt>Checked by</dt><dd>Streak test, then every source read by a person</dd></div>
+<div><dt>Review method</dt><dd>Basic checks, then human review of cited evidence</dd></div>
 </dl>
 <div class="results">
 <div class="table-box">
@@ -600,28 +628,28 @@ select:focus, textarea:focus { border-color: var(--gold); }
 <div class="report-verdict">
 <p class="label">Verdict</p>
 <p class="big">Fails the spec</p>
-<p class="why">Two of five leads don't hold up. The buyer can reject the delivery or ask the vendor for replacements.</p>
+<p class="why">Two of five leads fail the example checks. Any remedy depends on the buyer’s agreement with the vendor.</p>
 </div>
 <div class="report-sig">
-<p>Evidence sha256:9f3c…e21a</p>
-<p>Sources archived at intake</p>
-<p>Tool-assisted, human-checked</p>
+<p>Evidence references: illustrative</p>
+<p>Source records: fictional fixtures</p>
+<p>Human review: illustrated workflow</p>
 </div>
 </div>
 </div>
 </article>
 </div>
-<p class="caption-dark">Specimen only. The firms, IDs and hash are fictional. Signed certificates come after the pilots.</p>
+<p class="caption-dark">Specimen only. The firms and IDs are fictional. Signed certificates are not offered; a future certificate service would require separate validation.</p>
 
 <div class="scope">
 <div>
-<h3>Checked on delivery day</h3>
+<h3>Checks agreed for the pilot</h3>
 <ul class="ledger">
 <li><p class="term">Conformance</p><p class="def">Format, count, required fields and deadline.</p></li>
-<li><p class="term">Existence</p><p class="def">Links resolve, firms are registered and active, citations are real.</p></li>
-<li><p class="term">Support</p><p class="def">Each claim is backed by the source it cites.</p></li>
-<li><p class="term">Freshness</p><p class="def">Facts are current as of delivery.</p></li>
-<li><p class="term">Originality</p><p class="def">Nothing duplicated inside the delivery or resold from earlier work.</p></li>
+<li><p class="term">Existence</p><p class="def">Check links, citations, and available company records. Missing or inaccessible evidence is reported as a gap.</p></li>
+<li><p class="term">Source support</p><p class="def">Compare each in-scope claim with the source it cites; record contradictions and uncertainty.</p></li>
+<li><p class="term">Freshness</p><p class="def">Record source dates and check them against your agreed cutoff. A dated source does not guarantee that a fact is still current.</p></li>
+<li><p class="term">Duplicates</p><p class="def">Check for duplicates within the material provided. Prior resale or reuse cannot be ruled out without suitable comparison material.</p></li>
 </ul>
 </div>
 <div>
@@ -636,36 +664,36 @@ select:focus, textarea:focus { border-color: var(--gold); }
 <section id="direction" class="ruled" aria-labelledby="direction-h">
 <div class="wrap band">
 <h2 id="direction-h">Where this is going <span class="tag">In design</span></h2>
-<p class="lead">AI agents have started paying each other for work. The payment rails prove money moved; nothing yet proves the work was real. The Assay Office is designed to sit in that gap, using a rule metals traders already trust: both sides assay, small gaps are split, and big ones go to an umpire named in the contract.</p>
+<p class="lead">We’re exploring a future service in which buyers and providers agree how work will be checked before it is commissioned. The steps below are a proposed design. Today’s pilot provides findings; it does not settle payments or make binding dispute rulings.</p>
 <ol class="steps five">
-<li class="step" style="--c: var(--violet)"><p class="step-n" aria-hidden="true">1</p><h3>Stake the claim</h3><p>Buyer and provider lock the spec and a splitting limit before work starts.</p></li>
-<li class="step" style="--c: var(--cyan)"><p class="step-n" aria-hidden="true">2</p><h3>Deliver with a self-assay</h3><p>The provider submits the work with its own signed score for each criterion.</p></li>
-<li class="step" style="--c: var(--sky)"><p class="step-n" aria-hidden="true">3</p><h3>Run the streak test</h3><p>Fast checks on every delivery: spec, links, registries and duplicates.</p></li>
-<li class="step" style="--c: var(--fuchsia)"><p class="step-n" aria-hidden="true">4</p><h3>Split or call the umpire</h3><p>Inside the limit, the job settles. Outside it, an umpire assay decides, paid for by the side further from its result.</p></li>
-<li class="step" style="--c: var(--gold)"><p class="step-n" aria-hidden="true">5</p><h3>Stamp the hallmark</h3><p>The result joins the provider's record, which travels between marketplaces.</p></li>
+<li class="step" style="--c: var(--violet)"><p class="step-n" aria-hidden="true">1</p><h3>Agree the requirements</h3><p>Buyer and provider would set the checks and an acceptable difference between their scores. That tolerance is the proposed “splitting limit.”</p></li>
+<li class="step" style="--c: var(--cyan)"><p class="step-n" aria-hidden="true">2</p><h3>Record a self-check</h3><p>The provider would submit its assessment of each criterion alongside the work.</p></li>
+<li class="step" style="--c: var(--sky)"><p class="step-n" aria-hidden="true">3</p><h3>Check the delivery</h3><p>A future service would combine basic checks with source review and flag anything that remained uncertain.</p></li>
+<li class="step" style="--c: var(--fuchsia)"><p class="step-n" aria-hidden="true">4</p><h3>Review disagreements</h3><p>Differences beyond the agreed tolerance could go to an independent reviewer, with fees and authority agreed in advance. This service is not offered yet.</p></li>
+<li class="step" style="--c: var(--gold)"><p class="step-n" aria-hidden="true">5</p><h3>Build a review record</h3><p>With appropriate permission, findings could contribute to a provider’s record. Sharing that record across platforms remains a design goal.</p></li>
 </ol>
 
 <div class="grades">
 <article class="grade">
 <svg viewBox="0 0 96 56" width="96" height="56" aria-hidden="true"><rect x="4" y="8" width="88" height="40" rx="3" fill="#0b1222" stroke="#334155" stroke-width="1"/><path d="M16 34 C 34 30, 54 27, 80 22" fill="none" stroke="#fbbf24" stroke-width="5" stroke-linecap="round"/></svg>
 <h3>Streak test</h3>
-<p class="alias">The touchstone</p>
-<p class="what">Spec conformance, link checks, registry lookups and duplicate detection, on every delivery.</p>
-<p class="status live">Passed a 50-case synthetic test; running in pilots</p>
+<p class="alias">Basic checks</p>
+<p class="what">Check agreed fields, counts, links, available company records, and duplicates within the supplied material.</p>
+<p class="status live">Tested only in the offline synthetic benchmark</p>
 </article>
 <article class="grade">
 <svg viewBox="0 0 96 56" width="96" height="56" aria-hidden="true"><path d="M36 20 C 33 16, 39 13, 36 8" fill="none" stroke="#94a3b8" stroke-width="1.25" stroke-linecap="round"/><path d="M48 20 C 45 16, 51 13, 48 8" fill="none" stroke="#94a3b8" stroke-width="1.25" stroke-linecap="round"/><path d="M60 20 C 57 16, 63 13, 60 8" fill="none" stroke="#94a3b8" stroke-width="1.25" stroke-linecap="round"/><path d="M16 28 H80 C 78 41, 63 48, 48 48 C 33 48, 18 41, 16 28 Z" fill="none" stroke="#cbd5e1" stroke-width="1.5"/><path d="M24 28 C 31 35, 65 35, 72 28" fill="none" stroke="#475569" stroke-width="1"/><circle cx="48" cy="33" r="4" fill="#fbbf24"/></svg>
 <h3>Fire assay</h3>
-<p class="alias">The cupel</p>
-<p class="what">Every claim read against the source it cites. Designed to use models from different labs, with a person on anything disputed.</p>
-<p class="status hand">Done by a person with AI help during pilots</p>
+<p class="alias">Source review</p>
+<p class="what">Review the agreed claims against accessible cited evidence. Pilot findings are reviewed by a person using tools; a cross-provider AI judging panel remains proposed.</p>
+<p class="status hand">Human-reviewed pilot workflow; live accuracy unvalidated</p>
 </article>
 <article class="grade">
 <svg viewBox="0 0 96 56" width="96" height="56" aria-hidden="true"><path d="M48 12 V48" fill="none" stroke="#cbd5e1" stroke-width="1.5"/><path d="M34 48 H62" fill="none" stroke="#cbd5e1" stroke-width="1.5" stroke-linecap="round"/><path d="M18 16 H78" fill="none" stroke="#cbd5e1" stroke-width="1.5" stroke-linecap="round"/><path d="M18 16 L10 32 M18 16 L26 32" fill="none" stroke="#94a3b8" stroke-width="1"/><path d="M78 16 L70 32 M78 16 L86 32" fill="none" stroke="#94a3b8" stroke-width="1"/><path d="M8 32 H28 C 26 38, 10 38, 8 32 Z" fill="none" stroke="#cbd5e1" stroke-width="1.5"/><path d="M68 32 H88 C 86 38, 70 38, 68 32 Z" fill="none" stroke="#cbd5e1" stroke-width="1.5"/><circle cx="48" cy="12" r="3" fill="#fbbf24"/></svg>
 <h3>Umpire assay</h3>
-<p class="alias">The referee</p>
-<p class="what">A second, independent assay when buyer and provider disagree beyond the splitting limit.</p>
-<p class="status">Designed, not offered yet</p>
+<p class="alias">Independent dispute review</p>
+<p class="what">A proposed second review when buyer and provider scores differ beyond their agreed tolerance.</p>
+<p class="status">Proposed; untested and not offered</p>
 </article>
 </div>
 </div>
@@ -675,26 +703,27 @@ select:focus, textarea:focus { border-color: var(--gold); }
 <div class="wrap band">
 <div class="split">
 <div class="main">
-<h2 id="ind-h">The assayer is never the miner</h2>
+<h2 id="ind-h">How the pilot is reviewed.</h2>
 <ul class="principles">
-<li><p class="term">Standards come before the work.</p><p class="def">Criteria are agreed before checking starts, so nobody grades toward an answer.</p></li>
-<li><p class="term">A different hand judges.</p><p class="def">Lookups go first. Where a model helps, it comes from a different lab than the one that made the work.</p></li>
-<li><p class="term">The office never holds the gold.</p><p class="def">It never holds anyone's money. Payments stay between you and your vendor.</p></li>
-<li><p class="term">The office assays itself.</p><p class="def">Known-bad deliveries get seeded into the queue, and catch rates will be published once there's enough real work to count.</p></li>
-<li><p class="term">Evidence ships with every finding.</p><p class="def">Every cited page is archived at intake, and the report carries its hash.</p></li>
+<li><p class="term">Agree the checks first.</p><p class="def">Define the requirements, accessible evidence, reviewer, and treatment of uncertainty before the pilot begins.</p></li>
+<li><p class="term">Evidence first, with human review.</p><p class="def">A person reviews findings with tools. Model provenance is recorded where known; unknown provenance limits claims of independence. A cross-provider judging panel has not been validated.</p></li>
+<li><p class="term">Payment decisions stay with you.</p><p class="def">Pilots are free. The office does not hold funds, release payments, or make binding rulings about your vendor.</p></li>
+<li><p class="term">Test the checker, too.</p><p class="def">The recorded 50-case result is disclosed with its limitations. New holdout and live-source tests are planned; ongoing seeded monitoring and live catch rates are not established.</p></li>
+<li><p class="term">Record evidence and its limits.</p><p class="def">Findings identify the references consulted, access dates, and gaps. Any saved source copies, hashes, and retention period must be agreed in scope; a complete source archive is not promised.</p></li>
 </ul>
 </div>
 <aside class="rails" aria-labelledby="rails-h">
-<h3 id="rails-h">Designed to plug into the rails</h3>
-<ul class="chips" aria-label="Protocols">
-<li>x402</li><li>MPP</li><li>AP2</li><li>ERC-8004</li><li>ERC-8183</li><li>Stripe</li>
-</ul>
+<h3 id="rails-h">For developers: possible integrations</h3>
+<p class="rails-intro">These are research directions, not implemented features. The free pilot uses email and requires no wallet or payment.</p>
+<details class="protocol-detail">
+<summary>Protocol names, in plain language</summary>
 <dl>
-<div><dt>ERC-8183</dt><dd>The office can act as a job's evaluator, writing the report's hash into the job's reason field.</dd></div>
-<div><dt>ERC-8004</dt><dd>Scores can post to the validation registry, so the office's own record is public.</dd></div>
-<div><dt>x402</dt><dd>An assay can be a paid endpoint, so agents buy it the way they buy any other call.</dd></div>
+<div><dt><a href="https://ercs.ethereum.org/ERCS/erc-8183">ERC-8183 · Jobs and payment decisions</a></dt><dd>A specification for funded jobs with an evaluator. A future integration could connect review findings to a job’s decision record. No evaluator integration or automatic settlement has been built or tested here.</dd></div>
+<div><dt><a href="https://ercs.ethereum.org/ERCS/erc-8004">ERC-8004 · Agent identity and trust records</a></dt><dd>A specification covering agent identity, reputation, and validation. A future integration could publish review records with permission. This pilot does not post scores to a registry.</dd></div>
+<div><dt><a href="https://docs.x402.org/introduction">x402 · Payments for web requests</a></dt><dd>A standard for programmatic payment for online resources. A future paid review service could explore it; there is no paid endpoint in this pilot.</dd></div>
 </dl>
-<p class="motto">The escrow moves the money. The assay tells it when.</p>
+</details>
+<p class="motto">Today: findings for your decision. Payment automation remains a proposal.</p>
 </aside>
 </div>
 </div>
@@ -707,8 +736,8 @@ select:focus, textarea:focus { border-color: var(--gold); }
 <p class="lead">We’re looking for B2B buyers, revenue and operations teams, researchers, and developers who can help test independent checks of AI-made lead lists and reports.</p>
 <p>Bring a deliverable that let you down, a recurring checking problem from your day-to-day work, or expertise in data verification. Firsthand experience from the people doing the work matters here.</p>
 <p>We want candid feedback on what the checks miss, whether the evidence is clear, and whether the findings would change a decision. Start with a description of the problem; we can agree the scope before you share a deliverable.</p>
-<a class="btn" href="mailto:kaskade.systems@gmail.com?subject=PROSPEKTOR%20Assay%20Office%20collaboration">Discuss collaboration <span aria-hidden="true">&rarr;</span></a>
-<p class="stage">This is an early pilot invitation. The only test so far is a 50-case synthetic benchmark; real-world accuracy and usefulness remain to be established.</p>
+<a class="btn" href="mailto:kaskade.evolution@gmail.com?subject=PROSPEKTOR%20Assay%20Office%20collaboration">Discuss collaboration <span aria-hidden="true">&rarr;</span></a>
+<p class="stage">This is an early pilot invitation. The only test so far is an offline, deterministic 50-case synthetic benchmark; real-world accuracy and usefulness remain to be established.</p>
 </div>
 </section>
 
@@ -739,16 +768,19 @@ select:focus, textarea:focus { border-color: var(--gold); }
 </div>
 <div class="field">
 <label for="pf-notes">Anything we should know (optional)</label>
-<textarea id="pf-notes" name="notes" placeholder="Where the work came from and what it was supposed to meet"></textarea>
+<textarea id="pf-notes" name="notes" placeholder="Start with a brief description of the list or report and the requirements it was meant to meet"></textarea>
 </div>
-<p class="setup-note" id="setup-note" hidden>Contact address not set yet. Replace kaskade.systems@gmail.com in index.html before you share this page.</p>
+<label class="publication-choice" for="pf-publication">
+<input type="checkbox" id="pf-publication" name="publication">
+<span>You may ask me about an anonymized case study (optional). Publishing anything still requires my separate approval.</span>
+</label>
 <div class="form-row">
 <button type="submit" class="btn">Write the request email</button>
-<p class="direct">Or email <a id="contact-email" href="mailto:kaskade.systems@gmail.com">kaskade.systems@gmail.com</a></p>
+<p class="direct">Or email <a id="contact-email" href="mailto:kaskade.evolution@gmail.com">kaskade.evolution@gmail.com</a></p>
 </div>
 </form>
 </div>
-<p class="stage">Pilot stage. No signed certificates yet, no token, and the office never holds funds.</p>
+<p class="stage">Pilot stage. No signed certificates, payment integrations, or binding dispute rulings are offered.</p>
 </div>
 </section>
 
@@ -761,13 +793,12 @@ select:focus, textarea:focus { border-color: var(--gold); }
 <p>A <a href="/">Kaskade</a> system. Pilot stage, October 2026. <a href="#collaborate">Collaborate with us</a>.</p>
 </div>
 <div class="srcs">
-<p>Sources for the figures on this page</p>
+<p>Explore the pilot</p>
 <ul>
-<li><a href="https://www.ctvnews.ca/business/article/deloitte-to-partially-refund-australian-government-for-report-with-apparent-ai-generated-errors/">Deloitte to partially refund the Australian government, AP via CTV News</a></li>
-<li><a href="https://the-decoder.com/hallucinated-references-are-passing-peer-review-at-top-ai-conferences-and-a-new-open-tool-wants-to-fix-that/">Hallucinated references are passing peer review, The Decoder</a></li>
-<li><a href="https://www.trmlabs.com/trm-tech-blog/whos-actually-paying-measuring-ai-agent-payments-onchain">Who's actually paying? Measuring AI agent payments onchain, TRM Labs</a></li>
-<li><a href="https://www.assayofficelondon.co.uk/about-us/history-of-hallmarking">History of hallmarking, Assay Office London</a></li>
-<li><a href="https://docs.dataminesoftware.com/MineMarket/5.6.0/F-Sales-and-Marketing/03-Sales-Purchase-Contract-Terms/Assay-Rules.htm">Assay rules, splitting limits and umpires, Datamine MineMarket</a></li>
+<li><a href="#benchmark">Recorded synthetic benchmark: method, results, and limits</a></li>
+<li><a href="#pilots">Pilot scope, feedback, and data sharing</a></li>
+<li><a href="#rails-h">Proposed integrations and official protocol documentation</a></li>
+<li><a href="#collaborate">Collaboration invitation</a></li>
 </ul>
 </div>
 </div>
@@ -775,7 +806,7 @@ select:focus, textarea:focus { border-color: var(--gold); }
 
 <script>
 (function () {
-  // Replay the streak test.
+  // Replay the fictional illustration; this does not run a live check.
   var slab = document.getElementById('slab');
   var rerun = document.getElementById('rerun');
   if (slab && rerun) {
@@ -789,15 +820,14 @@ select:focus, textarea:focus { border-color: var(--gold); }
   // Pilot request: composes an email in the visitor's own mail app.
   var link = document.getElementById('contact-email');
   var form = document.getElementById('pilot-form');
-  var note = document.getElementById('setup-note');
   if (!link || !form) { return; }
   var address = (link.textContent || '').trim();
-  if (/example\.com$/i.test(address) && note) { note.hidden = false; }
   form.addEventListener('submit', function (event) {
     event.preventDefault();
     var kind = form.elements.kind.value;
     var role = form.elements.role.value;
     var notes = (form.elements.notes.value || '').trim();
+    var publication = form.elements.publication.checked;
     var subject = 'Assay Office pilot request: ' + kind;
     var body = [
       'Hello,',
@@ -807,8 +837,11 @@ select:focus, textarea:focus { border-color: var(--gold); }
       'What I want checked: ' + kind,
       'I am: ' + role,
       notes ? 'Notes: ' + notes : 'Notes: (none)',
+      publication
+        ? 'Publication: you may ask me about an anonymized case study; publishing still requires my separate approval.'
+        : 'Publication: not authorized. Any public example or case study requires my separate approval.',
       '',
-      "I'll attach the deliverable and its requirements, or send them once you reply.",
+      'Please confirm scope, reviewer, delivery date, tool use, and retention/deletion arrangements before I send files.',
       ''
     ].join('\n');
     window.location.href = 'mailto:' + address + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
