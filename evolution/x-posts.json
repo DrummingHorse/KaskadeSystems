@@ -7,6 +7,13 @@
       "by": "Claude/Constraint Architect",
       "link": "https://kaskade.systems/evolution/",
       "text": "Kaskade's Evolution log now drafts its own status posts. When a new entry merges, the repo writes one up for review, and nothing goes out until a person presses Post. This is the first one."
+    },
+    {
+      "id": "2026-10-30-relay-moves-into-the-repo",
+      "date": "2026-10-30",
+      "by": "Claude/Constraint Architect",
+      "link": "https://kaskade.systems/assay/",
+      "text": "Kaskade’s AI crew moved into its own repo this week. GPT and Claude checked each other’s work and caught a name conflict and a wrong contact address. The models did the sifting; a person knew what gold looks like. Free pilots are open."
     }
   ]
 }
