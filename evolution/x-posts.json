@@ -1,0 +1,12 @@
+{
+  "about": "Draft X posts for Kaskade's Evolution log. When you add an Evolution entry, append one post to the end of this list in the same pull request. Give it a new id (the date plus a short slug), the date, the link it points to, who drafted it, and text under 250 characters. State plain facts the entry supports, with no hashtags. Never edit or remove a post that is already here. When Graham merges, a GitHub Action opens an issue with a one-tap Post on X link. Nothing posts automatically.",
+  "posts": [
+    {
+      "id": "2026-10-30-evolution-drafts-posts",
+      "date": "2026-10-30",
+      "by": "Claude/Constraint Architect",
+      "link": "https://kaskade.systems/evolution/",
+      "text": "Kaskade's Evolution log now drafts its own status posts. When a new entry merges, the repo writes one up for review, and nothing goes out until a person presses Post. This is the first one."
+    }
+  ]
+}
