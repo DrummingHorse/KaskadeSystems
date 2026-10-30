@@ -1,6 +1,6 @@
 # Kaskade
 
-**Proposal:** this pass proposes a clearer public presentation of the Assay Office pilot. Graham decides what becomes canon by merging the pull request.
+**Proposal:** this pass prepares a clearer public presentation of Assay Office by Kaskade, the name selected by Graham for the pilot. Graham decides what becomes canon by merging the pull request.
 
 ## Relay workflow
 
@@ -20,7 +20,7 @@ The report specimens use fictional firms. The recorded code test is an offline, 
 
 ## Proposal
 
-The public presentation is Assay Office by Kaskade, a descriptive working name rather than a finalized independent brand. Free human-reviewed pilots, scope, timing, and data-sharing arrangements remain proposals to agree with participants. SKRAPR, Architekt, cross-provider judging, signed certificates, dispute rulings, and payment/reputation integrations are not represented as shipped services.
+The public name selected by Graham is Assay Office by Kaskade. It is implemented throughout the current presentation in this branch and awaits merge for publication. Free human-reviewed pilots, scope, timing, and data-sharing arrangements remain proposals to agree with participants. SKRAPR, Architekt, cross-provider judging, signed certificates, dispute rulings, and payment/reputation integrations are not represented as shipped services.
 
 ## Metaphor
 
@@ -30,6 +30,7 @@ Gold, pyrite, and assay terminology provide an analogy for checking work; they a
 
 - `/`: presentation, labelled specimen, evidence links, and collaboration routes.
 - `/assay/`: pilot proposal, prototype specimen, recorded benchmark, and email-drafting form.
+- `/evolution/annotations/2026-10-30-gpt-name-and-contact/`: new dated Annotation recording Graham's name selection and confirmed contact without rewriting the earlier naming proposal.
 - `/evolution/`: preserved development archive with an added dated Annotation notice.
 - `/evolution/001/`: unchanged historical article.
 - `/evolution/annotations/2026-10-30-gpt-public-presentation/`: new status and naming Annotation.

@@ -1,4 +1,4 @@
-# Assay Office — a Kaskade pilot proposal
+# Assay Office by Kaskade
 
 ## Implemented
 
@@ -18,7 +18,7 @@ The service invitation covers up to 25 lead entries or 15 cited claims, tool-ass
 
 Freshness checks compare dated evidence with agreed cutoffs. Duplicate checks cover supplied material; no blanket conclusion about previous resale is made. Full source archiving, signed certificates, cross-provider judging, binding disputes, and payment/reputation integrations are not claimed as implemented services.
 
-The working presentation is Assay Office by Kaskade. The dated GPT/Architect Annotation records the naming proposal and current status. No canonical naming decision is declared by this branch.
+Graham selected Assay Office by Kaskade for the public presentation and confirmed `kaskade.evolution@gmail.com` as the contact. The name is implemented in the current presentation, metadata, draft-email subjects, and social artwork in this branch. A new dated GPT/Architect Annotation records the selection; the earlier naming proposal is preserved. Publication and canon remain subject to Graham's merge.
 
 ## Metaphor
 
@@ -26,4 +26,4 @@ Gold, pyrite, streak tests, fire assays, and umpire assays are analogies. They d
 
 ## Implemented assets and preservation
 
-Fonts and license files remain in `fonts/`. The shared social preview is `/assets/kaskade-review.png`; its reproducible renderer is `tools/render-social-card.py`. Existing Evolution entries and Roots are not rewritten. The only Evolution-index change is an added dated Annotation notice and its stylesheet.
+Fonts and license files remain in `fonts/`. The current social preview is available at both `/assets/kaskade-review.png` and the established `/assay/og.png` path; its reproducible renderer is `tools/render-social-card.py`. Existing Evolution entries and Roots are not rewritten. Evolution-index additions are dated Annotation notices and their scoped stylesheet.

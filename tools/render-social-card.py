@@ -50,14 +50,17 @@ def render():
 
         for i, color in enumerate(('#b7a5ef', '#8ed7da', '#8db9e3', '#dfa2cd', '#f3c560')):
             line((82+i*5, 62+i*7, 106+i*5, 62+i*7), color, 3)
-        text(154, 58, 'KASKADE', 24, '#f3eee3', mono_path)
+        text(154, 50, 'Assay Office by Kaskade', 32, '#f3eee3')
         text(80, 160, 'A second look at', 82, '#f3eee3')
         text(80, 257, 'AI-made work.', 88, '#f3c560')
         text(84, 386, 'Independent checks of lead lists and research.', 30, '#b5bfce')
         line((80, 485, 1120, 485), '#283247')
         text(82, 523, 'PILOT PROPOSAL  /  HUMAN-REVIEWED', 18, '#8ed7da', mono_path)
         text(833, 523, 'kaskade.systems', 18, '#b5bfce', mono_path)
-        image.resize((1200, 630), Image.Resampling.LANCZOS).save(ROOT / 'assets/kaskade-review.png', optimize=True)
+        card = image.resize((1200, 630), Image.Resampling.LANCZOS)
+        # Retain both public image paths so older shared URLs use the new name.
+        for target in ('assets/kaskade-review.png', 'assay/og.png'):
+            card.save(ROOT / target, optimize=True)
 
 
 if __name__ == '__main__':
