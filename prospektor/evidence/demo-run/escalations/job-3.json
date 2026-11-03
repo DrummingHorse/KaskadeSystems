@@ -1,0 +1,28 @@
+{
+  "binding": {
+    "acp": "0x40D83C85b7083F0E50dd09d6428b2cf2fc5D724a",
+    "budget": 250000000,
+    "chain_id": 31337,
+    "client": "0x1E3C2058d03A090aCBDFe3648a2bba407BFacAc5",
+    "deliverable": "0x3fd709274b5e7ec3d6f0cb0dacffcc9cd67b82d8ed441d3881a7225479a7ee01",
+    "expired_at": 1800298800,
+    "gate": "0x0c1E3F0376d3cCb81eCB61AdAec10aB968DBb9d1",
+    "job_id": 3,
+    "provider": "0x0efF4705960106216C24138789C9A3Fb0DD034b2",
+    "terms_sha256": "0xdbe7a9bd14ffa157d1aa4cd946de54b3015d46302986162056e0981aae707d40",
+    "token": "0x568D27C45bA5ad287b30E6B7d332Cfecb443caB4"
+  },
+  "deadline": 1800298800,
+  "default_if_unresolved": "ERC-8183 claimRefund() after expired_at returns the escrow to the client.",
+  "escalation_format": "prospektor.escalation/0",
+  "open_questions": [
+    {
+      "check": "manual.review",
+      "criterion": "C10",
+      "detail": "needs human review, not machine-checkable: Volunteers' stated shift preferences honoured where reasonable"
+    }
+  ],
+  "receipt_sha256": "0x7c513b72674cf96b7a2c6eb8cac8e829b1844a6b6f1969076a7314656b27bddf",
+  "umpire": "Proposal only. No umpire service, dispute rules or fee-shifting are implemented or offered.",
+  "verdict": "HOLD"
+}
