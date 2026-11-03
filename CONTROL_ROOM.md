@@ -1,5 +1,5 @@
 # KASKADE CONTROL ROOM
-Evidence snapshot: 2026-11-02 · reconciled against `main` at `44013d408ed14710a396049ab1a8886ece6eeaed`. The Control Room was merged in PR #12; this documentation correction is proposed on its own review branch.
+Evidence snapshot: 2026-11-02 · dated status observations, not a live inventory. The Control Room was merged in PR #12 and its status reconciliation in PR #15; consult current `main`, open PRs and issues for subsequent changes.
 
 This is the single starting point for **where to look, what is verified, and which string to pull next**. It is an internal coordination *method* in a public repository, **not** a private diary, comprehensive invention inventory, or publication authorization. Do not add personal finances, health, family, unpublished creative work, private research contents, private contacts, or credentials.
 
@@ -17,7 +17,7 @@ This is the single starting point for **where to look, what is verified, and whi
 | Assay Office by Kaskade | **Implemented** public static presentation and fictional report specimen; **prototype** 50-case synthetic test; **proposal** human-reviewed pilot; customer validation **not verified** | [assay/README.md](assay/README.md), [assay site](https://kaskade.systems/assay/) | Resolve current review findings and define one buyer-facing trial with criteria; no inflated claims |
 | KASKADE relay and governance | **Implemented** branch/PR review conventions | [AGENTS.md](AGENTS.md), [pull requests](https://github.com/DrummingHorse/KaskadeSystems/pulls) | Triage open PRs by dependency, overlap, privacy, and publication status |
 | Evolution log & X drafts | **Implemented** draft workflow, not autonomous publication | [Evolution log](https://kaskade.systems/evolution/), [issues](https://github.com/DrummingHorse/KaskadeSystems/issues) | Verify posted links individually; don't infer publication from open/closed draft issues |
-| Wider research / creative / invention portfolio | **Not audited here**; some projects live outside this repository | Private, project-specific source records | Maintain separate private index; include public links here only after explicit Operator approval |
+| Wider research / creative / invention portfolio | **Not audited here**; the full project list and status live in the Operator's private registry | Operator's private registry (not published or mirrored here) | Reconcile status in the private registry; include individual public links here only after explicit Operator approval |
 
 ## Current review and evidence queue (dated snapshot)
 - **Old draft [PR #1](https://github.com/DrummingHorse/KaskadeSystems/pull/1):** still open. Claude's [30 October review](https://github.com/DrummingHorse/KaskadeSystems/pull/1#issuecomment-6516084031) warns that it restores an incorrect contact address and conflicts with main. It also overlaps merged PR #2 and proposes changes to older Evolution material. It needs an explicit close-or-redo disposition; do not merge it as a current status update.
