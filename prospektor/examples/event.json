@@ -1,0 +1,22 @@
+{
+  "format": "prospektor.event/0",
+  "title": "Riverside Lantern Walk (fictional event; all data invented)",
+  "shifts": [
+    {"id": "S01", "start": 540, "end": 780, "skill": "gate", "needed": 2},
+    {"id": "S02", "start": 540, "end": 840, "skill": "first_aid", "needed": 1},
+    {"id": "S03", "start": 600, "end": 900, "skill": "stage", "needed": 2},
+    {"id": "S04", "start": 780, "end": 1020, "skill": "gate", "needed": 2},
+    {"id": "S05", "start": 840, "end": 1140, "skill": "first_aid", "needed": 1},
+    {"id": "S06", "start": 1080, "end": 1320, "skill": "stage", "needed": 2}
+  ],
+  "volunteers": [
+    {"id": "V01", "skills": ["gate"], "available": [[480, 1100]]},
+    {"id": "V02", "skills": ["gate", "stage"], "available": [[480, 1320]]},
+    {"id": "V03", "skills": ["first_aid"], "available": [[500, 900]]},
+    {"id": "V04", "skills": ["first_aid", "gate"], "available": [[540, 1200]]},
+    {"id": "V05", "skills": ["stage"], "available": [[600, 1320]]},
+    {"id": "V06", "skills": ["stage", "gate"], "available": [[1000, 1400]]},
+    {"id": "V07", "skills": ["gate"], "available": [[700, 1100]]},
+    {"id": "V08", "skills": ["stage"], "available": [[560, 950]]}
+  ]
+}
