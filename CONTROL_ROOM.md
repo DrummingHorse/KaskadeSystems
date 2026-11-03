@@ -1,5 +1,5 @@
 # KASKADE CONTROL ROOM
-Snapshot: 2026-11-02 · **Proposal**, pending Operator review and merge
+Evidence snapshot: 2026-11-02 · reconciled against `main` at `44013d408ed14710a396049ab1a8886ece6eeaed`. The Control Room was merged in PR #12; this documentation correction is proposed on its own review branch.
 
 This is the single starting point for **where to look, what is verified, and which string to pull next**. It is an internal coordination *method* in a public repository, **not** a private diary, comprehensive invention inventory, or publication authorization. Do not add personal finances, health, family, unpublished creative work, private research contents, private contacts, or credentials.
 
@@ -19,12 +19,15 @@ This is the single starting point for **where to look, what is verified, and whi
 | Evolution log & X drafts | **Implemented** draft workflow, not autonomous publication | [Evolution log](https://kaskade.systems/evolution/), [issues](https://github.com/DrummingHorse/KaskadeSystems/issues) | Verify posted links individually; don't infer publication from open/closed draft issues |
 | Wider research / creative / invention portfolio | **Not audited here**; some projects live outside this repository | Private, project-specific source records | Maintain separate private index; include public links here only after explicit Operator approval |
 
-## Immediate review queue (recheck live status; snapshot only)
-- [PR #11](https://github.com/DrummingHorse/KaskadeSystems/pull/11) — public-facing privacy adjustment; assess before promoting unrelated publication changes.
-- [PR #9](https://github.com/DrummingHorse/KaskadeSystems/pull/9) — Creative Loop / Evolution proposal and X draft; check how it interacts with privacy adjustments.
-- [PR #8](https://github.com/DrummingHorse/KaskadeSystems/pull/8) — separate notation artifact; not a blocker for commercial work.
-- [X draft issue #5](https://github.com/DrummingHorse/KaskadeSystems/issues/5) and [#6](https://github.com/DrummingHorse/KaskadeSystems/issues/6) — verify actual X posts before choosing publish/close; issue state alone is not proof.
-These are **review pointers**, not instructions to merge, publish, or close.
+## Current review and evidence queue (dated snapshot)
+- **Old draft [PR #1](https://github.com/DrummingHorse/KaskadeSystems/pull/1):** still open. Claude's [30 October review](https://github.com/DrummingHorse/KaskadeSystems/pull/1#issuecomment-6516084031) warns that it restores an incorrect contact address and conflicts with main. It also overlaps merged PR #2 and proposes changes to older Evolution material. It needs an explicit close-or-redo disposition; do not merge it as a current status update.
+- **Merged, no longer pending:** presentation #2; Evolution note #9; scoped privacy adjustment #11; this Control Room #12; Listening Engine draft queue #13; and notation continuation #8. Merging a draft-queue change does not establish publication on X or completion of a proposed service.
+- **X draft issues:** [#5](https://github.com/DrummingHorse/KaskadeSystems/issues/5), [#6](https://github.com/DrummingHorse/KaskadeSystems/issues/6), [#10](https://github.com/DrummingHorse/KaskadeSystems/issues/10), and [#14](https://github.com/DrummingHorse/KaskadeSystems/issues/14) are open with no posted-link comments in the inspected snapshot. Verify actual posts individually before choosing publish/close; issue state alone is not proof.
+- **Listening Engine:** the first question was queued through merged #13 and generated #14. Reply collection, automatic investigation and automatic replies are still proposals.
+- **Public-site evidence:** the latest Pages build and deploy for `44013d4` [succeeded](https://github.com/DrummingHorse/KaskadeSystems/actions/runs/41532943858). That confirms the GitHub deployment job, not inbox delivery, customer value or live accuracy.
+- **Privacy scope:** #11 covers selected Evolution source files. It does not establish repository-wide anonymity, and it does not change the visibility of other repositories.
+
+These are status and review pointers. Decisions about closing, publication and promotion remain with the Operator.
 
 ## Scoring / prioritization
 Use only observed evidence; otherwise write `unknown`. Rate each candidate action on:

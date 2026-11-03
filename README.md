@@ -1,6 +1,8 @@
 # Kaskade
 
-**Proposal:** this pass prepares a clearer public presentation of Assay Office by Kaskade, the name selected by Graham for the pilot. Graham decides what becomes canon by merging the pull request.
+**Implemented:** the static Assay Office by Kaskade presentation was merged through PR #2. The latest inspected `main` is `44013d408ed14710a396049ab1a8886ece6eeaed` (2 November 2026), with a successful GitHub Pages build and deployment. New changes still require the Operator's merge.
+
+For current merged work, unresolved reviews and X-draft evidence, start at [CONTROL_ROOM.md](CONTROL_ROOM.md). The wider private portfolio is outside this public document.
 
 ## Relay workflow
 
@@ -8,7 +10,7 @@ The Operator's rules are in [AGENTS.md](AGENTS.md). Start from latest main, read
 
 ## Implemented
 
-Static pages, local fonts, navigation, social-preview metadata, and email-drafting links are implemented in this checkout. No frontend build is required. Source changes in this branch are not a production deployment until the Operator merges them.
+Static pages, local fonts, navigation, social-preview metadata, and email-drafting links are implemented in this checkout. No frontend build is required. This presentation is on `main`; a successful deployment does not establish live-source accuracy, inbox delivery or a completed customer pilot.
 
 Current contact: `kaskade.evolution@gmail.com`. Email links and the pilot form compose drafts; they do not establish inbox delivery or monitoring.
 
@@ -20,7 +22,7 @@ The report specimens use fictional firms. The recorded code test is an offline, 
 
 ## Proposal
 
-The public name selected by Graham is Assay Office by Kaskade. It is implemented throughout the current presentation in this branch and awaits merge for publication. Free human-reviewed pilots, scope, timing, and data-sharing arrangements remain proposals to agree with participants. SKRAPR, Architekt, cross-provider judging, signed certificates, dispute rulings, and payment/reputation integrations are not represented as shipped services.
+The public name selected by Graham is Assay Office by Kaskade. It is implemented throughout the merged presentation. This is a presentation milestone, not a claim that the proposed service capabilities are available. Free human-reviewed pilots, scope, timing, and data-sharing arrangements remain proposals to agree with participants. SKRAPR, Architekt, cross-provider judging, signed certificates, dispute rulings, and payment/reputation integrations are not represented as shipped services.
 
 ## Metaphor
 
