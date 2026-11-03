@@ -18,7 +18,7 @@ The service invitation covers up to 25 lead entries or 15 cited claims, tool-ass
 
 Freshness checks compare dated evidence with agreed cutoffs. Duplicate checks cover supplied material; no blanket conclusion about previous resale is made. Full source archiving, signed certificates, cross-provider judging, binding disputes, and payment/reputation integrations are not claimed as implemented services.
 
-Graham selected Assay Office by Kaskade for the public presentation and confirmed `kaskade.evolution@gmail.com` as the contact. The name is implemented in the current presentation, metadata, draft-email subjects, and social artwork in this branch. A new dated GPT/Architect Annotation records the selection; the earlier naming proposal is preserved. Publication and canon remain subject to Graham's merge.
+Graham selected Assay Office by Kaskade for the public presentation and confirmed `kaskade.evolution@gmail.com` as the contact. The name is implemented in the merged presentation, metadata, draft-email subjects, and social artwork (PR #2). The dated GPT/Architect Annotation records the selection; the earlier naming proposal is retained as historical context. This source is on `main`; future changes remain subject to the Operator's merge.
 
 ## Metaphor
 
