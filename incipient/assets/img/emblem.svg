@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none" stroke="#d4af37" stroke-linecap="round">
-  <title>Incipient emblem</title>
-  <circle cx="100" cy="100" r="78" stroke-width="2.2"/>
-  <circle cx="100" cy="100" r="56" stroke-width="1.4"/>
-  <circle cx="100" cy="100" r="34" stroke-width="2.8"/>
-  <path d="M100 22 L158 150 L42 150 Z" stroke="#e9dcb4" stroke-width="1" stroke-linejoin="round"/>
-  <path d="M8 100 H192 M100 8 V192" stroke-width="1.6"/>
-</svg>
