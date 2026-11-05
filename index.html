@@ -116,13 +116,23 @@ h1 em { color: var(--gold); font-weight: 350; }
 .contact-copy > p { font-size: 20px; color: var(--muted); }
 .contact-email { display: inline-block; margin-top: 28px; font-size: clamp(19px, 2.4vw, 29px); color: var(--text); overflow-wrap: anywhere; }
 .contact-copy .small { margin-top: 18px; font-size: 14px; color: var(--quiet); }
+.operator { position: relative; margin: 38px 0 0; max-width: 360px; }
+.operator-frame { position: relative; border-radius: 3px; overflow: hidden; box-shadow: 0 28px 80px #0006; transform: rotate(-1deg); }
+.operator-frame::before { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(180deg, transparent 62%, #060b18aa); }
+.operator img { display: block; width: 100%; height: auto; }
+.operator::before { content: ''; position: absolute; inset: 12px -12px -12px 12px; z-index: -1; border: 1px solid #f3c56055; border-radius: 3px; transform: rotate(-1deg); }
+.operator figcaption { margin-top: 16px; font: 11px/1.8 var(--mono); color: var(--quiet); letter-spacing: .04em; }
+.operator figcaption b { font-weight: 400; color: var(--muted); }
+.door { position: absolute; left: -6%; top: 78%; width: 26%; aspect-ratio: 1; border-radius: 50%; z-index: 2; cursor: default; color: #d4af37; }
+.door svg { width: 100%; height: 100%; opacity: 0; transition: opacity 1.2s; }
+@media (hover: hover) { .door:hover svg { opacity: .55; } }
 .site-foot { border-top: 1px solid var(--line); padding-block: 30px; }
 .footer-inner { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 22px; }
 .footer-note { font: 10px/1.7 var(--mono); color: var(--quiet); }
 .footer-links { display: flex; flex-wrap: wrap; gap: 6px 22px; }
 .footer-links a { display: inline-flex; align-items: center; min-height: 44px; color: var(--muted); font: 11px var(--mono); }
 @media (max-width: 1000px) { .hero { gap: 38px; } .specimen { padding: 22px; } .mini-table { font-size: 12px; } .result { font-size: 10px; } .section-head, .method, .contact { gap: 38px; } }
-@media (max-width: 800px) { .wrap { width: calc(100% - 48px); } .hero { grid-template-columns: 1fr; padding-block: 58px 64px; gap: 60px; } h1 { font-size: clamp(50px, 9.5vw, 76px); } .hero-copy > p:not(.eyebrow) { max-width: 35em; } .specimen { max-width: 560px; width: calc(100% - 8px); justify-self: center; } .mini-table { font-size: 15px; } .result { font-size: 11px; } .section-head, .method, .contact { grid-template-columns: 1fr; gap: 25px; } .section-head > p { padding-top: 0; font-size: 18px; } .people { grid-template-columns: 1fr; gap: 34px; } .person h3 { margin-top: 12px; } .person p { max-width: 40em; } .person a { margin-top: 10px; } .calibration { align-items: flex-start; gap: 14px; flex-direction: column; } .artifact { grid-template-columns: 54px 1fr 24px; gap: 14px; } .artifact p { grid-column: 2; grid-row: 2; } .artifact .arrow { grid-column: 3; grid-row: 1; } .band { padding-block: 64px; } .contact { padding-block: 72px; } }
+@media (max-width: 800px) { .wrap { width: calc(100% - 48px); } .hero { grid-template-columns: 1fr; padding-block: 58px 64px; gap: 60px; } h1 { font-size: clamp(50px, 9.5vw, 76px); } .hero-copy > p:not(.eyebrow) { max-width: 35em; } .specimen { max-width: 560px; width: calc(100% - 8px); justify-self: center; } .mini-table { font-size: 15px; } .result { font-size: 11px; } .section-head, .method, .contact { grid-template-columns: 1fr; gap: 25px; } .section-head > p { padding-top: 0; font-size: 18px; } .people { grid-template-columns: 1fr; gap: 34px; } .person h3 { margin-top: 12px; } .person p { max-width: 40em; } .person a { margin-top: 10px; } .calibration { align-items: flex-start; gap: 14px; flex-direction: column; } .artifact { grid-template-columns: 54px 1fr 24px; gap: 14px; } .artifact p { grid-column: 2; grid-row: 2; } .artifact .arrow { grid-column: 3; grid-row: 1; } .band { padding-block: 64px; } .contact { padding-block: 72px; } .operator { max-width: 320px; } }
 @media (max-width: 540px) { html { scroll-padding-top: 155px; } .nav { flex-wrap: wrap; padding-block: 16px 10px; gap: 9px; } .brand { min-height: 32px; font-size: 13px; } .nav-links { width: 100%; gap: 8px 20px; justify-content: space-between; } .nav-links a { font-size: 10px; } .nav-links .nav-contact { padding-inline: 12px; } .hero { padding-top: 40px; } h1 { font-size: clamp(47px, 12vw, 64px); } .hero-copy > p:not(.eyebrow) { font-size: 18px; } .actions { flex-direction: column; align-items: stretch; } .specimen { padding: 21px 17px; transform: none; } .specimen h2 { font-size: 31px; } .mini-table { font-size: 12.5px; } .result { font-size: 10px; } .mini-table td { padding-block: 11px; } .paper-meta { font-size: 9px; } .eyebrow { font-size: 10px; } .contact-copy > p { font-size: 18px; } .footer-inner { align-items: flex-start; flex-direction: column; } }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .btn { transition: none; } }
 </style>
@@ -208,11 +218,16 @@ h1 em { color: var(--gold); font-weight: 350; }
 </section>
 <div class="journal" id="evolution"><p>Implemented: the development archive is preserved. A new dated Annotation distinguishes current prototypes, proposals, and metaphors from earlier design language.</p><a href="/evolution/annotations/2026-10-30-gpt-public-presentation/">Read the status Annotation <span aria-hidden="true">↗</span></a></div>
 <section class="contact" id="access" aria-labelledby="contact-h">
-<div><p class="eyebrow">Implemented · Direct email contact</p><h2 id="contact-h">Have a real example?<br><em>Let’s look at it.</em></h2></div>
+<div><p class="eyebrow">Implemented · Direct email contact</p><h2 id="contact-h">Have a real example?<br><em>Let’s look at it.</em></h2>
+<figure class="operator">
+<div class="operator-frame"><img src="/assets/operator.jpg" alt="Graham Benjamin Higgins, the Operator, playing an acoustic guitar beside a mountain lake under the aurora" width="1024" height="1024" loading="lazy"><a class="door" href="#access" data-door="/tneipicni/" aria-hidden="true" tabindex="-1"><svg viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-linecap="round"><circle cx="100" cy="100" r="78" stroke-width="2.2"/><circle cx="100" cy="100" r="56" stroke-width="1.4"/><circle cx="100" cy="100" r="34" stroke-width="2.8"/><path d="M100 22 L158 150 L42 150 Z" stroke-width="1" stroke-linejoin="round"/><path d="M8 100 H192 M100 8 V192" stroke-width="1.6"/></svg></a></div>
+<figcaption><b>The Operator.</b> Graham Benjamin Higgins reads every check himself. Reviews are a conversation with a person, not a queue.</figcaption>
+</figure></div>
 <div class="contact-copy"><p>Tell us what you work on, what needs checking, and what a useful review would help you decide. We’ll agree the scope before you share a deliverable.</p><a class="contact-email" href="mailto:kaskade.evolution@gmail.com?subject=Kaskade%20conversation">kaskade.evolution@gmail.com</a><p class="small">Independent project · Pilot stage · Seeking collaborators</p></div>
 </section>
 </div>
 </main>
 <footer class="site-foot"><div class="wrap footer-inner"><p class="footer-note">KASKADE / Thoughtful review. Inspectable work.<br>© 2026 Kaskade</p><nav class="footer-links" aria-label="Footer navigation"><a href="/assay/">Assay Office by Kaskade</a><a href="/evolution/annotations/2026-10-30-gpt-name-and-contact/">Development</a><a href="https://x.com/gramlincodex">@gramlincodex on X</a><a href="https://forms.gle/daoYHEXbE6d6dqwPA" target="_blank" rel="noopener">Project updates</a></nav></div></footer>
+<script>(function(){var d=document.querySelector('.door');if(!d)return;var way=d.getAttribute('data-door').split('').reverse().join('');d.addEventListener('click',function(e){e.preventDefault();window.location.href=way;});})();</script>
 </body>
 </html>
