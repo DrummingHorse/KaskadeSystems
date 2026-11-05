@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Assay Office by Kaskade — how a check runs</title>
+<style>
+@font-face { font-family: "Fraunces"; src: url("../../assay/fonts/fraunces-normal.woff2") format("woff2"); font-weight: 100 900; font-style: normal; }
+@font-face { font-family: "Fraunces"; src: url("../../assay/fonts/fraunces-italic.woff2") format("woff2"); font-weight: 100 900; font-style: italic; }
+@font-face { font-family: "IBM Plex Mono"; src: url("../../assay/fonts/ibm-plex-mono-400.woff2") format("woff2"); font-weight: 400; }
+@font-face { font-family: "IBM Plex Mono"; src: url("../../assay/fonts/ibm-plex-mono-500.woff2") format("woff2"); font-weight: 500; }
+@font-face { font-family: "IBM Plex Mono"; src: url("../../assay/fonts/ibm-plex-mono-600.woff2") format("woff2"); font-weight: 600; }
+
+:root {
+  --stone: #020617; --slab: #0b1222; --rule: #1e293b; --rule2: #334155;
+  --ash: #94a3b8; --mist: #cbd5e1; --quartz: #f1ead8;
+  --gold: #fbbf24; --goldhi: #fcd34d; --bronze: #b08a44;
+  --violet: #a78bfa; --cyan: #22d3ee; --sky: #38bdf8; --fuchsia: #e879f9;
+  --seal: #9f2d20; --paper: #efe7d4; --ink: #1b1f2a; --ink3: #5b5547; --ink4: #8a8270; --hair: #c9bb9a;
+  --serif: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+html, body { margin: 0; background: #000; }
+#stage {
+  position: relative; width: 1080px; height: 1080px; overflow: hidden;
+  background: var(--stone); color: var(--quartz);
+  font-family: var(--serif); font-variation-settings: "SOFT" 60, "WONK" 0; font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+}
+#stage * { box-sizing: border-box; }
+.el { position: absolute; opacity: 0; transform-origin: 50% 50%; white-space: nowrap; }
+.tl { transform-origin: 0 50%; }
+.mono { font-family: var(--mono); }
+.eyebrow { font: 500 12.5px/1 var(--mono); letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); }
+.h1 { font-size: 62px; line-height: 1.02; font-weight: 420; letter-spacing: -0.02em; color: var(--quartz); }
+.sub { font-size: 26px; line-height: 1.3; font-style: italic; font-weight: 380; color: var(--ash); }
+
+/* background */
+.ray { position: absolute; left: -500px; width: 2200px; height: 260px; opacity: 0; transform-origin: 50% 50%; filter: blur(2px); }
+.grid { position: absolute; inset: 0;
+  background-image: linear-gradient(to right, rgba(148,163,184,0.055) 1px, transparent 1px), linear-gradient(to bottom, rgba(148,163,184,0.055) 1px, transparent 1px);
+  background-size: 90px 90px; background-position: 0 0; opacity: 0; }
+.vignette { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 60% at 50% 40%, rgba(167,139,250,0.10), transparent 60%), radial-gradient(ellipse 80% 70% at 50% 100%, rgba(251,191,36,0.07), transparent 60%); }
+.vig2 { position: absolute; inset: 0; box-shadow: inset 0 0 220px 60px rgba(2,6,23,0.9); }
+
+/* chrome */
+.bracket { position: absolute; width: 30px; height: 30px; border: 0 solid var(--gold); opacity: 0; }
+.bracket.tl { top: 34px; left: 34px; border-top-width: 2px; border-left-width: 2px; }
+.bracket.tr { top: 34px; right: 34px; border-top-width: 2px; border-right-width: 2px; }
+.bracket.bl { bottom: 34px; left: 34px; border-bottom-width: 2px; border-left-width: 2px; }
+.bracket.br { bottom: 34px; right: 34px; border-bottom-width: 2px; border-right-width: 2px; }
+.brand { left: 72px; top: 54px; font-size: 23px; line-height: 1; font-weight: 500; }
+.brand i { font-style: italic; font-weight: 400; color: var(--ash); font-size: 19px; margin-left: 6px; }
+.stamp-pilot { right: 72px; top: 56px; font: 500 12px/1 var(--mono); letter-spacing: 0.16em; color: var(--ash); text-transform: uppercase; }
+.caption { left: 72px; bottom: 56px; font: 400 12px/1 var(--mono); color: var(--ash); letter-spacing: 0.02em; }
+.url { right: 72px; bottom: 56px; font: 500 12px/1 var(--mono); color: var(--gold); letter-spacing: 0.04em; }
+
+/* scene 1 panel */
+.panel { left: 72px; top: 436px; width: 936px; height: 400px; border: 1px solid var(--rule); border-radius: 4px; background: rgba(11,18,34,0.85); }
+.panel .b { position: absolute; width: 14px; height: 14px; border: 0 solid var(--gold); }
+.panel .b.tl { top: -1px; left: -1px; border-top-width: 2px; border-left-width: 2px; }
+.panel .b.tr { top: -1px; right: -1px; border-top-width: 2px; border-right-width: 2px; }
+.panel .b.bl { bottom: -1px; left: -1px; border-bottom-width: 2px; border-left-width: 2px; }
+.panel .b.br { bottom: -1px; right: -1px; border-bottom-width: 2px; border-right-width: 2px; }
+.ptitle { left: 108px; top: 462px; font: 400 14px/1.5 var(--mono); color: var(--mist); }
+.ptitle b { font-weight: 500; color: var(--quartz); }
+.badge { right: 108px; top: 460px; padding: 7px 11px; border: 1px solid rgba(251,191,36,0.5); border-radius: 3px; font: 600 11.5px/1 var(--mono); letter-spacing: 0.16em; color: var(--gold); text-transform: uppercase; }
+.rowname { height: 24px; font: 500 18px/24px var(--mono); color: var(--quartz); }
+.rowidx { font: 400 13px/24px var(--mono); color: var(--rule2); margin-right: 14px; }
+.deliv { right: 108px; height: 24px; font: 400 13px/24px var(--mono); color: var(--mist); }
+.deliv span { color: var(--mist); margin-right: 8px; }
+.prule { left: 108px; width: 864px; height: 1px; background: var(--rule); }
+
+/* matrix */
+.section { left: 72px; top: 112px; }
+.progress { left: 72px; top: 140px; width: 936px; height: 1px; background: var(--rule); opacity: 0; position: absolute; }
+.progress i { position: absolute; left: 0; top: -1px; height: 3px; width: 0; background: linear-gradient(90deg, var(--violet), var(--cyan), var(--sky), var(--fuchsia), var(--gold)); }
+.colhead { width: 100px; height: 44px; top: 262px; text-align: center; }
+.colhead i { position: absolute; left: 10px; top: 0; height: 2px; width: 80px; transform-origin: 50% 50%; }
+.colhead b { position: absolute; left: 0; right: 0; top: 12px; font: 600 11.5px/1 var(--mono); letter-spacing: 0.18em; }
+.colhead em { position: absolute; left: -20px; right: -20px; top: 30px; font: 400 10.5px/1 var(--mono); font-style: normal; color: var(--ash); letter-spacing: 0; }
+.hrule { left: 72px; height: 1px; background: var(--rule); width: 820px; }
+.cell { width: 100px; height: 92px; }
+.cell .ring { position: absolute; left: 32px; top: 28px; width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--rule2); }
+.cell .dot { position: absolute; left: 32px; top: 28px; width: 36px; height: 36px; border-radius: 50%; background: var(--gold); color: var(--stone); font: 600 18px/36px var(--mono); text-align: center; opacity: 0; box-shadow: 0 0 18px rgba(251,191,36,0.55); }
+.cell .dot.fail { background: transparent; border: 2px solid var(--bronze); color: var(--bronze); box-shadow: 0 0 18px rgba(176,138,68,0.35); line-height: 32px; }
+.cell .dash { position: absolute; left: 0; right: 0; top: 28px; height: 36px; font: 400 18px/36px var(--mono); color: var(--rule2); text-align: center; opacity: 0; }
+.cell .flash { position: absolute; left: 32px; top: 28px; width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--gold); opacity: 0; }
+.cursor { width: 140px; height: 120px; border-radius: 40%; background: linear-gradient(135deg, var(--violet), var(--cyan), var(--sky), var(--fuchsia), var(--gold)); filter: blur(22px); opacity: 0; }
+.note { font: 400 12px/1 var(--mono); color: var(--bronze); letter-spacing: 0.02em; }
+.tally { width: 92px; height: 24px; text-align: center; font: 600 11px/22px var(--mono); letter-spacing: 0.16em; border-radius: 3px; border: 1px solid; }
+.tally.gold { color: var(--gold); border-color: rgba(251,191,36,0.55); background: rgba(251,191,36,0.08); }
+.tally.pyr { color: var(--bronze); border-color: rgba(176,138,68,0.5); background: rgba(176,138,68,0.07); }
+.read { width: 220px; height: 110px; }
+.read .k { position: absolute; left: 0; top: 0; font: 500 11.5px/1 var(--mono); letter-spacing: 0.18em; color: var(--ash); text-transform: uppercase; }
+.read .n { position: absolute; left: 0; top: 24px; font-size: 60px; line-height: 1; font-weight: 340; letter-spacing: -0.02em; transform-origin: 0 50%; font-variant-numeric: lining-nums tabular-nums; }
+.read .u { position: absolute; left: 0; top: 94px; height: 1px; width: 180px; background: var(--rule); }
+.read .u i { position: absolute; left: 0; top: -1px; height: 2px; width: 0; }
+
+/* report card */
+.card { left: 220px; top: 226px; width: 640px; height: 610px; background: var(--paper); color: var(--ink); border-radius: 3px; box-shadow: 0 30px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(201,187,154,0.5); font-variation-settings: "SOFT" 70, "WONK" 0; }
+.card .cb { position: absolute; width: 16px; height: 16px; border: 0 solid var(--ink3); }
+.card .cb.tl { top: 10px; left: 10px; border-top-width: 1px; border-left-width: 1px; }
+.card .cb.tr { top: 10px; right: 10px; border-top-width: 1px; border-right-width: 1px; }
+.card .cb.bl { bottom: 10px; left: 10px; border-bottom-width: 1px; border-left-width: 1px; }
+.card .cb.br { bottom: 10px; right: 10px; border-bottom-width: 1px; border-right-width: 1px; }
+.cl { position: absolute; left: 40px; right: 40px; opacity: 0; }
+.cl.eye { top: 38px; font: 500 11px/1 var(--mono); letter-spacing: 0.2em; color: var(--ink4); text-transform: uppercase; }
+.cl.ttl { top: 62px; font-size: 40px; line-height: 1; font-weight: 420; letter-spacing: -0.015em; color: var(--ink); }
+.cl.meta { top: 112px; font: 400 12.5px/1 var(--mono); color: var(--ink3); }
+.cl.rule { height: 1px; background: var(--hair); }
+.cl.pair { height: 50px; }
+.cl.pair .k { position: absolute; left: 0; top: 0; font: 500 10.5px/1 var(--mono); letter-spacing: 0.18em; color: var(--ink4); text-transform: uppercase; }
+.cl.pair .v { position: absolute; left: 0; top: 18px; font-size: 18.5px; line-height: 1.2; color: var(--ink); white-space: normal; width: 560px; }
+.cl.res .k { position: absolute; left: 0; top: 0; font: 500 10.5px/1 var(--mono); letter-spacing: 0.18em; color: var(--ink4); text-transform: uppercase; }
+.cl.res .v { position: absolute; left: 0; top: 20px; font-size: 27px; line-height: 1.1; font-weight: 440; letter-spacing: -0.015em; color: var(--ink); }
+.cl.foot { font: 400 11px/1.5 var(--mono); color: var(--ink4); white-space: normal; width: 350px; }
+.stamp { left: 632px; top: 656px; width: 222px; height: 104px; border: 3px solid var(--seal); border-radius: 6px; color: var(--seal); text-align: center; mix-blend-mode: multiply; }
+.stamp:before { content: ""; position: absolute; inset: 4px; border: 1px solid var(--seal); border-radius: 3px; }
+.stamp b { position: absolute; left: 0; right: 0; top: 14px; font: 600 36px/1 var(--mono); letter-spacing: 0.1em; }
+.stamp i { position: absolute; left: 0; right: 0; top: 60px; font: 600 14px/1 var(--mono); font-style: normal; letter-spacing: 0.34em; }
+.lede { left: 72px; top: 176px; font-size: 24px; line-height: 1.3; font-style: italic; font-weight: 380; color: var(--ash); }
+.tally-line { left: 72px; top: 868px; width: 936px; text-align: center; font-size: 30px; line-height: 1.3; font-style: italic; font-weight: 380; color: var(--mist); white-space: normal; }
+
+/* close */
+.big { font-size: 124px; line-height: 0.98; font-weight: 420; letter-spacing: -0.025em; color: var(--quartz); }
+.big .g { color: var(--gold); }
+.big .p { color: var(--bronze); }
+.specline { left: 72px; top: 600px; width: 0; height: 2px; background: linear-gradient(90deg, var(--violet), var(--cyan), var(--sky), var(--fuchsia), var(--gold)); opacity: 1; }
+.csub { left: 72px; top: 636px; font-size: 27px; line-height: 1.35; font-weight: 400; color: var(--mist); white-space: normal; width: 880px; }
+.cta { left: 72px; top: 770px; height: 56px; padding: 0 28px; border-radius: 4px; background: var(--gold); color: var(--stone); font-size: 20px; line-height: 56px; font-weight: 600; }
+.ctaurl { left: 326px; top: 770px; font: 500 16px/56px var(--mono); color: var(--gold); letter-spacing: 0.02em; }
+.cfine { left: 72px; top: 850px; font: 400 13px/1.6 var(--mono); color: var(--ash); }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script>
+(function () {
+  const S = document.getElementById('stage');
+  const clamp = (x, a, b) => Math.min(b, Math.max(a, x));
+  const E = {
+    lin: x => x,
+    outCubic: x => 1 - Math.pow(1 - x, 3),
+    outQuint: x => 1 - Math.pow(1 - x, 5),
+    outExpo: x => x >= 1 ? 1 : 1 - Math.pow(2, -10 * x),
+    inOut: x => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2,
+    inCubic: x => x * x * x,
+    back: x => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); },
+    backHard: x => { const c1 = 2.6, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); }
+  };
+  const tw = (t, a, d, e) => (e || E.outCubic)(clamp((t - a) / d, 0, 1));
+  const lerp = (a, b, u) => a + (b - a) * u;
+  const mk = (cls, html, st) => {
+    const d = document.createElement('div');
+    d.className = 'el ' + (cls || '');
+    if (html) d.innerHTML = html;
+    if (st) Object.assign(d.style, st);
+    S.appendChild(d);
+    return d;
+  };
+  const px = v => v + 'px';
+  const put = (el, o, x, y, s, r, b) => {
+    el.style.opacity = clamp(o, 0, 1).toFixed(3);
+    el.style.transform = `translate(${(x || 0).toFixed(2)}px, ${(y || 0).toFixed(2)}px) rotate(${(r || 0).toFixed(2)}deg) scale(${(s === undefined ? 1 : s).toFixed(4)})`;
+    el.style.filter = b ? `blur(${b.toFixed(2)}px)` : '';
+  };
+  const rise = (t, a, d) => { const u = tw(t, a, d, E.outQuint); return { o: tw(t, a, d * 0.7), y: (1 - u) * 26, b: (1 - u) * 7 }; };
+
+  /* ---------- data ---------- */
+  const FIRMS = [
+    { name: 'Quillfeather Freight Co.', res: [1, 1, 1, 1, 1] },
+    { name: 'Ostrowe & Pike Logistics', res: [0, -1, -1, -1, -1], note: 'no registration found' },
+    { name: 'Tamberlane Haulage', res: [1, 1, 1, 1, 1] },
+    { name: 'Marrowbone Dray Co.', res: [1, 0, -1, -1, -1], note: 'dissolved in 2025' },
+    { name: 'Vellichor Cargo', res: [1, 1, 1, 1, 1] }
+  ];
+  const CHECKS = [
+    { k: 'Exists', d: 'record found', c: '#a78bfa' },
+    { k: 'Active', d: 'status current', c: '#22d3ee' },
+    { k: 'Fits', d: '50–500 staff', c: '#38bdf8' },
+    { k: 'Fresh', d: 'source < 180 d', c: '#e879f9' },
+    { k: 'Unique', d: 'no duplicates', c: '#fbbf24' }
+  ];
+  const MX = 392, MY = 330, CW = 100, RH = 92;        // matrix cell origin and size
+  const cellX = c => MX + c * CW, cellY = r => MY + r * RH;
+  const rowCY = r => cellY(r) + RH / 2;                 // row centre y
+  const S1_ROWY = i => 532 + i * 58;                    // scene-1 panel row centres
+
+  // scan events
+  const EV = [];
+  (function () {
+    let t = 7.55; const DT = 0.34;
+    FIRMS.forEach((f, r) => {
+      let dashT = null;
+      f.res.forEach((v, c) => {
+        if (v >= 0) { EV.push({ t, r, c, v }); t += DT; }
+        else { if (dashT === null) dashT = t - DT + 0.22; EV.push({ t: dashT + (c - 1) * 0.05, r, c, v: -1 }); }
+      });
+      t += dashT !== null ? 0.66 : 0.26;
+    });
+    window.__scanEnd = t;
+  })();
+  const LIVE = EV.filter(e => e.v >= 0);
+  const SCAN_END = LIVE[LIVE.length - 1].t;             // ≈ 15.2
+  const TALLY_T = SCAN_END + 0.45;                      // gold / pyrite tags
+  const MX_OUT = TALLY_T + 1.75;                        // matrix leaves
+  const CARD_IN = MX_OUT + 0.35;                        // findings report rises
+  const STAMP_T = CARD_IN + 1.8;
+  const TLINE_T = STAMP_T + 0.95;
+  const CARD_OUT = TLINE_T + 2.25;
+  const CLOSE = CARD_OUT + 0.55;                        // "Pay for gold"
+  const END = Math.ceil((CLOSE + 5.4) * 10) / 10;
+
+  /* ---------- background ---------- */
+  const grid = document.createElement('div'); grid.className = 'grid'; S.appendChild(grid);
+  const vig = document.createElement('div'); vig.className = 'vignette'; S.appendChild(vig);
+  const RAYS = [
+    { c: 'rgba(167,139,250,0.55)', y: 120, ph: 0.0 },
+    { c: 'rgba(34,211,238,0.45)', y: 420, ph: 2.1 },
+    { c: 'rgba(232,121,249,0.40)', y: 700, ph: 4.2 },
+    { c: 'rgba(251,191,36,0.45)', y: 940, ph: 1.3 }
+  ].map(r => {
+    const d = document.createElement('div'); d.className = 'ray';
+    d.style.background = `linear-gradient(90deg, transparent 0%, ${r.c} 35%, ${r.c} 60%, transparent 100%)`;
+    d.style.top = px(r.y); d.dataset.ph = r.ph; S.appendChild(d); return d;
+  });
+  const vig2 = document.createElement('div'); vig2.className = 'vig2'; S.appendChild(vig2);
+
+  /* ---------- chrome ---------- */
+  const brackets = ['tl', 'tr', 'bl', 'br'].map(k => { const d = document.createElement('div'); d.className = 'bracket ' + k; S.appendChild(d); return d; });
+  const brand = mk('brand tl', 'Assay Office<i>by Kaskade</i>');
+  const pilot = mk('stamp-pilot', 'Pilot · how a check runs');
+  const caption = mk('caption tl', 'Illustration · fictional example DEMO-0417 · not a live check');
+  const url = mk('url', 'kaskade.systems/assay');
+
+  /* ---------- scene 1 ---------- */
+  const h1a = mk('h1 tl', 'AI work looks finished', { left: '72px', top: '160px' });
+  const h1b = mk('h1 tl', 'long before anyone checks it.', { left: '72px', top: '226px' });
+  const sub1 = mk('sub tl', 'A tidy list proves the format, not the facts.', { left: '72px', top: '318px' });
+  const panel = mk('panel', '<i class="b tl"></i><i class="b tr"></i><i class="b bl"></i><i class="b br"></i>');
+  const ptitle = mk('ptitle tl', '<b>Deliverable</b> · Five qualified leads: US logistics firms, 50 to 500 staff · made by an AI lead-list vendor');
+  const badge = mk('badge', 'Delivered · looks complete');
+  const prules = FIRMS.map((f, i) => mk('prule', '', { top: px(S1_ROWY(i) + 29) }));
+  const rows = FIRMS.map((f, i) => mk('rowname tl', `<span class="rowidx">0${i + 1}</span>${f.name}`, { left: '108px', top: px(S1_ROWY(i) - 12) }));
+  const delivs = FIRMS.map((f, i) => mk('deliv', '<span>✓</span>delivered', { top: px(S1_ROWY(i) - 12) }));
+
+  /* ---------- scene 2/3 matrix ---------- */
+  const section = mk('eyebrow section tl', 'The assay · 5 entries × 5 agreed checks · tool-assisted, human-reviewed');
+  const section2 = mk('eyebrow section tl', 'Checks complete · 18 run · 16 supported · 2 unsupported · 7 skipped after a failure');
+  const lede = mk('lede tl', 'Every entry, checked against the requirements it was meant to meet.');
+  const progress = document.createElement('div'); progress.className = 'progress'; progress.innerHTML = '<i></i>'; S.appendChild(progress);
+  const progFill = progress.firstChild;
+  const heads = CHECKS.map((ch, j) => mk('colhead', `<i style="background:${ch.c}"></i><b style="color:${ch.c}">${ch.k.toUpperCase()}</b><em>${ch.d}</em>`, { left: px(cellX(j)) }));
+  const hrules = [0, 1, 2, 3, 4, 5].map(i => mk('hrule tl', '', { top: px(MY + i * RH) }));
+  const cursor = mk('cursor', '');
+  const cells = [];
+  FIRMS.forEach((f, r) => CHECKS.forEach((ch, c) => {
+    const v = f.res[c];
+    const el = mk('cell', `<i class="ring"></i><i class="flash"></i><i class="dot${v === 0 ? ' fail' : ''}">${v === 0 ? '✕' : '✓'}</i><i class="dash">—</i>`, { left: px(cellX(c)), top: px(cellY(r)) });
+    cells.push({ el, r, c, v, ring: el.children[0], flash: el.children[1], dot: el.children[2], dash: el.children[3], ev: EV.find(e => e.r === r && e.c === c) });
+  }));
+  const notes = FIRMS.map((f, i) => f.note ? mk('note tl', '↳ ' + f.note, { left: px(cellX(f.res.indexOf(0) + 1) + 6), top: px(rowCY(i) + 24) }) : null);
+  const tallies = FIRMS.map((f, i) => mk('tally ' + (f.res.includes(0) ? 'pyr' : 'gold'), f.res.includes(0) ? 'PYRITE' : 'GOLD', { left: '916px', top: px(rowCY(i) - 12) }));
+  const READS = [
+    { k: 'Checks run', col: 'var(--quartz)', bar: 'linear-gradient(90deg,var(--violet),var(--cyan))' },
+    { k: 'Supported', col: 'var(--gold)', bar: 'var(--gold)' },
+    { k: 'Unsupported', col: 'var(--bronze)', bar: 'var(--bronze)' },
+    { k: 'Skipped', col: 'var(--ash)', bar: 'var(--rule2)' }
+  ].map((r, i) => {
+    const el = mk('read', `<b class="k">${r.k}</b><b class="n" style="color:${r.col}">0</b><i class="u"><i style="background:${r.bar}"></i></i>`, { left: px(72 + i * 234), top: '838px' });
+    return { el, n: el.children[1], bar: el.children[2].firstChild, last: 0, lastT: -9 };
+  });
+
+  /* ---------- scene 4 card ---------- */
+  const card = mk('card', '<i class="cb tl"></i><i class="cb tr"></i><i class="cb bl"></i><i class="cb br"></i>');
+  const cl = (cls, html, top) => { const d = document.createElement('div'); d.className = 'cl ' + cls; d.innerHTML = html; d.style.top = px(top); card.appendChild(d); return d; };
+  const CL = [
+    cl('eye', 'Assay Office by Kaskade · specimen, not a live result', 38),
+    cl('ttl', 'Assay Findings Report', 62),
+    cl('meta', 'No. PK-0417 · 29 October 2026 · basic checks, then human review', 112),
+    cl('rule', '', 142),
+    cl('pair', '<b class="k">Job</b><div class="v">Five qualified leads: US logistics firms, 50 to 500 staff</div>', 164),
+    cl('pair', '<b class="k">Requested by</b><div class="v">A B2B sales team buying the list</div>', 228),
+    cl('pair', '<b class="k">Made by</b><div class="v">An AI lead-list vendor</div>', 292),
+    cl('pair', '<b class="k">Criteria</b><div class="v">Exists · active · fits · sources under 180 days · unique</div>', 356),
+    cl('rule', '', 424),
+    cl('res', '<b class="k">Result</b><div class="v">3 of 5 leads meet every criterion</div>', 446),
+    cl('foot', 'Findings support your decision; they do not guarantee conversion. Fictional firms and IDs; no signed certificate is offered.', 536)
+  ];
+  const stamp = mk('stamp', '<b>FAILS</b><i>THE SPEC</i>');
+  const tline = mk('tally-line', 'Three gold. Two pyrite. The spec needed all five, so the list fails.');
+
+  /* ---------- scene 5 ---------- */
+  const bigA = mk('big tl', 'Pay for <span class="g">gold,</span>', { left: '72px', top: '300px' });
+  const bigB = mk('big tl', 'not <span class="p">pyrite.</span>', { left: '72px', top: '428px' });
+  const specline = mk('specline tl', '');
+  const csub = mk('csub tl', 'Independent checks of AI-made work — before you rely on a lead list or a research report.');
+  const cta = mk('cta tl', 'Request a free pilot');
+  const ctaurl = mk('ctaurl tl', 'kaskade.systems/assay');
+  const cfine = mk('cfine tl', 'Up to five design-partner pilots · lead lists up to 25 entries, reports up to 15 cited claims<br>Scope, reviewer and delivery date agreed before any file is shared · findings in ~3 business days');
+
+  /* ---------- timeline ---------- */
+  function seek(t) {
+    const endFade = 1 - tw(t, END - 0.8, 0.8, E.inOut);
+    const chrome = 1;                                    // frame stays up across the loop point
+
+    // background
+    grid.style.opacity = '0.9';
+    grid.style.backgroundPosition = `${(t * 3) % 90}px ${(t * 2) % 90}px`;
+    const rayBoost = 1 + 0.9 * tw(t, CLOSE, 1.6) - 0.35 * tw(t, 4.2, 1.2) + 0.35 * tw(t, CARD_IN, 1.0);
+    RAYS.forEach((d, i) => {
+      const ph = +d.dataset.ph;
+      const dx = Math.sin(t * 0.21 + ph) * 160;
+      const dy = Math.cos(t * 0.17 + ph) * 60;
+      put(d, 0.11 * rayBoost, dx, dy, 1, -24);
+    });
+
+    // chrome
+    brackets.forEach((b, i) => put(b, chrome));
+    put(brand, chrome);
+    put(pilot, chrome);
+    put(caption, chrome);
+    put(url, chrome);
+
+    /* ----- scene 1 ----- */
+    const s1out = 1 - tw(t, 3.95, 0.5, E.inOut);
+    { const r = rise(t, 0.15, 0.9); put(h1a, Math.min(r.o, s1out), 0, r.y, 1, 0, r.b); }
+    { const r = rise(t, 0.45, 0.9); put(h1b, Math.min(r.o, s1out), 0, r.y, 1, 0, r.b); }
+    { const r = rise(t, 1.1, 0.8); put(sub1, Math.min(r.o, s1out), 0, r.y, 1, 0, r.b); }
+    const pin = tw(t, 1.45, 0.8, E.outQuint);
+    const panelOut = 1 - tw(t, 3.9, 0.45, E.inOut);
+    put(panel, tw(t, 1.45, 0.5) * panelOut, 0, (1 - pin) * 36, lerp(0.985, 1, pin));
+    put(ptitle, tw(t, 1.75, 0.5) * panelOut, 0, (1 - tw(t, 1.75, 0.6, E.outQuint)) * 10);
+    const badgeIn = tw(t, 2.95, 0.45, E.back);
+    put(badge, tw(t, 2.95, 0.2) * panelOut, 0, 0, lerp(0.6, 1, badgeIn));
+    badge.style.borderColor = `rgba(251,191,36,${(0.3 + 0.4 * Math.abs(Math.sin(t * 4))).toFixed(2)})`;
+    prules.forEach((p, i) => put(p, tw(t, 1.9 + i * 0.16, 0.4) * panelOut * 0.9, (1 - tw(t, 1.9 + i * 0.16, 0.7, E.outQuint)) * -60));
+    delivs.forEach((d, i) => { const u = tw(t, 2.15 + i * 0.16, 0.45, E.back); put(d, tw(t, 2.15 + i * 0.16, 0.2) * panelOut, 0, 0, lerp(0.7, 1, u)); });
+
+    // rows: panel → matrix
+    rows.forEach((r, i) => {
+      const inU = tw(t, 1.85 + i * 0.16, 0.7, E.outQuint);
+      const mv = tw(t, 3.95 + i * 0.07, 0.95, E.inOut);
+      const x = lerp(0, 72 - 108, mv) + (1 - inU) * -40;
+      const y = lerp(0, rowCY(i) - S1_ROWY(i), mv);
+      const mxOut = 1 - tw(t, MX_OUT, 0.55, E.inOut);
+      const failed = FIRMS[i].res.includes(0);
+      const evFail = failed ? EV.find(e => e.r === i && e.v === 0) : null;
+      const dim = evFail ? tw(t, evFail.t, 0.5) : 0;
+      r.style.color = dim ? `rgb(${lerp(241, 148, dim) | 0},${lerp(234, 163, dim) | 0},${lerp(216, 184, dim) | 0})` : '';
+      put(r, tw(t, 1.85 + i * 0.16, 0.35) * mxOut, x, y);
+    });
+
+    /* ----- scene 2: matrix build ----- */
+    const mxOut = 1 - tw(t, MX_OUT, 0.55, E.inOut);
+    const sec1 = tw(t, 4.4, 0.6) * (1 - tw(t, TALLY_T + 0.1, 0.35, E.inOut));
+    put(section, sec1, 0, (1 - tw(t, 4.4, 0.8, E.outQuint)) * 8);
+    const sec2 = tw(t, TALLY_T + 0.35, 0.5) * mxOut;
+    put(section2, sec2, 0, (1 - tw(t, TALLY_T + 0.35, 0.7, E.outQuint)) * 8);
+    { const r = rise(t, 4.75, 0.9); put(lede, Math.min(r.o, mxOut), 0, r.y, 1, 0, r.b); }
+    progress.style.opacity = (tw(t, 4.6, 0.5) * mxOut).toFixed(3);
+    heads.forEach((h, j) => {
+      const u = tw(t, 5.0 + j * 0.12, 0.6, E.outQuint);
+      put(h, tw(t, 5.0 + j * 0.12, 0.35) * mxOut, 0, (1 - u) * 10);
+      h.firstChild.style.transform = `scaleX(${u.toFixed(3)})`;
+    });
+    hrules.forEach((h, i) => { const u = tw(t, 5.25 + i * 0.08, 0.7, E.outQuint); put(h, tw(t, 5.25 + i * 0.08, 0.3) * mxOut, 0, 0); h.style.transform += ` scaleX(${u.toFixed(3)})`; });
+    READS.forEach((rd, i) => { const r = rise(t, 6.15 + i * 0.1, 0.7); put(rd.el, Math.min(r.o, mxOut), 0, r.y, 1, 0, r.b); });
+
+    /* ----- scene 3: scan ----- */
+    let run = 0, sup = 0, uns = 0, skp = 0, lastChange = [-9, -9, -9, -9];
+    EV.forEach(e => { if (e.t <= t) { if (e.v === 1) { run++; sup++; lastChange[0] = lastChange[1] = e.t; } else if (e.v === 0) { run++; uns++; lastChange[0] = lastChange[2] = e.t; } else { skp++; lastChange[3] = e.t; } } });
+    const vals = [run, sup, uns, skp];
+    READS.forEach((rd, i) => {
+      rd.n.textContent = vals[i];
+      const pop = 1 - tw(t, lastChange[i], 0.3, E.outCubic);
+      rd.n.style.transform = `scale(${(1 + 0.18 * pop).toFixed(3)})`;
+      rd.bar.style.width = px(180 * clamp(vals[i] / 25, 0, 1));
+    });
+    progFill.style.width = px(936 * ((run + skp) / 25));
+
+    cells.forEach(cd => {
+      const e = cd.ev;
+      const pend = tw(t, 5.3 + cd.r * 0.08 + cd.c * 0.05, 0.4) * mxOut;
+      const charge = e.v >= 0 ? tw(t, e.t - 0.34, 0.3) * (1 - tw(t, e.t, 0.12)) : 0;
+      put(cd.el, pend, 0, 0);
+      cd.ring.style.borderColor = e.v >= 0 && t < e.t ? `rgba(${charge > 0 ? '251,191,36' : '51,65,85'},${(0.9 * (0.5 + charge)).toFixed(2)})` : 'rgba(51,65,85,0.6)';
+      cd.ring.style.transform = `scale(${(1 + 0.12 * charge).toFixed(3)})`;
+      cd.ring.style.opacity = t < e.t ? '1' : (1 - tw(t, e.t, 0.2)).toFixed(2);
+      if (e.v >= 0) {
+        const u = tw(t, e.t, 0.42, E.backHard);
+        cd.dot.style.opacity = tw(t, e.t, 0.1).toFixed(2);
+        cd.dot.style.transform = `scale(${(Math.max(0.01, u)).toFixed(3)})`;
+        const f = tw(t, e.t, 0.55, E.outCubic);
+        cd.flash.style.opacity = (f > 0 && f < 1 ? 0.8 * (1 - f) : 0).toFixed(2);
+        cd.flash.style.transform = `scale(${(1 + 2.2 * f).toFixed(3)})`;
+        cd.flash.style.borderColor = e.v ? 'var(--gold)' : 'var(--bronze)';
+      } else {
+        cd.dash.style.opacity = tw(t, e.t, 0.3).toFixed(2);
+        cd.dash.style.transform = `translateX(${((1 - tw(t, e.t, 0.5, E.outQuint)) * -14).toFixed(1)}px)`;
+      }
+    });
+
+    // cursor: glides to the cell about to resolve
+    {
+      let prev = null, next = null;
+      for (const e of LIVE) { if (e.t <= t) prev = e; else { next = e; break; } }
+      const from = prev ? { x: cellX(prev.c), y: cellY(prev.r) } : { x: cellX(0) - 160, y: cellY(0) };
+      const to = next ? { x: cellX(next.c), y: cellY(next.r) } : from;
+      const u = next ? tw(t, next.t - 0.36, 0.3, E.inOut) : 1;
+      const x = lerp(from.x, to.x, u) - 20, y = lerp(from.y, to.y, u) - 14;
+      const o = tw(t, 7.0, 0.5) * (1 - tw(t, SCAN_END + 0.05, 0.5));
+      put(cursor, 0.5 * o, x, y, 1 + 0.08 * Math.sin(t * 9));
+    }
+    notes.forEach((n, i) => { if (!n) return; const e = EV.find(e => e.r === i && e.v === 0); const r = rise(t, e.t + 0.25, 0.5); put(n, Math.min(r.o, mxOut), (1 - tw(t, e.t + 0.25, 0.6, E.outQuint)) * -10, 0); });
+    tallies.forEach((tg, i) => { const u = tw(t, TALLY_T + i * 0.1, 0.5, E.back); put(tg, tw(t, TALLY_T + i * 0.1, 0.2) * mxOut, (1 - u) * -16, 0, lerp(0.85, 1, u)); });
+
+    /* ----- scene 4: findings report ----- */
+    const cIn = tw(t, CARD_IN, 1.0, E.outQuint);
+    const cOut = 1 - tw(t, CARD_OUT, 0.7, E.inOut);
+    const slam = tw(t, STAMP_T, 0.3, E.outCubic);
+    const shake = slam > 0 && slam < 1 ? Math.sin(t * 90) * 3 * (1 - slam) : 0;
+    put(card, tw(t, CARD_IN, 0.5) * cOut, shake, (1 - cIn) * 60 - (1 - cOut) * 40, lerp(0.97, 1, cIn));
+    CL.forEach((c, i) => { const a = CARD_IN + 0.35 + i * 0.085; const u = tw(t, a, 0.6, E.outQuint); c.style.opacity = tw(t, a, 0.3).toFixed(2); c.style.transform = `translateY(${((1 - u) * 10).toFixed(1)}px)`; });
+    { const u = tw(t, STAMP_T, 0.32, E.outCubic); put(stamp, tw(t, STAMP_T, 0.08) * cOut, shake, (1 - cOut) * -40, lerp(2.3, 1, u), lerp(-4, -9, u)); }
+    { const r = rise(t, TLINE_T, 0.8); put(tline, Math.min(r.o, cOut), 0, r.y, 1, 0, r.b); }
+
+    /* ----- scene 5: close ----- */
+    { const r = rise(t, CLOSE, 1.0); put(bigA, Math.min(r.o, endFade), 0, r.y, 1, 0, r.b); }
+    { const r = rise(t, CLOSE + 0.3, 1.0); put(bigB, Math.min(r.o, endFade), 0, r.y, 1, 0, r.b); }
+    specline.style.width = px(936 * tw(t, CLOSE + 0.85, 1.2, E.outQuint));
+    put(specline, tw(t, CLOSE + 0.85, 0.2) * endFade);
+    { const r = rise(t, CLOSE + 1.15, 0.9); put(csub, Math.min(r.o, endFade), 0, r.y, 1, 0, r.b); }
+    { const u = tw(t, CLOSE + 1.85, 0.6, E.back); put(cta, tw(t, CLOSE + 1.85, 0.25) * endFade, 0, 0, lerp(0.85, 1, u)); }
+    { const r = rise(t, CLOSE + 2.05, 0.8); put(ctaurl, Math.min(r.o, endFade), 0, r.y, 1, 0, r.b); }
+    { const r = rise(t, CLOSE + 2.35, 0.9); put(cfine, Math.min(r.o, endFade), 0, r.y, 1, 0, r.b); }
+  }
+  window.seek = seek;
+  window.END = END;
+  seek(0);
+  if (location.hash !== '#cap') {
+    const t0 = performance.now();
+    (function loop() { seek(((performance.now() - t0) / 1000) % END); requestAnimationFrame(loop); })();
+  }
+})();
+</script>
+</body>
+</html>
