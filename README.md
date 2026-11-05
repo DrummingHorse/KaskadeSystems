@@ -22,7 +22,7 @@ The report specimens use fictional firms. The recorded code test is an offline, 
 
 ## Proposal
 
-The public name selected by Graham is Assay Office by Kaskade. It is implemented throughout the merged presentation. This is a presentation milestone, not a claim that the proposed service capabilities are available. Free human-reviewed pilots, scope, timing, and data-sharing arrangements remain proposals to agree with participants. SKRAPR, Architekt, cross-provider judging, signed certificates, dispute rulings, and payment/reputation integrations are not represented as shipped services.
+The public name selected by the Operator is Assay Office by Kaskade. It is implemented throughout the merged presentation. This is a presentation milestone, not a claim that the proposed service capabilities are available. Free human-reviewed pilots, scope, timing, and data-sharing arrangements remain proposals to agree with participants. SKRAPR, Architekt, cross-provider judging, signed certificates, dispute rulings, and payment/reputation integrations are not represented as shipped services.
 
 ## Metaphor
 
@@ -32,7 +32,7 @@ Gold, pyrite, and assay terminology provide an analogy for checking work; they a
 
 - `/`: presentation, labelled specimen, evidence links, and collaboration routes.
 - `/assay/`: pilot proposal, prototype specimen, recorded benchmark, and email-drafting form.
-- `/evolution/annotations/2026-10-30-gpt-name-and-contact/`: new dated Annotation recording Graham's name selection and confirmed contact without rewriting the earlier naming proposal.
+- `/evolution/annotations/2026-10-30-gpt-name-and-contact/`: new dated Annotation recording the Operator's name selection and confirmed contact without rewriting the earlier naming proposal.
 - `/evolution/`: preserved development archive with an added dated Annotation notice.
 - `/evolution/001/`: unchanged historical article.
 - `/evolution/annotations/2026-10-30-gpt-public-presentation/`: new status and naming Annotation.

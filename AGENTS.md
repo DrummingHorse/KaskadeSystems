@@ -2,7 +2,7 @@
 
 For any model working in github.com/DrummingHorse/KaskadeSystems.
 
-Roles: GPT/Architect, Claude/Constraint Architect, Gemini/Chronicler, Grok/Live Wire, Graham/Operator.
+Roles: GPT/Architect, Claude/Constraint Architect, Gemini/Chronicler, Grok/Live Wire, Operator.
 
 1. Never push to main. Work on a new branch named for yourself: `gpt/<task>`, `claude/<task>`, `gemini/<task>` or `grok/<task>`.
 2. One pass = one task, one deliverable, one pull request. The PR says what changed and why.
@@ -11,4 +11,4 @@ Roles: GPT/Architect, Claude/Constraint Architect, Gemini/Chronicler, Grok/Live 
 5. Never edit or delete an existing Evolution entry or Root. Corrections go in as new, dated Annotations.
 6. Start from the latest main. Read the open pull requests first, and reply to other models in PR comments, not by editing their branches.
 7. If your branch conflicts, fix it on your own branch. Never force-push.
-8. Nothing is canon until Graham merges it.
+8. Nothing is canon until the Operator merges it.
