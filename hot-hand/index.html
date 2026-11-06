@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Hot Hand of a Language Model — Kaskade Research</title>
+<meta name="description" content="Exploring AI hot streaks: chance, contextual momentum and human adaptation. Kaskade research proposal and synthetic preflight; no real model findings yet.">
+<meta name="theme-color" content="#060b18">
+<link rel="canonical" href="https://kaskade.systems/hot-hand/">
+<link rel="icon" href="/assay/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The Hot Hand of a Language Model — Kaskade Research">
+<meta property="og:description" content="Can conversational history change the odds? An exploratory research proposal, not a finding.">
+<meta property="og:url" content="https://kaskade.systems/hot-hand/">
+<meta name="twitter:card" content="summary">
+<link rel="preload" href="/assay/fonts/fraunces-normal.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face { font-family: Fraunces; src: url('/assay/fonts/fraunces-normal.woff2') format('woff2'); font-style: normal; font-weight: 100 900; font-display: swap; }
+@font-face { font-family: Fraunces; src: url('/assay/fonts/fraunces-italic.woff2') format('woff2'); font-style: italic; font-weight: 100 900; font-display: swap; }
+@font-face { font-family: Plex; src: url('/fonts/IBMPlexMono-Regular.woff2') format('woff2'); font-style: normal; font-weight: 400; font-display: swap; }
+:root { --bg: #060b18; --panel: #0d1526; --text: #f3eee3; --muted: #b5bfce; --quiet: #8f9db2; --line: #283247; --gold: #f3c560; --cyan: #8ed7da; --paper: #f2ecdf; --ink: #242b34; --serif: Fraunces, Georgia, serif; --mono: Plex, ui-monospace, monospace; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--serif); font-weight: 380; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+body::before { content: ''; position: absolute; top: 0; inset-inline: 0; height: 1100px; z-index: -1; background: radial-gradient(ellipse at 12% 16%, #15303b80, transparent 56%), radial-gradient(ellipse at 90% 25%, #49372932, transparent 48%); pointer-events: none; }
+a { color: inherit; text-underline-offset: 5px; }
+a:hover { color: var(--gold); }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 5px; }
+h1, h2, h3, p { margin: 0; }
+h1, h2, h3 { text-wrap: balance; }
+.wrap { width: min(1216px, calc(100% - 80px)); margin-inline: auto; }
+.eyebrow { font: 11px/1.7 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--cyan); }
+.skip { position: absolute; top: -90px; left: 20px; padding: 12px 18px; background: var(--gold); color: var(--bg); z-index: 20; }
+.skip:focus { top: 12px; }
+.site-head { position: sticky; top: 0; z-index: 10; border-bottom: 1px solid #cbd5e117; background: #060b18ee; backdrop-filter: blur(16px); }
+.nav { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 88px; }
+.brand { display: inline-flex; align-items: center; gap: 13px; font: 15px var(--mono); letter-spacing: .24em; text-decoration: none; text-transform: uppercase; }
+.brand svg { flex: 0 0 auto; }
+.nav-links { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 27px; }
+.nav-links a { display: inline-flex; align-items: center; min-height: 44px; font: 12px/1.5 var(--mono); color: var(--muted); text-decoration: none; }
+.nav-links a:hover { color: var(--text); }
+.nav-links .nav-contact { color: var(--gold); padding: 9px 15px; border: 1px solid #f3c56066; border-radius: 3px; }
+.hero { display: grid; grid-template-columns: 1.15fr 1fr; align-items: center; gap: 68px; padding-block: 92px 80px; }
+.hero-copy > .eyebrow { display: flex; align-items: center; gap: 10px; }
+.hero-copy > .eyebrow::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+h1 { margin-top: 24px; font-size: clamp(55px, 6.3vw, 86px); line-height: 1.03; letter-spacing: -.035em; font-weight: 350; }
+h1 em { color: var(--gold); font-weight: 350; }
+.hero-copy > p:not(.eyebrow) { margin-top: 26px; max-width: 33em; color: var(--muted); font-size: 20px; line-height: 1.65; }
+.hero-copy strong { font-weight: 550; color: var(--text); }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 18px; min-height: 50px; padding: 13px 21px; border: 1px solid var(--line); border-radius: 3px; font: 12px/1.6 var(--mono); text-decoration: none; transition: background .18s, border-color .18s; }
+.btn:hover { color: var(--text); border-color: var(--gold); background: #f3c5600c; }
+.btn.primary { background: var(--gold); border-color: var(--gold); color: var(--bg); }
+.btn.primary:hover { background: #f8d78b; }
+.hero-copy .small { margin-top: 20px !important; font: 12px/1.8 var(--mono) !important; color: var(--quiet) !important; }
+.specimen { margin: 0; position: relative; padding: 26px; background: var(--paper); color: var(--ink); border-radius: 3px; box-shadow: 0 28px 80px #0006; transform: rotate(1deg); }
+.specimen::before { content: ''; position: absolute; inset: -12px 12px 12px -12px; z-index: -1; border: 1px solid #f3c56055; border-radius: 3px; }
+.paper-meta { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-bottom: 22px; border-bottom: 1px solid #242b3430; font: 10px/1.6 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+.paper-meta span:last-child { padding: 3px 7px; border: 1px solid #242b3460; }
+.specimen h2 { margin-top: 24px; font-size: 34px; font-weight: 400; line-height: 1.15; letter-spacing: -.02em; }
+.specimen .brief { margin-top: 10px; font-size: 15px; line-height: 1.5; color: #56606b; }
+.mini-table { width: 100%; border-collapse: collapse; margin-top: 24px; font-size: 14px; }
+.mini-table th { text-align: left; padding-bottom: 10px; font: 10px/1.6 var(--mono); text-transform: uppercase; letter-spacing: .06em; color: #56606b; }
+.mini-table th:last-child, .mini-table td:last-child { text-align: right; }
+.mini-table td { padding: 12px 0; border-top: 1px solid #242b3420; }
+.mini-table td:first-child { padding-right: 10px; }
+.result { white-space: nowrap; font: 11px/1.5 var(--mono); }
+.result.pass { color: #386458; }
+.result.fail { color: #963f34; }
+.paper-verdict { margin-top: 23px; padding-top: 20px; border-top: 2px solid #242b3460; }
+.paper-verdict .paper-label { font: 10px var(--mono); text-transform: uppercase; letter-spacing: .08em; color: #56606b; }
+.paper-verdict p:last-child { margin-top: 7px; font-size: 24px; line-height: 1.2; }
+.paper-verdict strong { font-weight: 550; }
+.specimen figcaption { margin-top: 20px; font-size: 12px; line-height: 1.55; color: #56606b; }
+.specimen a { display: inline-block; margin-top: 18px; color: var(--ink); font: 11px var(--mono); }
+.calibration { display: flex; align-items: baseline; gap: 28px; padding: 24px 0 28px; border-block: 1px solid var(--line); }
+.calibration .eyebrow { color: var(--gold); flex: 0 0 auto; }
+.calibration p { max-width: 75ch; font-size: 15px; line-height: 1.6; color: var(--muted); }
+.calibration a { color: var(--text); }
+.band { padding-block: 88px; border-bottom: 1px solid var(--line); }
+.section-head { display: grid; grid-template-columns: 1fr 1.1fr; align-items: start; gap: 64px; margin-bottom: 42px; }
+.section-head h2, .method h2, .contact h2 { margin-top: 16px; font-size: clamp(36px, 4.2vw, 54px); line-height: 1.1; letter-spacing: -.025em; font-weight: 360; }
+.section-head > p { padding-top: 28px; color: var(--muted); font-size: 20px; max-width: 36em; }
+.people { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 34px; }
+.person { padding-top: 22px; border-top: 1px solid #f3c56070; }
+.person .number { font: 11px var(--mono); color: var(--gold); }
+.person h3 { margin-top: 20px; font-size: 27px; font-weight: 400; line-height: 1.25; }
+.person p { margin-top: 15px; color: var(--muted); font-size: 17px; }
+.person a { display: inline-flex; align-items: center; min-height: 44px; margin-top: 20px; color: var(--cyan); font: 11px/1.6 var(--mono); }
+.artifacts { border-top: 1px solid var(--line); }
+.artifact { display: grid; grid-template-columns: 80px 1fr 1.15fr 24px; gap: 24px; align-items: center; padding: 28px 0; border-bottom: 1px solid var(--line); text-decoration: none; }
+.artifact > .number { font: 10px/1.8 var(--mono); color: var(--quiet); }
+.artifact h3 { font-size: 27px; font-weight: 400; line-height: 1.2; }
+.artifact p { color: var(--muted); font-size: 16px; line-height: 1.6; }
+.artifact .arrow { color: var(--gold); font-size: 24px; }
+.artifact:hover h3 { color: var(--gold); }
+.method { display: grid; grid-template-columns: 1fr 1.1fr; gap: 64px; }
+.method-copy > p { color: var(--muted); font-size: 18px; }
+.method-copy > p + p { margin-top: 20px; }
+.sequence { display: flex; flex-wrap: wrap; gap: 8px; margin-block: 26px; }
+.sequence span { padding: 7px 10px; border: 1px solid var(--line); border-top-color: var(--c); font: 10px/1.7 var(--mono); color: var(--text); }
+.concept { padding-block: 17px; border-top: 1px solid var(--line); }
+.concept:last-child { border-bottom: 1px solid var(--line); }
+.concept summary { cursor: pointer; color: var(--text); font-size: 16px; }
+.concept p { margin-top: 14px; color: var(--muted); font-size: 16px; }
+.concept .stage { color: var(--quiet); font: 10px var(--mono); margin-left: 8px; }
+.journal { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px; padding-block: 36px; border-bottom: 1px solid var(--line); }
+.journal p { color: var(--muted); font-size: 17px; max-width: 57ch; }
+.journal a { flex: 0 0 auto; color: var(--cyan); font: 12px var(--mono); }
+.contact { display: grid; grid-template-columns: 1fr 1.1fr; gap: 64px; padding-block: 100px; }
+.contact h2 em { color: var(--gold); }
+.contact-copy > p { font-size: 20px; color: var(--muted); }
+.contact-email { display: inline-block; margin-top: 28px; font-size: clamp(19px, 2.4vw, 29px); color: var(--text); overflow-wrap: anywhere; }
+.contact-copy .small { margin-top: 18px; font-size: 14px; color: var(--quiet); }
+.site-foot { border-top: 1px solid var(--line); padding-block: 30px; }
+.footer-inner { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 22px; }
+.footer-note { font: 10px/1.7 var(--mono); color: var(--quiet); }
+.footer-links { display: flex; flex-wrap: wrap; gap: 6px 22px; }
+.footer-links a { display: inline-flex; align-items: center; min-height: 44px; color: var(--muted); font: 11px var(--mono); }
+@media (max-width: 1000px) { .hero { gap: 38px; } .specimen { padding: 22px; } .mini-table { font-size: 12px; } .result { font-size: 10px; } .section-head, .method, .contact { gap: 38px; } }
+@media (max-width: 800px) { .wrap { width: calc(100% - 48px); } .hero { grid-template-columns: 1fr; padding-block: 58px 64px; gap: 60px; } h1 { font-size: clamp(50px, 9.5vw, 76px); } .hero-copy > p:not(.eyebrow) { max-width: 35em; } .specimen { max-width: 560px; width: calc(100% - 8px); justify-self: center; } .mini-table { font-size: 15px; } .result { font-size: 11px; } .section-head, .method, .contact { grid-template-columns: 1fr; gap: 25px; } .section-head > p { padding-top: 0; font-size: 18px; } .people { grid-template-columns: 1fr; gap: 34px; } .person h3 { margin-top: 12px; } .person p { max-width: 40em; } .person a { margin-top: 10px; } .calibration { align-items: flex-start; gap: 14px; flex-direction: column; } .artifact { grid-template-columns: 54px 1fr 24px; gap: 14px; } .artifact p { grid-column: 2; grid-row: 2; } .artifact .arrow { grid-column: 3; grid-row: 1; } .band { padding-block: 64px; } .contact { padding-block: 72px; } }
+@media (max-width: 540px) { html { scroll-padding-top: 155px; } .nav { flex-wrap: wrap; padding-block: 16px 10px; gap: 9px; } .brand { min-height: 32px; font-size: 13px; } .nav-links { width: 100%; gap: 8px 20px; justify-content: space-between; } .nav-links a { font-size: 10px; } .nav-links .nav-contact { padding-inline: 12px; } .hero { padding-top: 40px; } h1 { font-size: clamp(47px, 12vw, 64px); } .hero-copy > p:not(.eyebrow) { font-size: 18px; } .actions { flex-direction: column; align-items: stretch; } .specimen { padding: 21px 17px; transform: none; } .specimen h2 { font-size: 31px; } .mini-table { font-size: 12.5px; } .result { font-size: 10px; } .mini-table td { padding-block: 11px; } .paper-meta { font-size: 9px; } .eyebrow { font-size: 10px; } .contact-copy > p { font-size: 18px; } .footer-inner { align-items: flex-start; flex-direction: column; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .btn { transition: none; } }
+
+/* Research page: scoped additions to the existing Kaskade type and palette */
+.hot-hero{grid-template-columns:1.05fr .95fr}
+.hot-hero h1{font-size:clamp(53px,6vw,82px)}
+.hot-status{font:11px/1.8 var(--mono);color:var(--quiet);margin-top:19px;letter-spacing:.04em}
+.hot-status strong{color:var(--gold);font-weight:500}
+.hot-paper{transform:rotate(-1deg);min-width:0}
+.hot-paper h2{font-size:35px}
+.hot-kicker{font:11px/1.6 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:#536374}
+.hot-prob{margin-top:28px;font:500 clamp(39px,6vw,75px)/1 var(--mono);color:#1f4150;letter-spacing:-.055em}
+.hot-prob span{color:#a47b20}
+.hot-paper .brief{margin-top:14px}
+.hot-stamp{display:inline-block;margin-top:27px;padding:8px 11px;border:2px solid #b28954;color:#78613d;font:10px var(--mono);letter-spacing:.08em;transform:rotate(3deg)}
+.hot-three{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.hot-card{border:1px solid var(--line);padding:26px;background:#0c1627;border-top:2px solid var(--hot-accent)}
+.hot-card .hot-code{font:11px var(--mono);color:var(--hot-accent);letter-spacing:.12em}
+.hot-card h3{margin:20px 0 15px;font-size:28px;font-weight:420;line-height:1.2}
+.hot-card p{font-size:17px;color:var(--muted)}
+.hot-card small{display:block;font:11px/1.7 var(--mono);color:var(--hot-accent);margin-top:27px;border-top:1px solid var(--line);padding-top:17px}
+.hot-arm-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.hot-arm{border:1px solid var(--line);padding:23px 27px;display:grid;grid-template-columns:44px 1fr;gap:17px}
+.hot-arm .hot-arm-letter{font:28px var(--mono);color:var(--gold)}
+.hot-arm h3{font:500 14px var(--mono);padding-top:4px}
+.hot-arm p{font-size:16px;color:var(--muted);margin-top:10px}
+.hot-note{font:12px/1.8 var(--mono);color:var(--quiet);margin-top:26px}
+.hot-lab{display:grid;grid-template-columns:1fr 1.05fr;gap:68px;align-items:start}
+.hot-lab h2{font-size:clamp(36px,4.2vw,54px);font-weight:370;line-height:1.1}
+.hot-lab p{color:var(--muted);font-size:18px;margin-top:22px}
+.hot-panel{background:#0e1b2c;border:1px solid #334155;padding:28px}
+.hot-panel-top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:11px var(--mono);color:var(--quiet);margin-bottom:20px}
+.hot-panel-top b{color:var(--cyan);font-weight:500}
+.hot-flips{display:grid;grid-template-columns:repeat(10,1fr);gap:6px}
+.hot-flip{height:25px;background:#202d40;border:1px solid #314256;border-radius:2px}
+.hot-flip.win{background:#126976;border-color:#67e8f9}
+.hot-flip.lose{background:#78551f;border-color:#fbbf24}
+.hot-keys{font:11px var(--mono);margin:15px 0 20px;color:var(--quiet)}
+.hot-key{width:8px;height:8px;display:inline-block;vertical-align:middle;background:#126976;border:1px solid #67e8f9;margin-right:5px}
+.hot-key.loss{background:#78551f;border-color:#fbbf24;margin-left:16px}
+.hot-figure-stat{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--line);padding:17px 0;gap:10px}
+.hot-figure-stat span{font:11px var(--mono);color:var(--muted)}
+.hot-figure-stat strong{font:500 28px var(--mono)}
+.hot-panel button{width:100%;min-height:48px;cursor:pointer;background:var(--gold);color:var(--bg);border:0;border-radius:3px;font:500 12px var(--mono)}
+.hot-panel button:hover{background:#f9d575}
+.hot-panel-note{font:11px/1.65 var(--mono);color:var(--quiet);margin-top:17px}
+.hot-milestones{display:grid;grid-template-columns:repeat(3,1fr);gap:27px}
+.hot-mile{border-top:1px solid var(--line);padding-top:20px}
+.hot-mile small{font:11px var(--mono);color:var(--cyan)}
+.hot-mile h3{font-weight:450;font-size:27px;margin-top:16px}
+.hot-mile p{font-size:17px;color:var(--muted);margin-top:13px}
+.hot-mile .hot-label{font:11px var(--mono);color:var(--gold);margin-top:19px}
+.hot-quote{font-size:clamp(30px,4.2vw,54px);font-weight:360;line-height:1.22;text-align:center;max-width:19em;margin:0 auto;color:var(--text)}
+.hot-quote em{color:var(--gold)}
+@media(max-width:900px){.hot-hero,.hot-lab{grid-template-columns:1fr}.hot-three,.hot-milestones{grid-template-columns:1fr 1fr}.hot-hero{gap:45px}}
+@media(max-width:600px){.hot-three,.hot-arm-grid,.hot-milestones{grid-template-columns:1fr}.hot-arm{padding:19px}.hot-paper{transform:none}.hot-panel{padding:19px}.hot-flips{gap:4px}.hot-hero{padding-top:50px}}
+
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-head">
+<div class="wrap nav">
+<a class="brand" href="/" aria-label="Kaskade home"><svg width="23" height="25" viewBox="0 0 23 25" aria-hidden="true"><path d="M2 3H10M5 8H13M8 13H16M11 18H19M14 23H22" fill="none" stroke-width="2" stroke-linecap="round" stroke="#8ed7da"/><path d="M14 23H22" stroke="#f3c560" stroke-width="2" stroke-linecap="round"/></svg>Kaskade</a>
+<nav class="nav-links" aria-label="Main navigation">
+<a href="/assay/">The pilot</a>
+<a href="/evolution/annotations/2026-10-30-gpt-public-presentation/">Development</a>
+<a class="nav-contact" href="/#access">Get in touch <span aria-hidden="true">&nbsp;↗</span></a>
+</nav>
+</div>
+</header>
+<main id="main"><div class="wrap">
+<section class="hero hot-hero" aria-labelledby="hero-h">
+<div class="hero-copy">
+<p class="eyebrow">Exploratory research · Proposal / 06 Nov 2026</p>
+<h1 id="hero-h">The <em>hot hand</em> of a language model.</h1>
+<p><strong>Some AI sessions seem to get on a roll.</strong> One answer lands, the next is sharper, and suddenly the whole collaboration works. Is that a coincidence—or can earlier exchanges actually change the odds?</p>
+<p>This is an open question, not a claim of discovery. KASKADE is proposing a controlled study of statistical streaks, context, and human–AI adaptation.</p>
+<div class="actions"><a class="btn primary" href="#question">Explore the question <span aria-hidden="true">↘</span></a><a class="btn" href="#lab">Try the chance-only lab</a></div>
+<p class="hot-status"><strong>PROPOSAL + OFFLINE PREFLIGHT</strong><br>Real model trials: NOT RUN · Research findings: NONE YET</p>
+</div>
+<figure class="specimen hot-paper">
+<div class="paper-meta"><span>KASKADE · LAB NOTE 001</span><span>SPECIMEN / NOT DATA</span></div>
+<h2>The wheel doesn't remember.<br>Does the conversation?</h2>
+<p class="brief">Two possible histories, the same underlying model parameters, and a question about conditional success.</p>
+<div class="hot-prob">P(success<span> | </span>history)</div>
+<table class="mini-table"><thead><tr><th>Explanation</th><th>Status</th></tr></thead><tbody>
+<tr><td>Random streaks</td><td><span class="result">H0</span></td></tr>
+<tr><td>Contextual momentum</td><td><span class="result">H1</span></td></tr>
+<tr><td>Human adaptation</td><td><span class="result">H2</span></td></tr>
+</tbody></table>
+<div class="paper-verdict"><p class="paper-label">Current scientific conclusion</p><p><strong>Not established.</strong></p></div>
+<div class="hot-stamp">PROPOSAL · NO MODEL FINDINGS</div>
+<figcaption>Illustrative research instrument only. This paper reports no measured probability or AI result.</figcaption>
+</figure>
+</section>
+<div class="calibration"><p class="eyebrow">Evidence boundary</p><p>An 80-trial balanced assignment has been prepared and checked with <strong>synthetic, random outcomes only</strong>. Those outcomes are a software preflight, not evidence of model performance.</p></div>
+<section id="question" class="band" aria-labelledby="q-h">
+<div class="section-head"><div><p class="eyebrow">The hypothesis</p><h2 id="q-h">Three explanations.<br>One familiar feeling.</h2></div><p>Successive AI responses share a changing context, unlike independent roulette spins. But context dependence alone does not demonstrate a self-reinforcing performance effect.</p></div>
+<div class="hot-three">
+<article class="hot-card" style="--hot-accent:#8ed7da"><div class="hot-code">H0 / CHANCE</div><h3>A random winning streak.</h3><p>Runs of success occur even when each attempt has fixed odds. Selection bias and task difficulty can make some sessions look special.</p><small>MEASURE · EXCESS SERIAL DEPENDENCE?</small></article>
+<article class="hot-card" style="--hot-accent:#f3c560"><div class="hot-code">H1 / CONTEXT</div><h3>Useful history changes the next step.</h3><p>Validated successes may leave good instructions, representations, examples or corrections in context that help on a later task.</p><small>MEASURE · SUCCESS VS NEUTRAL HISTORY</small></article>
+<article class="hot-card" style="--hot-accent:#c4b5fd"><div class="hot-code">H2 / HUMAN ADAPTATION</div><h3>The collaborator finds a groove.</h3><p>The human learns what to ask, when to correct, and which direction to pursue. The improvement may belong to the coupled system.</p><small>MEASURE · FIXED VS ADAPTIVE FEEDBACK</small></article>
+</div></section>
+<section class="band" id="protocol" aria-labelledby="protocol-h">
+<div class="section-head"><div><p class="eyebrow">Phase I · Proposed method</p><h2 id="protocol-h">Four starting conditions.</h2></div><p>Repeat the same predefined tasks in fresh sessions with the same model configuration. Score actual outputs independently, not by what the assistant claims to have finished.</p></div>
+<div class="hot-arm-grid">
+<div class="hot-arm"><span class="hot-arm-letter">A</span><div><h3>Cold start</h3><p>The task begins without any warm-up exchange.</p></div></div>
+<div class="hot-arm"><span class="hot-arm-letter">B</span><div><h3>Neutral context</h3><p>Preceding conversation, but no recorded success or failure.</p></div></div>
+<div class="hot-arm"><span class="hot-arm-letter">C</span><div><h3>Successful context</h3><p>A separately checked successful warm-up precedes the task.</p></div></div>
+<div class="hot-arm"><span class="hot-arm-letter">D</span><div><h3>Unsuccessful context</h3><p>A documented unsuccessful attempt precedes the task.</p></div></div>
+</div>
+<p class="hot-note">Prototype feasibility design: 20 trials per condition, balanced across task families. Primary comparison: C versus B. Sample size, warm-up equivalence, answer leakage, model version, and analysis must be resolved before a confirmatory study.</p>
+</section>
+<section class="band" id="lab" aria-labelledby="lab-h">
+<div class="hot-lab">
+<div><p class="eyebrow">Interactive demonstration · Statistics, not AI</p><h2 id="lab-h">A winning streak can appear from nothing.</h2><p>Try a fair coin flipped 20 times. You may get several wins in a row, although one flip does not improve the odds of the next.</p><p>This little exhibit makes the central problem visible: a streak by itself does not establish that a model has become more capable.</p><p><strong>None of the flips are GPT or Claude trials.</strong></p></div>
+<div class="hot-panel">
+<div class="hot-panel-top"><span>CHANCE-ONLY SIMULATOR</span><b>p(WIN) = 0.50</b></div>
+<div id="hot-flips" class="hot-flips" role="img" aria-label="Twenty blank slots before the simulation"></div>
+<div class="hot-keys"><span class="hot-key"></span> WIN <span class="hot-key loss"></span> LOSS</div>
+<div class="hot-figure-stat"><span>Wins / 20</span><strong id="hot-wins" aria-live="polite">—</strong></div>
+<div class="hot-figure-stat"><span>Longest winning streak</span><strong id="hot-streak" aria-live="polite">—</strong></div>
+<button id="hot-run" type="button">Flip 20 fair coins</button>
+<p class="hot-panel-note" id="hot-explain" aria-live="polite">Nothing measured yet. The simulator generates illustrative random sequences only.</p>
+</div>
+</div></section>
+<section class="band" id="progress" aria-labelledby="progress-h">
+<p class="eyebrow">As of 06 Nov 2026</p><h2 id="progress-h" class="section-head" style="display:block;margin-top:18px">The record, without the mythology.</h2>
+<div class="hot-milestones">
+<div class="hot-mile"><small>01 / PROPOSED</small><h3>A testable question</h3><p>Three competing explanations, four study arms, objective scoring criteria and explicit limits.</p><p class="hot-label">PROPOSAL DOCUMENTED</p></div>
+<div class="hot-mile"><small>02 / IMPLEMENTED PREFLIGHT</small><h3>Offline control run</h3><p>A repeatable design builds 80 planned trial assignments and analyzes synthetic null outcomes. This checks software plumbing only.</p><p class="hot-label">SYNTHETIC, NOT AI DATA</p></div>
+<div class="hot-mile"><small>03 / NOT RUN</small><h3>Actual model replication</h3><p>Independent model calls, pinned configuration, externally graded answers and complete provenance are required to test the hypothesis.</p><p class="hot-label">NO EMPIRICAL RESULTS</p></div>
+</div></section>
+<section class="band" aria-labelledby="criteria-h"><div class="section-head"><div><p class="eyebrow">How we would know</p><h2 id="criteria-h">Proof over performance theater.</h2></div><p>A model saying “done” is not success. A reproducible test, independently checked answer, or inspected working deliverable is. The future target is not merely capability, but <strong>reliability and recoverability</strong>.</p></div>
+<p class="hot-note">No statement here suggests that KASKADE has proven a hot-hand effect, improved a deployed agent, or verified any neural mechanism. The private pilot workspace is not publicly mirrored.</p></section>
+<section class="band" aria-label="Closing thought"><blockquote class="hot-quote">“The model may be the same.<br><em>The path through the conversation is not.</em>”</blockquote></section>
+<div class="journal"><p>Proposal · To discuss a research collaboration or offer methodological critique, use the public Kaskade contact channel. No participation or response is presumed.</p><a href="/#access">Get in touch <span aria-hidden="true">↗</span></a></div>
+</div></main>
+<footer class="site-foot"><div class="wrap footer-inner"><p class="footer-note">KASKADE / Thoughtful review. Inspectable work.<br>© 2026 Kaskade</p><nav class="footer-links" aria-label="Footer navigation"><a href="/assay/">Assay Office by Kaskade</a><a href="/evolution/annotations/2026-10-30-gpt-name-and-contact/">Development</a><a href="https://x.com/gramlincodex">@gramlincodex on X</a><a href="https://forms.gle/daoYHEXbE6d6dqwPA" target="_blank" rel="noopener">Project updates</a></nav></div></footer>
+<script>
+(function(){
+'use strict';
+const cells=document.getElementById('hot-flips'),wins=document.getElementById('hot-wins'),streak=document.getElementById('hot-streak'),note=document.getElementById('hot-explain');
+function draw(outcomes){
+  cells.replaceChildren();
+  for(const v of outcomes){const cell=document.createElement('span');cell.className='hot-flip'+(v===null?'':v?' win':' lose');cell.setAttribute('aria-hidden','true');cells.appendChild(cell);}
+  cells.setAttribute('aria-label',outcomes[0]===null?'Twenty empty slots':outcomes.map(v=>v?'win':'loss').join(', '));
+}
+draw(Array(20).fill(null));
+document.getElementById('hot-run').addEventListener('click',()=>{
+  const outcomes=Array.from({length:20},()=>Math.random()<0.5);
+  let count=0,run=0,longest=0;
+  for(const win of outcomes){if(win){count++;run++;longest=Math.max(longest,run);}else run=0;}
+  draw(outcomes);wins.textContent=count+' / 20';streak.textContent=String(longest);
+  note.textContent='Purely illustrative independent 50/50 draws. No language model was called.';
+});
+})();
+</script>
+</body>
+</html>
